@@ -1,4 +1,4 @@
-# Cow-Boys for life 
+# React + Vite TEST
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

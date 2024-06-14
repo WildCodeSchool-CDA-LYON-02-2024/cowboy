@@ -3,6 +3,7 @@ import UserDAO from '../models/UserDAO.js';
 
 import AbstractController from './AbsractController.js';
 import { hashPassword } from '../utils/auth.js';
+import error from '../services/error.js';
 
 class UserController extends AbstractController {
   constructor() {
@@ -20,6 +21,7 @@ class UserController extends AbstractController {
         res.sendStatus(200);
       })
       .catch((err) => {
+        error(err, res);
         console.error(err);
       });
   };

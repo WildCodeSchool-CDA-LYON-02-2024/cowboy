@@ -5,6 +5,21 @@ class UserDAO extends AbstractDAO {
     super(db);
     this.table = 'player';
   }
+
+  findAll() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT id, username, email FROM ${this.table}`,
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
+        }
+      );
+    });
+  }
+
   create(username, email, password) {
     return new Promise((resolve, reject) => {
       console.log(username, email, password);

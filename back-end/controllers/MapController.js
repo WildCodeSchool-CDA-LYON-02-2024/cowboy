@@ -1,7 +1,6 @@
 import Database from '../models/Database.js';
 import MapDAO from '../models/MapDAO.js';
 import AbstractController from './AbsractController.js';
-import error from '../services/error.js';
 
 class MapController extends AbstractController {
   constructor() {

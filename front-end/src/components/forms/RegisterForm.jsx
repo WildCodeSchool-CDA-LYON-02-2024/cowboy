@@ -8,11 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerService } from "../../services/PlayerService";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleMailChange = (event) => {
     setEmail(event.target.value);
@@ -24,10 +29,29 @@ export default function RegisterForm() {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { success, error } = await registerService({
+      username,
+      email,
+      password,
+    });
+
+    if (success) {
+      console.info("Bien inscrit");
+      navigate("/"); //redirige vers le login
+    } else {
+      setError(error);
+      console.info("Pas inscrit");
+    }
+  };
+
   return (
     <Box
       component="form"
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       sx={{
         border: "2px black",
         height: "35rem",
@@ -142,6 +166,7 @@ export default function RegisterForm() {
               <OutlinedInput
                 onChange={handleMailChange}
                 value={email}
+                type="email"
                 label="Email"
                 sx={{
                   height: "3rem",
@@ -205,20 +230,21 @@ export default function RegisterForm() {
               />
             </FormControl>
           </Box>
-          <Typography
-            sx={{
-              fontSize: "0.7rem",
-              width: "60%",
-              textAlign: "center",
-              pt: "1rem",
-              fontFamily: "Pixelify",
-              color: "white",
-              textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            }}
-          >
-            Déjà un compte? Ta ville a besoin de toi !
-          </Typography>
+          <Link to={"/"} style={{ marginTop: "1rem" }}>
+            <Typography
+              sx={{
+                fontSize: "0.7rem",
+                textAlign: "center",
+                fontFamily: "Pixelify",
+                color: "white",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+            >
+              Déjà un compte? Ta ville a besoin de toi !
+            </Typography>
+          </Link>
+          {error && <Typography color="error">{error}</Typography>}
           <Button
             variant="contained"
             sx={{

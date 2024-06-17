@@ -1,9 +1,9 @@
-import Database from '../models/Database.js';
-import UserDAO from '../models/UserDAO.js';
+import Database from "../models/Database.js";
+import UserDAO from "../models/UserDAO.js";
 
-import AbstractController from './AbsractController.js';
-import { hashPassword } from '../utils/auth.js';
-import error from '../services/error.js';
+import AbstractController from "./AbsractController.js";
+import { hashPassword } from "../utils/auth.js";
+import error from "../services/error.js";
 
 class UserController extends AbstractController {
   constructor() {
@@ -18,11 +18,14 @@ class UserController extends AbstractController {
     await this.model
       .create(username, email, hashedPassword)
       .then(() => {
-        res.sendStatus(200);
+        res.status(200).json({ message: "PLAYER créé avec succès" });
       })
       .catch((err) => {
         error(err, res);
         console.error(err);
+        res.status(500).json({
+          error: "Une erreur est survenue lors de la création du PLAYER",
+        });
       });
   };
 

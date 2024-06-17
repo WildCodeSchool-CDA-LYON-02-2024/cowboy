@@ -1,7 +1,8 @@
 const error = (err, res) => {
   switch (err.errno) {
     case 1062:
-      res.json({ message: 'Email already exist' });
+      console.log('err :', err);
+      res.json({ message: `${err.sqlMessage}` });
       break;
     default:
       res.json({ message: 'Unknow error' });

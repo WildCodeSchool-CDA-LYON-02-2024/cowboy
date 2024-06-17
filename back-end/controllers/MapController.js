@@ -9,21 +9,6 @@ class MapController extends AbstractController {
     this.db = new Database();
     this.model = new MapDAO(this.db);
   }
-  add = async (req, res) => {
-    const slot = 2;
-
-    const playerId = 1;
-    console.log('2');
-    await this.model
-      .create(slot, playerId)
-      .then(() => {
-        res.sendStatus(200);
-      })
-      .catch((err) => {
-        error(err, res);
-        console.error(err);
-      });
-  };
 }
 
 export default MapController;

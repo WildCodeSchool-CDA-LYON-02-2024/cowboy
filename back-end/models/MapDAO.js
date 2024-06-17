@@ -6,11 +6,11 @@ class MapDAO extends AbstractDAO {
     this.table = 'map';
   }
 
-  create(slot, playerId) {
+  create(slot) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
-        `INSERT INTO ${this.table} (slot, player_id) VALUES (?,?)`,
-        [slot, playerId],
+        `INSERT INTO ${this.table} (slot) VALUES (?)`,
+        [slot],
         (err, result, fields) => {
           if (err) {
             return reject(err);

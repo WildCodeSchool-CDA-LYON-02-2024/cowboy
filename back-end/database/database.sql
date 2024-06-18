@@ -82,7 +82,6 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`map` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `slot_UNIQUE` (`slot` ASC) VISIBLE,
   INDEX `fk_map_player_idx` (`player_id` ASC) VISIBLE,
-  UNIQUE INDEX `player_id_UNIQUE` (`player_id` ASC) VISIBLE,
   CONSTRAINT `fk_map_player`
     FOREIGN KEY (`player_id`)
     REFERENCES `cowboy`.`player` (`id`))

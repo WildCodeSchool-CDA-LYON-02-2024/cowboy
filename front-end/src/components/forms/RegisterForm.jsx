@@ -8,32 +8,65 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerService } from "../../services/PlayerService";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [usernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleMailChange = (event) => {
     setEmail(event.target.value);
   };
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
+    setUsernameError(event.target.value.trim() === "");
+  };
+  const handleBlur = () => {
+    setUsernameError(username.trim() === "");
+    setEmailError(email.trim() === "");
+    setPasswordError(password.trim() === "");
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { success, error } = await registerService({
+      username,
+      email,
+      password,
+    });
+
+    if (success) {
+      console.info("Bien inscrit");
+      navigate("/"); //redirige vers le login
+    } else {
+      setError(error);
+      console.info("Pas inscrit");
+    }
+  };
+
   return (
     <Box
       component="form"
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       sx={{
         border: "2px black",
-        height: "35rem",
+        height: "40rem",
         width: "20rem",
         paddingTop: "2rem",
-        paddingBottom: "0.5rem",
+        paddingBottom: "3.5rem",
       }}
     >
       <Paper
@@ -98,6 +131,9 @@ export default function RegisterForm() {
                 Username
               </InputLabel>
               <OutlinedInput
+                required
+                error={usernameError}
+                onBlur={handleBlur}
                 onChange={handleUsernameChange}
                 value={username}
                 label="Username"
@@ -108,13 +144,13 @@ export default function RegisterForm() {
                     fontFamily: "Pixelify",
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: usernameError ? "red" : "white",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: usernameError ? "red" : "white",
                   },
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: usernameError ? "red" : "white",
                   },
                 }}
               />
@@ -140,8 +176,12 @@ export default function RegisterForm() {
                 Email
               </InputLabel>
               <OutlinedInput
+                required
+                error={emailError}
+                onBlur={handleBlur}
                 onChange={handleMailChange}
                 value={email}
+                type="email"
                 label="Email"
                 sx={{
                   height: "3rem",
@@ -150,13 +190,13 @@ export default function RegisterForm() {
                     fontFamily: "Pixelify",
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: emailError ? "red" : "white",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: emailError ? "red" : "white",
                   },
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: emailError ? "red" : "white",
                   },
                 }}
               />
@@ -181,10 +221,12 @@ export default function RegisterForm() {
                 Mot de passe
               </InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
+                required
+                error={passwordError}
+                onBlur={handleBlur}
                 onChange={handlePasswordChange}
-                type="password"
                 value={password}
+                type="password"
                 label="Mot de passe"
                 sx={{
                   height: "3rem",
@@ -193,32 +235,46 @@ export default function RegisterForm() {
                     fontFamily: "Pixelify",
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: passwordError ? "red" : "white",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: passwordError ? "red" : "white",
                   },
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                    borderColor: passwordError ? "red" : "white",
                   },
                 }}
               />
             </FormControl>
           </Box>
-          <Typography
-            sx={{
-              fontSize: "0.7rem",
-              width: "60%",
-              textAlign: "center",
-              pt: "1rem",
-              fontFamily: "Pixelify",
-              color: "white",
-              textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            }}
-          >
-            Déjà un compte? Ta ville a besoin de toi !
-          </Typography>
+          <Link to={"/"} style={{ marginTop: "1rem" }}>
+            <Typography
+              sx={{
+                fontSize: "0.7rem",
+                textAlign: "center",
+                fontFamily: "Pixelify",
+                color: "white",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+            >
+              Déjà un compte? Ta ville a besoin de toi !
+            </Typography>
+          </Link>
+          {error && (
+            <Typography
+              sx={{
+                fontSize: "0.7rem",
+                textAlign: "center",
+                fontFamily: "Pixelify",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+              color="error"
+            >
+              {error}
+            </Typography>
+          )}
           <Button
             variant="contained"
             sx={{

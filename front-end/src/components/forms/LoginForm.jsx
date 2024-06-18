@@ -8,10 +8,18 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { usePlayerContext } from "../../context/PlayerContext";
+import { loginService } from "../../services/PlayerService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { login } = usePlayerContext();
+
+  const navigate = useNavigate();
 
   const handleMailChange = (event) => {
     setEmail(event.target.value);
@@ -20,13 +28,31 @@ export default function LoginForm() {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { success, user, role, error } = await loginService(email, password);
+
+    if (success) {
+      // Inclure le rôle avec userData lors de la connexion
+      login({ ...user, role });
+      console.info("Connecté");
+      navigate("/test");
+      console.info("Connexion réussi");
+    } else {
+      setError(error);
+      console.info("Echec de la connexion big enflure");
+    }
+  };
+
   return (
     <Box
       component="form"
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       sx={{
         border: "2px black",
-        height: "30rem",
+        height: "33rem",
         width: "20rem",
         paddingTop: "3rem",
       }}
@@ -94,7 +120,9 @@ export default function LoginForm() {
                 Email
               </InputLabel>
               <OutlinedInput
+                required
                 onChange={handleMailChange}
+                type="email"
                 value={email}
                 label="Email"
                 sx={{
@@ -135,10 +163,10 @@ export default function LoginForm() {
                 Mot de passe
               </InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
+                required
                 onChange={handlePasswordChange}
-                type="password"
                 value={password}
+                type="password"
                 label="Mot de passe"
                 sx={{
                   height: "3rem",
@@ -159,18 +187,36 @@ export default function LoginForm() {
               />
             </FormControl>
           </Box>
-          <Typography
-            sx={{
-              fontSize: "0.7rem",
-              pt: "1rem",
-              fontFamily: "Pixelify",
-              color: "white",
-              textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            }}
-          >
-            Pas encore de compte? Inscrivez vous !
-          </Typography>
+          <Link to={"/register"}>
+            <Typography
+              sx={{
+                fontSize: "0.7rem",
+                pt: "1rem",
+                fontFamily: "Pixelify",
+                color: "white",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+            >
+              Pas encore de compte? Inscrivez vous !
+            </Typography>
+          </Link>
+          {error && (
+            <Typography
+              sx={{
+                marginTop: "2rem",
+                fontSize: "0.7rem",
+                textAlign: "center",
+                fontFamily: "Pixelify",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+              color="error"
+            >
+              {error}
+            </Typography>
+          )}
+
           <Button
             variant="contained"
             sx={{

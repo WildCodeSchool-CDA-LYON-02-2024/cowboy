@@ -52,7 +52,7 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       sx={{
         border: "2px black",
-        height: "30rem",
+        height: "33rem",
         width: "20rem",
         paddingTop: "3rem",
       }}
@@ -120,7 +120,9 @@ export default function LoginForm() {
                 Email
               </InputLabel>
               <OutlinedInput
+                required
                 onChange={handleMailChange}
+                type="email"
                 value={email}
                 label="Email"
                 sx={{
@@ -161,10 +163,10 @@ export default function LoginForm() {
                 Mot de passe
               </InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
+                required
                 onChange={handlePasswordChange}
-                type="password"
                 value={password}
+                type="password"
                 label="Mot de passe"
                 sx={{
                   height: "3rem",
@@ -199,7 +201,21 @@ export default function LoginForm() {
               Pas encore de compte? Inscrivez vous !
             </Typography>
           </Link>
-          {error && <Typography color="error">{error}</Typography>}
+          {error && (
+            <Typography
+              sx={{
+                marginTop: "2rem",
+                fontSize: "0.7rem",
+                textAlign: "center",
+                fontFamily: "Pixelify",
+                textShadow:
+                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              }}
+              color="error"
+            >
+              {error}
+            </Typography>
+          )}
 
           <Button
             variant="contained"

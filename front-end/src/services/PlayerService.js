@@ -12,10 +12,8 @@ export const registerService = async ({ username, email, password }) => {
         body: JSON.stringify({ username, email, password }),
       }
     );
-    console.log(response, "RESPONSE");
 
     const responseData = await response.json();
-    console.log(responseData, "RRRRRRRRRRRRRRRRRRRRRRR");
 
     if (response.status === 200) {
       return { success: true };
@@ -51,7 +49,6 @@ export const loginService = async (email, password) => {
     if (response.status === 200) {
       const userData = await response.json();
       const token = userData.token;
-      console.log(token, "TOKEN");
 
       if (!token) {
         return {

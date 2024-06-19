@@ -1,11 +1,13 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-// import LoginPage from "./pages/LoginPage";
-// import RegisterPage from "./pages/RegisterPage";
-import BoardPage from "./pages/BoardPage";
+import Header from "./components/Header";
 function App() {
-  // return <LoginPage />;
-  // return <RegisterPage />;
-  return <BoardPage />;
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
 }
 
 export default App;

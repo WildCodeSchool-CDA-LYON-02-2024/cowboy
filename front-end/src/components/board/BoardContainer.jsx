@@ -2,10 +2,14 @@ import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
+import ArmurerieUp from "./ArmurerieUp";
+import EcurieUp from "./EcurieUp";
+import EntrepotUp from "./EntrepotUp";
+import SaloonUp from "./SaloonUp";
 
 export default function BoardContainer() {
   return (
-    <Container component="section" disableGutters>
+    <Container component="section" disableGutters sx={{ pt: "5rem" }}>
       <Box
         sx={{
           height: "20vh",
@@ -54,8 +58,11 @@ export default function BoardContainer() {
         >
           SALOON
         </AccordionSummary>
-        <AccordionDetails sx={{ backgroundColor: "#959595", height: "15rem" }}>
+        <AccordionDetails
+          sx={{ padding: 0, backgroundColor: "#959595", height: "15rem" }}
+        >
           {/*COMPOSANT D AMELIORATION SALOON*/}
+          <SaloonUp />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -76,8 +83,11 @@ export default function BoardContainer() {
         >
           ARMURERIE
         </AccordionSummary>
-        <AccordionDetails sx={{ backgroundColor: "#959595", height: "15rem" }}>
+        <AccordionDetails
+          sx={{ padding: 0, backgroundColor: "#959595", height: "15rem" }}
+        >
           {/*COMPOSANT D AMELIORATION ARMURERIE*/}
+          <ArmurerieUp />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -98,8 +108,11 @@ export default function BoardContainer() {
         >
           ÉCURIE
         </AccordionSummary>
-        <AccordionDetails sx={{ backgroundColor: "#959595", height: "15rem" }}>
+        <AccordionDetails
+          sx={{ padding: 0, backgroundColor: "#959595", height: "15rem" }}
+        >
           {/*COMPOSANT D AMELIORATION ECURIE*/}
+          <EcurieUp />
         </AccordionDetails>
       </Accordion>{" "}
       <Accordion
@@ -120,8 +133,11 @@ export default function BoardContainer() {
         >
           ENTREPOT
         </AccordionSummary>
-        <AccordionDetails sx={{ backgroundColor: "#959595", height: "15rem" }}>
+        <AccordionDetails
+          sx={{ padding: 0, backgroundColor: "#959595", height: "15rem" }}
+        >
           {/*COMPOSANT D AMELIORATION ENTREPOT*/}
+          <EntrepotUp />
         </AccordionDetails>
       </Accordion>
     </Container>

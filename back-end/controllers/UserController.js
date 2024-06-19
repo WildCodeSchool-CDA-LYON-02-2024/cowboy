@@ -1,4 +1,3 @@
-import {db} from "../models/Database.js";
 import UserDAO from "../models/UserDAO.js";
 
 import error from "../services/error.js";
@@ -9,7 +8,7 @@ class UserController extends AbstractController {
   constructor() {
     super();
   
-    this.model = new UserDAO(db);
+    this.model = new UserDAO();
   }
   add = async (req, res) => {
     const { username, email, password } = req.body;

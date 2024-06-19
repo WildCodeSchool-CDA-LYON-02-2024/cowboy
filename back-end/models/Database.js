@@ -1,6 +1,6 @@
-import mysql from 'mysql2';
+import mysql from "mysql2";
 
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 class Database {
@@ -18,4 +18,5 @@ class Database {
     this.connection.end();
   }
 }
-export default Database;
+const db = new Database();
+export { db };

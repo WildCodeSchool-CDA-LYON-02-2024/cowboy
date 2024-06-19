@@ -8,7 +8,7 @@ export default function Header() {
       elevation={2}
       square
       sx={{
-        height: "5rem",
+        height: "4rem",
         width: "100%",
         display: "flex",
         justifyContent: "space-between",

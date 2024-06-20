@@ -1,10 +1,15 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-// import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-
+import Header from "./components/Header";
+import BottomNavbar from "./components/BottomNavbar";
 function App() {
-  // return <LoginPage />;
-  return <RegisterPage />;
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <BottomNavbar />
+    </>
+  );
 }
 
 export default App;

@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RegisterPage from "../src/pages/RegisterPage.jsx";
 import LoginPage from "../src/pages/LoginPage.jsx";
+import App from "./App.jsx";
 import { PlayerContextProvider } from "./context/PlayerContext.jsx";
 import "./index.css";
+import BoardPage from "./pages/BoardPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 
 const router = createBrowserRouter([
@@ -17,8 +19,18 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: "/test",
-    element: <TestPage />,
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/board",
+        element: <BoardPage />,
+      },
+      {
+        path: "/test",
+        element: <TestPage />,
+      },
+    ],
   },
 ]);
 

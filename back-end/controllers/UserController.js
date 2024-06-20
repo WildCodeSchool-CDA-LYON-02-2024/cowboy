@@ -16,15 +16,11 @@ class UserController extends AbstractController {
     await this.model
       .create(username, email, hashedPassword)
       .then(() => {
-
         return res.status(200).json({ message: 'PLAYER créé avec succès' });
       })
       .catch((err) => {
         error(err, res);
         console.error(err);
-        // return res.status(500).json({
-        //   error: 'Une erreur est survenue lors de la création du PLAYER',
-        // });
       });
   };
 

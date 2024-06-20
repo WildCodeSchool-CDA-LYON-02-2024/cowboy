@@ -7,7 +7,7 @@ class MapConfig {
     this.nbOfPlayer = null;
     this.maxPlayer = 5;
     this.freeSlotsArray = [];
-    this.playerId = 1;
+    this.playerId = 3;
   }
 
   addPlayer() {

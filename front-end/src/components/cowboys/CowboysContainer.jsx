@@ -3,13 +3,18 @@ import { AccordionDetails, AccordionSummary } from "@mui/material/";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import Bullet from "../../assets/images/cowboys/bullet.png";
-import WesternSaloon from "../../assets/images/cowboys/saloon.png";
+import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
 
 import CardContainer from "./CardContainer";
 
 export default function CowboysContainer() {
   return (
-    <Container component="section" disableGutters sx={{ pt: "5rem" }}>
+    <Container
+      component="section"
+      disableGutters
+      maxWidth={false}
+      sx={{ pt: "4rem", height: "100%", width: "100%" }}
+    >
       <Box
         sx={{
           height: "15vh",
@@ -78,21 +83,32 @@ export default function CowboysContainer() {
             fontSize: "2rem",
           }}
         >
-          BANDITS
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            BANDITS
+            <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys polyvalents équilibrés et adaptables
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails
           sx={{
             padding: 0,
             backgroundColor: "#959595",
-            height: "17rem",
+            height: "18.1rem",
             display: "flex",
             alignItems: "center",
-            overflow: "auto",
           }}
         >
           <CardContainer />
         </AccordionDetails>
       </Accordion>
+
       <Accordion
         sx={{
           "&.MuiPaper-root": {
@@ -112,13 +128,24 @@ export default function CowboysContainer() {
             fontSize: "2rem",
           }}
         >
-          BRUTES
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            BRUTES <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys robustes, endurants et tenaces
+            </Typography>
+          </Box>
         </AccordionSummary>
+
         <AccordionDetails
           sx={{
             padding: 0,
             backgroundColor: "#959595",
-            height: "17rem",
+            height: "18.1rem",
             display: "flex",
             alignItems: "center",
             overflow: "auto",
@@ -127,6 +154,7 @@ export default function CowboysContainer() {
           <CardContainer />
         </AccordionDetails>
       </Accordion>
+
       <Accordion
         sx={{
           "&.MuiPaper-root": {
@@ -146,13 +174,24 @@ export default function CowboysContainer() {
             fontSize: "2rem",
           }}
         >
-          CHASSEURS DE PRIMES
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            CHASSEURS DE PRIMES <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys précis, rusés et impitoyables.
+            </Typography>
+          </Box>
         </AccordionSummary>
+
         <AccordionDetails
           sx={{
             padding: 0,
             backgroundColor: "#959595",
-            height: "17rem",
+            height: "18.1rem",
             display: "flex",
             alignItems: "center",
             overflow: "auto",
@@ -161,6 +200,7 @@ export default function CowboysContainer() {
           <CardContainer />
         </AccordionDetails>
       </Accordion>
+
       <Accordion
         sx={{
           "&.MuiPaper-root": {
@@ -180,13 +220,23 @@ export default function CowboysContainer() {
             fontSize: "2rem",
           }}
         >
-          PISTEURS
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            PISTEURS <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys efficaces, ingénieux et prolifiques
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails
           sx={{
             padding: 0,
             backgroundColor: "#959595",
-            height: "17rem",
+            height: "18.1rem",
             display: "flex",
             alignItems: "center",
             overflow: "auto",
@@ -198,7 +248,7 @@ export default function CowboysContainer() {
       <Box
         alt="Image de la ville"
         sx={{
-          height: "17rem",
+          height: "18.1rem",
           width: "100%",
           backgroundImage: `url(${WesternSaloon})`,
           backgroundSize: "cover",

@@ -46,7 +46,9 @@ export default function CowboyCard({ cowboy }) {
           alt="Bandit Class"
           sx={{
             height: "1rem",
-            padding: "0.2rem",
+            pl: "0.2rem",
+            pr: "0.2rem",
+            pb: "0.2rem",
             position: "relative",
             bottom: "12.2rem",
             backgroundColor: "#1D1C1C",
@@ -80,9 +82,9 @@ export default function CowboyCard({ cowboy }) {
 }
 
 CowboyCard.propTypes = {
-  cowboy: {
+  cowboy: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
-  }.isRequired,
+  }).isRequired,
 };

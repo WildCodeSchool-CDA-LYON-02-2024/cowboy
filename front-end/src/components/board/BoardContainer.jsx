@@ -2,7 +2,7 @@ import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
-import WesternCity from "../../assets/images/western-city.jpg";
+import WesternCity from "../../assets/images/western-city.jpeg";
 import ArmurerieUp from "./ArmurerieUp";
 import EcurieUp from "./EcurieUp";
 import EntrepotUp from "./EntrepotUp";
@@ -10,7 +10,12 @@ import SaloonUp from "./SaloonUp";
 
 export default function BoardContainer() {
   return (
-    <Container component="section" disableGutters sx={{ pt: "5rem" }}>
+    <Container
+      component="section"
+      disableGutters
+      maxWidth={false}
+      sx={{ pt: "4rem", height: "100vh", width: "100vw" }}
+    >
       <Box
         sx={{
           height: "15vh",
@@ -64,7 +69,7 @@ export default function BoardContainer() {
           SALOON
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "17rem" }}
+          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION SALOON*/}
           <SaloonUp />
@@ -93,7 +98,7 @@ export default function BoardContainer() {
           ARMURERIE
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "17rem" }}
+          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ARMURERIE*/}
           <ArmurerieUp />
@@ -122,7 +127,7 @@ export default function BoardContainer() {
           ÉCURIE
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "17rem" }}
+          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ECURIE*/}
           <EcurieUp />
@@ -155,7 +160,7 @@ export default function BoardContainer() {
           sx={{
             padding: 0,
             backgroundColor: "#959595",
-            height: "17rem",
+            height: "18.1rem",
           }}
         >
           {/*COMPOSANT D AMELIORATION ENTREPOT*/}
@@ -165,7 +170,7 @@ export default function BoardContainer() {
       <Box
         alt="Image de la ville"
         sx={{
-          height: "17rem",
+          height: "18.1rem",
           width: "100%",
           backgroundImage: `url(${WesternCity})`,
           backgroundSize: "cover",

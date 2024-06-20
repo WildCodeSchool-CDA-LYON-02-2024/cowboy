@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "initMap": "node init/initMap.js"
   },
   "dependencies": {
     "argon2": "^0.40.3",

@@ -146,7 +146,7 @@ export default function ArmurerieUp() {
 
       <RessourcesForUp />
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: "1rem" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
           variant="contained"
           sx={{

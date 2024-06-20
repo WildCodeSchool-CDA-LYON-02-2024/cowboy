@@ -58,7 +58,7 @@ export default function EcurieUp() {
             width: "90%",
           }}
         >
-          Augmente la vitesse de déplacement
+          Augmente la vitesse de déplacement de tes cowboys
         </Typography>
         <Box
           sx={{

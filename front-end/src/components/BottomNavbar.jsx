@@ -1,4 +1,5 @@
 import { AppBar, IconButton, Toolbar } from "@mui/material";
+import { Link } from "react-router-dom";
 import GlobeIcon from "../assets/images/navbar/GlobeIcon";
 import HatIcon from "../assets/images/navbar/HatIcon";
 import HomeIcon from "../assets/images/navbar/HomeIcon";
@@ -25,16 +26,24 @@ export default function BottomNavbar() {
           }}
         >
           <IconButton>
-            <GlobeIcon />
+            <Link to="/test"> {/** Lier avec la page appropriée  */}
+              <GlobeIcon />
+            </Link>
           </IconButton>
           <IconButton>
-            <HomeIcon />
+            <Link to="/board">
+              <HomeIcon />
+            </Link>
           </IconButton>
           <IconButton>
-            <MagnumsIcon />
+            <Link to="/test"> {/** Lier avec la page appropriée  */}
+              <MagnumsIcon />
+            </Link>
           </IconButton>
           <IconButton>
-            <HatIcon />
+            <Link to="/test">{/** Lier avec la page appropriée  */}
+              <HatIcon />
+            </Link>
           </IconButton>
         </Toolbar>
       </AppBar>

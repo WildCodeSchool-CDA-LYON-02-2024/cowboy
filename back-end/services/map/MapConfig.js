@@ -1,11 +1,13 @@
 import ColonyDAO from '../../models/ColonyDAO.js';
 import MapDAO from '../../models/MapDAO.js';
+import BuildingConfig from '../buildings/BuildingConfig.js';
 
 class MapConfig {
   constructor() {
     this.maxSlot = 10;
     this.map = new MapDAO();
     this.colony = new ColonyDAO();
+    this.building = new BuildingConfig();
     this.nbOfPlayer = null;
     this.maxPlayer = 5;
     this.freeSlotsArray = [];
@@ -22,21 +24,24 @@ class MapConfig {
         }
         // Création d'un tableau avec les slots disponible
         this.freeSlots()
-          .then(
-            () => {
-              // Affectation du joueur sur un slot de map
-              this.affectRandomSlot(this.freeSlotsArray, playerId);
-              // Recuperation de l'id du slot sur la table map
-              this.getIdBySlot()
-                .then(() => {
-                  // Insertion de l'id de la table map, dans la table colony, afin de relier le nouveau joueur a sa colonie
-                  this.affectPlayerToColony();
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            } // Affectation d'un slot aux joueurs
-          )
+          .then(() => {
+            // Affectation du joueur sur un slot de map
+            this.affectRandomSlot(this.freeSlotsArray, playerId);
+            // Recuperation de l'id du slot sur la table map
+            this.getIdBySlot()
+              .then(() => {
+                // Insertion de l'id de la table map, dans la table colony, afin de relier le nouveau joueur a sa colonie
+                this.affectPlayerToColony()
+                  .then((res) => {
+                    // Init des building de la colonie
+                    this.building.initBuilding(res.insertId);
+                  })
+                  .catch((err) => console.error(err));
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          })
           .catch((err) => {
             console.error(err);
           });

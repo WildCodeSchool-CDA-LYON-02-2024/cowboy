@@ -1,11 +1,9 @@
-import Database from '../models/Database.js';
-import MapDAO from '../models/MapDAO.js';
+import MapDAO from '../../models/MapDAO.js';
 
 class MapConfig {
   constructor() {
-    this.db = new Database();
     this.slot = 10;
-    this.model = new MapDAO(this.db);
+    this.model = new MapDAO();
     this.nbOfPlayer = null;
     this.maxPlayer = 5;
     this.freeSlotsArray = [];

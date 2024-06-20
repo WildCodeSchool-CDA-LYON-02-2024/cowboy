@@ -1,10 +1,10 @@
 import AbstractDAO from './AbstractDAO.js';
 
 class BuildingDAO extends AbstractDAO {
-  constructor(db) {
-    super(db);
+  constructor() {
+    super();
     this.table = 'building';
-    console.log('db :', db);
+ 
   }
 
   getLevel(buildingTypeId, colonyId) {

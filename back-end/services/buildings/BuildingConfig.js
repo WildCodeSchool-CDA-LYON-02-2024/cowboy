@@ -1,11 +1,10 @@
-import AbstractController from '../controllers/AbsractController.js';
-import BuildingDAO from '../models/BuildingDAO.js';
-import { db } from '../models/Database.js';
+import AbstractController from '../../controllers/AbsractController.js';
+import BuildingDAO from '../../models/BuildingDAO.js';
 
-class Building extends AbstractController {
+class BuildingConfig extends AbstractController {
   constructor() {
     super();
-    this.model = new BuildingDAO(db);
+    this.model = new BuildingDAO();
     this.building = this.model.table;
     this.lvl = null;
     this.wood = null;
@@ -23,4 +22,4 @@ class Building extends AbstractController {
   }
 }
 
-export default Building;
+export default BuildingConfig;

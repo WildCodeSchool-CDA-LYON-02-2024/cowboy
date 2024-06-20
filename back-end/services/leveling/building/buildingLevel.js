@@ -1,5 +1,5 @@
-import Building from '../../Building.js';
-const building = new Building();
-console.log('building : ', building);
+import BuildingConfig from '../../buildings/BuildingConfig.js';
+const building = new BuildingConfig();
+
 
 building.getLevel;

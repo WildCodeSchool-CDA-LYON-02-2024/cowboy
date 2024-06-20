@@ -1,5 +1,4 @@
 import AbstractDAO from '../models/AbstractDAO.js';
-//import { db } from '../models/Database.js';
 
 class AbstractController {
   constructor() {

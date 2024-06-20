@@ -12,34 +12,34 @@
 -- --   ('player9', 'player9@example.com', 'password9'),
 -- --   ('player10', 'player10@example.com', 'password10');
 
--- -- Insert cowboys
--- INSERT INTO `cowboy` (`name`, `player_ID`)
--- VALUES
---   ('Wyatt Earp', null),
---   ('Billy the Kid', null),
---   ('Doc Holliday', null),
---   ('Jesse James', null),
---   ('Butch Cassidy', null),
---   ('Sundance Kid', null),
---   ('Wild Bill Hickok', null),
---   ('Pat Garrett', null),
---   ('Buffalo Bill', null),
---   ('Kit Carson', null),
---   ('Curly Bill', NULL),
---   ('Clay Allison', NULL),
---   ('John Wesley Hardin', NULL),
---   ('Luke Short', NULL),
---   ('Bat Masterson', NULL),
---   ('Kid Curry', NULL),
---   ('Frank James', NULL),
---   ('Tom Horn', NULL),
---   ('Joaquin Murrieta', NULL),
---   ('King Fisher', NULL),
---   ('Black Bart', NULL),
---   ('Sam Bass', NULL),
---   ('Harry Tracy', NULL),
---   ('Longhair Jim', NULL),
---   ('Dave Rudabaugh', NULL);
+-- Insert cowboys
+INSERT INTO `cowboy` (`name`, `player_ID`)
+VALUES
+  ('Wyatt Earp', null),
+  ('Billy the Kid', null),
+  ('Doc Holliday', null),
+  ('Jesse James', null),
+  ('Butch Cassidy', null),
+  ('Sundance Kid', null),
+  ('Wild Bill Hickok', null),
+  ('Pat Garrett', null),
+  ('Buffalo Bill', null),
+  ('Kit Carson', null),
+  ('Curly Bill', NULL),
+  ('Clay Allison', NULL),
+  ('John Wesley Hardin', NULL),
+  ('Luke Short', NULL),
+  ('Bat Masterson', NULL),
+  ('Kid Curry', NULL),
+  ('Frank James', NULL),
+  ('Tom Horn', NULL),
+  ('Joaquin Murrieta', NULL),
+  ('King Fisher', NULL),
+  ('Black Bart', NULL),
+  ('Sam Bass', NULL),
+  ('Harry Tracy', NULL),
+  ('Longhair Jim', NULL),
+  ('Dave Rudabaugh', NULL);
 
 -- -- Insert resource types
 -- INSERT INTO `resource_type` (`id`, `name`)
@@ -72,15 +72,15 @@
 
 -- -- insert into player_resource 
 
-INSERT INTO `player_resource` (`player_ID`, `resource_ID`, `quantity`)
-VALUES
-(1, 1, 50),
-(1, 2, 30),
-(1, 3, 40),
-(1, 4, 25),
-(1, 5, 35),
-(2, 1, 20),
-(2, 2, 15),
-(3, 1, 10),
-(3, 4, 50),
-(1, 10, 3);
+-- INSERT INTO `player_resource` (`player_ID`, `resource_ID`, `quantity`)
+-- VALUES
+-- (1, 1, 50),
+-- (1, 2, 30),
+-- (1, 3, 40),
+-- (1, 4, 25),
+-- (1, 5, 35),
+-- (2, 1, 20),
+-- (2, 2, 15),
+-- (3, 1, 10),
+-- (3, 4, 50),
+-- (1, 10, 3);

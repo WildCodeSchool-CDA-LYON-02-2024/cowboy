@@ -1,4 +1,4 @@
-import MapConfig from '../services/mapConfig.js';
+import MapConfig from '../services/map/MapConfig.js';
 
 const map = new MapConfig();
 

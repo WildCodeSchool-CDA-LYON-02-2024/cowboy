@@ -1,5 +1,5 @@
-import CowboyModel from "../../models/CowboyDAO.js";
-import { db } from "../../models/Database.js";
+import CowboyModel from '../../models/CowboyDAO.js';
+import { db } from '../../models/Database.js';
 
 const Cowboy = new CowboyModel(db);
 /* get all cowboys */
@@ -22,7 +22,9 @@ const getAlldispoCowboys = (req, res) => {
       res.json(Cowboy);
     })
     .catch((err) => {
-      console.err(err);
+      console.log("erreur controll")
+      return res.status(401).json(err);
+ 
     });
 };
 

@@ -4,7 +4,6 @@ import logo from "../assets/images/LOGO.png";
 export default function Header() {
   return (
     <Paper
-      component="header"
       elevation={2}
       square
       sx={{

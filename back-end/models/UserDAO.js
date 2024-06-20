@@ -1,8 +1,8 @@
 import AbstractDAO from './AbstractDAO.js';
 
 class UserDAO extends AbstractDAO {
-  constructor(db) {
-    super(db);
+  constructor() {
+    super();
     this.table = 'player';
   }
 

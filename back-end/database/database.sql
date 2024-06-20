@@ -1,8 +1,3 @@
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema mydb
@@ -68,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`player` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -86,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`map` (
     FOREIGN KEY (`player_id`)
     REFERENCES `cowboy`.`player` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -103,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`colony` (
     FOREIGN KEY (`map_id`)
     REFERENCES `cowboy`.`map` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -156,9 +154,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `cowboy`.`cowboy` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(150) NULL DEFAULT NULL,
-  `expedition_id` INT NOT NULL,
-  `colony_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `expedition_id`, `colony_id`),
+  `expedition_id` INT NULL DEFAULT NULL,
+  `colony_id` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `colony_id_UNIQUE` (`colony_id` ASC) VISIBLE,
+  UNIQUE INDEX `expedition_id_UNIQUE` (`expedition_id` ASC) VISIBLE,
   INDEX `fk_cowboy_expedition1_idx` (`expedition_id` ASC) VISIBLE,
   INDEX `fk_cowboy_colony1_idx` (`colony_id` ASC) VISIBLE,
   CONSTRAINT `fk_cowboy_colony1`
@@ -168,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`cowboy` (
     FOREIGN KEY (`expedition_id`)
     REFERENCES `cowboy`.`expedition` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -180,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`resource_type` (
   `name` VARCHAR(150) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -191,8 +193,9 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`resource` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `quantity` INT NULL DEFAULT NULL,
   `resource_type_id` INT NOT NULL,
-  `colony_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `resource_type_id`, `colony_id`),
+  `colony_id` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `resource_type_id`),
+  UNIQUE INDEX `colony_id_UNIQUE` (`colony_id` ASC) VISIBLE,
   INDEX `fk_resource_resource_type1_idx` (`resource_type_id` ASC) VISIBLE,
   INDEX `fk_resource_colony1_idx` (`colony_id` ASC) VISIBLE,
   CONSTRAINT `fk_resource_colony1`
@@ -202,6 +205,7 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`resource` (
     FOREIGN KEY (`resource_type_id`)
     REFERENCES `cowboy`.`resource_type` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

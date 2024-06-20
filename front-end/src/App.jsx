@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
@@ -30,6 +31,15 @@ function App() {
       </p>
     </>
   );
+=======
+import "./App.css";
+// import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+
+function App() {
+  // return <LoginPage />;
+  return <RegisterPage />;
+>>>>>>> dev
 }
 
 export default App;

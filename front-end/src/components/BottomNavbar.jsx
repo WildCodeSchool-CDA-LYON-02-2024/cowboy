@@ -26,7 +26,9 @@ export default function BottomNavbar() {
           }}
         >
           <IconButton>
-            <Link to="/test"> {/** Lier avec la page appropriée  */}
+            <Link to="/test">
+              {" "}
+              {/** Lier avec la page appropriée  */}
               <GlobeIcon />
             </Link>
           </IconButton>
@@ -36,12 +38,15 @@ export default function BottomNavbar() {
             </Link>
           </IconButton>
           <IconButton>
-            <Link to="/test"> {/** Lier avec la page appropriée  */}
+            <Link to="/test">
+              {" "}
+              {/** Lier avec la page appropriée  */}
               <MagnumsIcon />
             </Link>
           </IconButton>
           <IconButton>
-            <Link to="/test">{/** Lier avec la page appropriée  */}
+            <Link to="/my-cowboys">
+              {/** Lier avec la page appropriée  */}
               <HatIcon />
             </Link>
           </IconButton>

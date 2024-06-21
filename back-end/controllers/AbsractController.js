@@ -1,11 +1,10 @@
 import AbstractDAO from '../models/AbstractDAO.js';
-import Database from '../models/Database.js';
 
 class AbstractController {
   constructor() {
-    this.db = new Database();
-    this.model = new AbstractDAO(this.db);
+    this.model = new AbstractDAO();
   }
+
   browse = (req, res) => {
     this.model
       .findAll()

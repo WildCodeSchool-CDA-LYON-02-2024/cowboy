@@ -1,8 +1,8 @@
 import AbstractDAO from './AbstractDAO.js';
 
 class UserDAO extends AbstractDAO {
-  constructor(db) {
-    super(db);
+  constructor() {
+    super();
     this.table = 'player';
   }
 
@@ -20,9 +20,20 @@ class UserDAO extends AbstractDAO {
     });
   }
 
+  read(id) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM ${this.table} WHERE id = ?`;
+      this.connection.execute(query, [id], (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result[0]);
+        }
+      });
+    });
+  }
   create(username, email, password) {
     return new Promise((resolve, reject) => {
-      console.log(username, email, password);
       this.connection.execute(
         `INSERT INTO ${this.table} (username, email, password) VALUES (?,?,?)`,
         [username, email, password],

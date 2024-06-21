@@ -1,5 +1,7 @@
+import { db } from '../models/Database.js';
+
 class AbstractDAO {
-  constructor(db) {
+  constructor() {
     this.connection = db.connection;
     this.table = null;
   }

@@ -8,6 +8,7 @@ import { PlayerContextProvider } from "./context/PlayerContext.jsx";
 import "./index.css";
 import BoardPage from "./pages/BoardPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
+import CowboyPage from "./pages/CowboyPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/board",
         element: <BoardPage />,
+      },
+      {
+        path: "/my-cowboys",
+        element: <CowboyPage />,
       },
       {
         path: "/test",

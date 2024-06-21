@@ -1,24 +1,26 @@
 import AbstractDAO from './AbstractDAO.js';
 
-class BuildingType extends AbstractDAO {
+class RessourceTypeDAO extends AbstractDAO {
   constructor() {
     super();
-    this.table = 'building_type';
+    this.table = 'resource_type';
   }
-  insert(buildingName) {
+
+  insert(name) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
-        `INSERT INTO ${this.table} (name) VALUES (?)`,
-        [buildingName],
+        `INSERT INTO ${this.table} (name) VALUES (?)
+        `,
+        [name],
         (err, result, fields) => {
           if (err) {
             return reject(err);
           }
-          resolve(result);
+          return resolve(result);
         }
       );
     });
   }
 }
 
-export default BuildingType;
+export default RessourceTypeDAO;

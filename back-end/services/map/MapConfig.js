@@ -1,6 +1,7 @@
 import ColonyDAO from '../../models/ColonyDAO.js';
 import MapDAO from '../../models/MapDAO.js';
 import BuildingConfig from '../buildings/BuildingConfig.js';
+import Ressource from '../ressources/Ressource.js';
 
 class MapConfig {
   constructor() {
@@ -8,6 +9,7 @@ class MapConfig {
     this.map = new MapDAO();
     this.colony = new ColonyDAO();
     this.building = new BuildingConfig();
+    this.ressource = new Ressource();
     this.nbOfPlayer = null;
     this.maxPlayer = 5;
     this.freeSlotsArray = [];
@@ -34,7 +36,19 @@ class MapConfig {
                 this.affectPlayerToColony()
                   .then((res) => {
                     // Init des building de la colonie
-                    this.building.initBuilding(res.insertId);
+                    this.building.initBuilding(res.insertId).then(() => {
+                      this.ressource
+                        .initRessourceBuilding(
+                          res.insertId,
+                          this.building.ressource.initQuantity
+                        )
+                        .then((res) => console.log(res))
+                        .catch((err) => console.error(err));
+                      console.log(
+                        'building config : ',
+                        this.building.ressource.initQuantity
+                      );
+                    });
                   })
                   .catch((err) => console.error(err));
               })
@@ -51,6 +65,10 @@ class MapConfig {
       });
   }
 
+  initGame() {
+    this.ressource.initType();
+    this.generateMap();
+  }
   // Generation de la map
   generateMap() {
     console.log('Start init map');

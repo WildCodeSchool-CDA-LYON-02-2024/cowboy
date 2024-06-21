@@ -5,4 +5,4 @@ const map = new MapConfig();
 const building = new BuildingConfig();
 
 building.initType();
-map.generateMap();
+map.initGame();

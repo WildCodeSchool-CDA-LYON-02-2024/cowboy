@@ -1,17 +1,22 @@
 import AbstractController from '../../controllers/AbsractController.js';
 import BuildingDAO from '../../models/BuildingDAO.js';
-import BuildingType from '../../models/BuildingType.js';
+import BuildingTypeDAO from '../../models/BuildingTypeDAO.js';
+
+import Ressource from '../ressources/Ressource.js';
 
 class BuildingConfig extends AbstractController {
   constructor() {
     super();
     this.building = new BuildingDAO();
-    this.buildingTypeModel = new BuildingType();
+    this.buildingTypeModel = new BuildingTypeDAO();
+
     // this.building = this.model.table;
     this.lvl = 1;
-    this.wood = null;
-    this.gold = null;
-    this.metal = null;
+    this.ressource = new Ressource();
+    this.wood = new Ressource('wood');
+    this.gold = new Ressource('gold');
+    this.metal = new Ressource('metal');
+    this.stone = new Ressource('stone');
     this.type = ['saloon', 'armory', 'stable', 'warehouse'];
   }
 

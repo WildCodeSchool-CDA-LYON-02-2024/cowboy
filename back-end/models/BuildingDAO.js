@@ -5,16 +5,8 @@ class BuildingDAO extends AbstractDAO {
     super();
     this.table = 'building';
   }
-  //TODO : Création des building
+
   create(level, buildingTypeId, colonyId) {
-    console.log(
-      'level :',
-      level,
-      'buildingTypeId :',
-      buildingTypeId,
-      ' colony Id :',
-      colonyId
-    );
     return new Promise((resolve, reject) => {
       this.connection.execute(
         `INSERT INTO ${this.table} (level,building_type_id,colony_id)

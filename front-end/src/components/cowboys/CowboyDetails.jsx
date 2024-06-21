@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import BigCanyon from "../../assets/images/big-canyon.png";
+import BigCanyon from "../../assets/images/big-canyon-pix.jpeg";
 import CowboyUpgrade from "./CowboyUpgrade";
 
 export default function CowboyDetails({ cowboy, onBack }) {

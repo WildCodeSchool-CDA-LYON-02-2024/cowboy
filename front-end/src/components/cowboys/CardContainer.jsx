@@ -16,7 +16,7 @@ export default function CardContainer() {
     {
       id: 1,
       name: "John Marston",
-      image: "../../../src/assets/images/cowboys/cowboy-pix.png",
+      image: "../../../src/assets/images/cowboys/cowboy-pix-sbg.png",
     },
     {
       id: 2,
@@ -26,17 +26,17 @@ export default function CardContainer() {
     {
       id: 3,
       name: "Dutch Van Der Linde",
-      image: "../../../src/assets/images/cowboys/cowboy3-pix.png",
+      image: "../../../src/assets/images/cowboys/cowboy3-pix-sbg.png",
     },
     {
       id: 4,
-      name: "Dutch Van Der Linde",
+      name: "Nate the Nomad",
       image: "../../../src/assets/images/cowboys/cowboy4-pix-sbg.png",
     },
     {
       id: 5,
-      name: "Dutch Van Der Linde",
-      image: "../../../src/assets/images/cowboys/cowboy-pix.png",
+      name: "Buck Rivers",
+      image: "../../../src/assets/images/cowboys/cowboy3-pix-sbg.png",
     },
     // Ajoutez autant de cowboys que nécessaire
   ];

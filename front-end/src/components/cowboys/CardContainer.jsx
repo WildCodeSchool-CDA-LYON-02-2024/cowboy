@@ -31,7 +31,7 @@ export default function CardContainer() {
     {
       id: 4,
       name: "Dutch Van Der Linde",
-      image: "../../../src/assets/images/cowboys/cowboy2-pix.png",
+      image: "../../../src/assets/images/cowboys/cowboy4-pix-sbg.png",
     },
     {
       id: 5,

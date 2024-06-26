@@ -1,11 +1,14 @@
 import { AppBar, IconButton, Toolbar } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import GlobeIcon from "../assets/images/navbar/GlobeIcon";
 import HatIcon from "../assets/images/navbar/HatIcon";
 import HomeIcon from "../assets/images/navbar/HomeIcon";
 import MagnumsIcon from "../assets/images/navbar/MagnumsIcon";
 
 export default function BottomNavbar() {
+  const location = useLocation();
+  const activeStyle = { borderColor: "#B91818" };
+
   return (
     <>
       <AppBar
@@ -25,23 +28,57 @@ export default function BottomNavbar() {
             mt: "0.3rem",
           }}
         >
-          <IconButton>
-            <Link to="/test"> {/** Lier avec la page appropriée  */}
+          <IconButton
+            sx={{
+              borderRadius: 0,
+              height: "4.3rem",
+              borderBottom: `10px solid ${
+                location.pathname === "/test" ? activeStyle.borderColor : {}
+              }`,
+            }}
+          >
+            <Link to="/test">
               <GlobeIcon />
             </Link>
           </IconButton>
-          <IconButton>
+          <IconButton
+            sx={{
+              borderRadius: 0,
+              height: "4.3rem",
+              borderBottom: `10px solid ${
+                location.pathname === "/board" ? activeStyle.borderColor : {}
+              }`,
+            }}
+          >
             <Link to="/board">
               <HomeIcon />
             </Link>
           </IconButton>
-          <IconButton>
-            <Link to="/test"> {/** Lier avec la page appropriée  */}
+          <IconButton
+            sx={{
+              borderRadius: 0,
+              height: "4.3rem",
+              borderBottom: `10px solid ${
+                location.pathname === "/test" ? activeStyle.borderColor : {}
+              }`,
+            }}
+          >
+            <Link to="/test">
               <MagnumsIcon />
             </Link>
           </IconButton>
-          <IconButton>
-            <Link to="/test">{/** Lier avec la page appropriée  */}
+          <IconButton
+            sx={{
+              borderRadius: 0,
+              height: "4.3rem",
+              borderBottom: `10px solid ${
+                location.pathname === "/my-cowboys"
+                  ? activeStyle.borderColor
+                  : {}
+              }`,
+            }}
+          >
+            <Link to="/my-cowboys">
               <HatIcon />
             </Link>
           </IconButton>

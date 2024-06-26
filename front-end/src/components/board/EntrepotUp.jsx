@@ -41,7 +41,7 @@ export default function EntrepotUp() {
       </Box>
       <Box
         sx={{
-          padding: "0.5rem",
+          padding: "1.5rem 0.5rem 0.5rem 0.5rem",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

@@ -2,19 +2,18 @@ import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
-import WesternCity from "../../assets/images/western-city.jpeg";
-import ArmurerieUp from "./ArmurerieUp";
-import EcurieUp from "./EcurieUp";
-import EntrepotUp from "./EntrepotUp";
-import SaloonUp from "./SaloonUp";
+import Bullet from "../../assets/images/cowboys/bullet.png";
+import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
 
-export default function BoardContainer() {
+import CardContainer from "./CardContainer";
+
+export default function CowboysContainer() {
   return (
     <Container
       component="section"
       disableGutters
       maxWidth={false}
-      sx={{ pt: "4rem", height: "100vh", width: "100vw" }}
+      sx={{ pt: "4rem", height: "100%", width: "100%" }}
     >
       <Box
         sx={{
@@ -35,7 +34,7 @@ export default function BoardContainer() {
               "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           }}
         >
-          B
+          C{" "}
           <span>
             <Box
               component="img"
@@ -44,7 +43,25 @@ export default function BoardContainer() {
               sx={{ width: "3.5rem", height: "3.5rem", mt: "0.5rem" }}
             />
           </span>
-          ARD
+          W
+          <span>
+            <Box
+              component="img"
+              src={Bullet}
+              alt="barillet"
+              sx={{ width: "3.5rem", height: "2.5rem", mt: "1rem" }}
+            />
+          </span>
+          B{" "}
+          <span>
+            <Box
+              component="img"
+              src={BarilletImg}
+              alt="barillet"
+              sx={{ width: "3.5rem", height: "3.5rem", mt: "0.5rem" }}
+            />
+          </span>
+          YS
         </Typography>
       </Box>
       <Accordion
@@ -66,105 +83,166 @@ export default function BoardContainer() {
             fontSize: "2rem",
           }}
         >
-          SALOON
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
-        >
-          {/*COMPOSANT D AMELIORATION SALOON*/}
-          <SaloonUp />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        sx={{
-          "&.MuiPaper-root": {
-            margin: 0,
-          },
-          fontFamily: "Pixelify",
-          textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ChevronIcon />}
-          sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
-          }}
-        >
-          ARMURERIE
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
-        >
-          {/*COMPOSANT D AMELIORATION ARMURERIE*/}
-          <ArmurerieUp />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        sx={{
-          "&.MuiPaper-root": {
-            margin: 0,
-          },
-          fontFamily: "Pixelify",
-          textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ChevronIcon />}
-          sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
-          }}
-        >
-          ÉCURIE
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
-        >
-          {/*COMPOSANT D AMELIORATION ECURIE*/}
-          <EcurieUp />
-        </AccordionDetails>
-      </Accordion>{" "}
-      <Accordion
-        sx={{
-          "&.MuiPaper-root": {
-            margin: 0,
-            zIndex: 1,
-          },
-          fontFamily: "Pixelify",
-          textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ChevronIcon />}
-          sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
-          }}
-        >
-          ENTREPOT
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            BANDITS
+            <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys polyvalents équilibrés et adaptables
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails
           sx={{
             padding: 0,
             backgroundColor: "#959595",
             height: "18.1rem",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {/*COMPOSANT D AMELIORATION ENTREPOT*/}
-          <EntrepotUp />
+          <CardContainer />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion
+        sx={{
+          "&.MuiPaper-root": {
+            margin: 0,
+          },
+          fontFamily: "Pixelify",
+          textShadow:
+            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          color: "white",
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ChevronIcon />}
+          sx={{
+            height: "10vh",
+            backgroundColor: "#565656",
+            fontSize: "2rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            BRUTES <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys robustes, endurants et tenaces
+            </Typography>
+          </Box>
+        </AccordionSummary>
+
+        <AccordionDetails
+          sx={{
+            padding: 0,
+            backgroundColor: "#959595",
+            height: "18.1rem",
+            display: "flex",
+            alignItems: "center",
+            overflow: "auto",
+          }}
+        >
+          <CardContainer />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion
+        sx={{
+          "&.MuiPaper-root": {
+            margin: 0,
+          },
+          fontFamily: "Pixelify",
+          textShadow:
+            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          color: "white",
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ChevronIcon />}
+          sx={{
+            height: "10vh",
+            backgroundColor: "#565656",
+            fontSize: "2rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            CHASSEURS DE PRIMES <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys précis, rusés et impitoyables.
+            </Typography>
+          </Box>
+        </AccordionSummary>
+
+        <AccordionDetails
+          sx={{
+            padding: 0,
+            backgroundColor: "#959595",
+            height: "18.1rem",
+            display: "flex",
+            alignItems: "center",
+            overflow: "auto",
+          }}
+        >
+          <CardContainer />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion
+        sx={{
+          "&.MuiPaper-root": {
+            margin: 0,
+          },
+          fontFamily: "Pixelify",
+          textShadow:
+            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          color: "white",
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ChevronIcon />}
+          sx={{
+            height: "10vh",
+            backgroundColor: "#565656",
+            fontSize: "2rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            PISTEURS <br />
+            <Typography sx={{ fontFamily: "Pixelify", fontSize: "0.8rem" }}>
+              Cowboys efficaces, ingénieux et prolifiques
+            </Typography>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            padding: 0,
+            backgroundColor: "#959595",
+            height: "18.1rem",
+            display: "flex",
+            alignItems: "center",
+            overflow: "auto",
+          }}
+        >
+          <CardContainer />
         </AccordionDetails>
       </Accordion>
       <Box
@@ -172,7 +250,7 @@ export default function BoardContainer() {
         sx={{
           height: "18.1rem",
           width: "100%",
-          backgroundImage: `url(${WesternCity})`,
+          backgroundImage: `url(${WesternSaloon})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

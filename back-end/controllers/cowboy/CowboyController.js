@@ -1,7 +1,6 @@
 import CowboyModel from '../../models/CowboyDAO.js';
-import { db } from '../../models/Database.js';
 
-const Cowboy = new CowboyModel(db);
+const Cowboy = new CowboyModel();
 /* get all cowboys */
 
 const browse = (req, res) => {

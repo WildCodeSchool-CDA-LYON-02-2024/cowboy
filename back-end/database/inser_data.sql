@@ -13,47 +13,47 @@
 -- --   ('player10', 'player10@example.com', 'password10');
 
 -- Insert cowboys
-INSERT INTO `cowboy` (`name`, `player_ID`)
-VALUES
-  ('Wyatt Earp', null),
-  ('Billy the Kid', null),
-  ('Doc Holliday', null),
-  ('Jesse James', null),
-  ('Butch Cassidy', null),
-  ('Sundance Kid', null),
-  ('Wild Bill Hickok', null),
-  ('Pat Garrett', null),
-  ('Buffalo Bill', null),
-  ('Kit Carson', null),
-  ('Curly Bill', NULL),
-  ('Clay Allison', NULL),
-  ('John Wesley Hardin', NULL),
-  ('Luke Short', NULL),
-  ('Bat Masterson', NULL),
-  ('Kid Curry', NULL),
-  ('Frank James', NULL),
-  ('Tom Horn', NULL),
-  ('Joaquin Murrieta', NULL),
-  ('King Fisher', NULL),
-  ('Black Bart', NULL),
-  ('Sam Bass', NULL),
-  ('Harry Tracy', NULL),
-  ('Longhair Jim', NULL),
-  ('Dave Rudabaugh', NULL);
+-- INSERT INTO `cowboy` (`name`, `colony_id`)
+-- VALUES
+--   ('Wyatt Earp', null),
+--   ('Billy the Kid', null),
+--   ('Doc Holliday', null),
+--   ('Jesse James', null),
+--   ('Butch Cassidy', null),
+--   ('Sundance Kid', null),
+--   ('Wild Bill Hickok', null),
+--   ('Pat Garrett', null),
+--   ('Buffalo Bill', null),
+--   ('Kit Carson', null),
+--   ('Curly Bill', NULL),
+--   ('Clay Allison', NULL),
+--   ('John Wesley Hardin', NULL),
+--   ('Luke Short', NULL),
+--   ('Bat Masterson', NULL),
+--   ('Kid Curry', NULL),
+--   ('Frank James', NULL),
+--   ('Tom Horn', NULL),
+--   ('Joaquin Murrieta', NULL),
+--   ('King Fisher', NULL),
+--   ('Black Bart', NULL),
+--   ('Sam Bass', NULL),
+--   ('Harry Tracy', NULL),
+--   ('Longhair Jim', NULL),
+--   ('Dave Rudabaugh', NULL);
 
 -- -- Insert resource types
 -- INSERT INTO `resource_type` (`id`, `name`)
 -- VALUES
--- (1, 'or'),
--- (2, 'argent'),
--- (3, 'bois'),
--- (4, 'fer'),
--- (5, 'charbon'),
--- (6, 'eau'),
--- (7, 'bétail'),
--- (8, 'cuir'),
--- (9, 'maïs'),
--- (10, 'blé');
+-- (1, 'gold'),
+-- (2, 'silver'),
+-- (3, 'wood'),
+-- (4, 'iron'),
+-- (5, 'coal'),
+-- (6, 'water'),
+-- (7, 'livestock'),
+-- (8, 'leather'),
+-- (9, 'corn'),
+-- (10, 'wheat');
 
 -- -- Insert resources
 -- INSERT INTO `resource` (`id`, `quantity`, `resource_type_id`)

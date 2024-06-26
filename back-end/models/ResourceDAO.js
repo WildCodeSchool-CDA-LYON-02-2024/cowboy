@@ -1,9 +1,9 @@
-import AbstractDAO from './AbstractDAO.js';
+import AbstractDAO from "./AbstractDAO.js";
 
 class ResourceModel extends AbstractDAO {
   constructor() {
     super();
-    this.table = 'resource';
+    this.table = "resource";
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
@@ -32,11 +32,12 @@ class ResourceModel extends AbstractDAO {
 
   getGold(id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT  player_resource.quantity AS total_of_gold 
-          FROM player_resource 
-          JOIN resource ON player_resource.resource_ID = resource.id
-          JOIN resource_type ON resource.resource_type_id = resource_type.id
-          WHERE player_resource.player_ID = ? AND resource_type.name = "or"`;
+      const query = `SELECT SUM(resource.quantity) AS total_of_gold 
+                   FROM resource
+                   JOIN resource_type ON resource.resource_type_id = resource_type.id
+                   JOIN colony ON resource.colony_id = colony.id
+                   JOIN map ON colony.map_id = map.id
+                   WHERE map.player_id = ? AND resource_type.name = "gold"`;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);

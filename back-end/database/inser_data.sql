@@ -13,33 +13,33 @@
 -- --   ('player10', 'player10@example.com', 'password10');
 
 -- Insert cowboys
--- INSERT INTO `cowboy` (`name`, `colony_id`)
--- VALUES
---   ('Wyatt Earp', null),
---   ('Billy the Kid', null),
---   ('Doc Holliday', null),
---   ('Jesse James', null),
---   ('Butch Cassidy', null),
---   ('Sundance Kid', null),
---   ('Wild Bill Hickok', null),
---   ('Pat Garrett', null),
---   ('Buffalo Bill', null),
---   ('Kit Carson', null),
---   ('Curly Bill', NULL),
---   ('Clay Allison', NULL),
---   ('John Wesley Hardin', NULL),
---   ('Luke Short', NULL),
---   ('Bat Masterson', NULL),
---   ('Kid Curry', NULL),
---   ('Frank James', NULL),
---   ('Tom Horn', NULL),
---   ('Joaquin Murrieta', NULL),
---   ('King Fisher', NULL),
---   ('Black Bart', NULL),
---   ('Sam Bass', NULL),
---   ('Harry Tracy', NULL),
---   ('Longhair Jim', NULL),
---   ('Dave Rudabaugh', NULL);
+INSERT INTO `cowboy` (`name`, `colony_id`)
+VALUES
+  ('Wyatt Earp', null),
+  ('Billy the Kid', null),
+  ('Doc Holliday', null),
+  ('Jesse James', null),
+  ('Butch Cassidy', null),
+  ('Sundance Kid', null),
+  ('Wild Bill Hickok', null),
+  ('Pat Garrett', null),
+  ('Buffalo Bill', null),
+  ('Kit Carson', null),
+  ('Curly Bill', NULL),
+  ('Clay Allison', NULL),
+  ('John Wesley Hardin', NULL),
+  ('Luke Short', NULL),
+  ('Bat Masterson', NULL),
+  ('Kid Curry', NULL),
+  ('Frank James', NULL),
+  ('Tom Horn', NULL),
+  ('Joaquin Murrieta', NULL),
+  ('King Fisher', NULL),
+  ('Black Bart', NULL),
+  ('Sam Bass', NULL),
+  ('Harry Tracy', NULL),
+  ('Longhair Jim', NULL),
+  ('Dave Rudabaugh', NULL);
 
 -- -- Insert resource types
 -- INSERT INTO `resource_type` (`id`, `name`)
@@ -55,7 +55,7 @@
 -- (9, 'corn'),
 -- (10, 'wheat');
 
--- -- Insert resources
+-- Insert resources
 -- INSERT INTO `resource` (`id`, `quantity`, `resource_type_id`)
 -- VALUES
 -- (1, 100, 1),
@@ -70,5 +70,4 @@
 -- (10, 100, 10);
 
 
--- -- insert into player_resource 
 

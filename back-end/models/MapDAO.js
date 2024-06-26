@@ -9,7 +9,8 @@ class MapDAO extends AbstractDAO {
   create(slot) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
-        `INSERT INTO ${this.table} (slot) VALUES (?)`,
+        `INSERT INTO ${this.table} 
+        (slot) VALUES (?)`,
         [slot],
         (err, result, fields) => {
           if (err) {
@@ -23,13 +24,16 @@ class MapDAO extends AbstractDAO {
 
   update(playerId, slot) {
     return new Promise((resolve, reject) => {
+      console.log('playerId :', playerId, 'slot : ', slot);
       this.connection.execute(
-        `UPDATE ${this.table} set player_id = ? WHERE slot = ?`,
+        `UPDATE ${this.table} set player_id = ? 
+        WHERE slot = ?`,
         [playerId, slot],
         (err, result, fields) => {
           if (err) {
             return reject(err);
           }
+
           return resolve(result);
         }
       );
@@ -39,7 +43,8 @@ class MapDAO extends AbstractDAO {
   countPlayerId() {
     return new Promise((resolve, reject) => {
       this.connection.query(
-        `select count(distinct player_id) as nbOfPlayer from map`,
+        `select count(distinct player_id) as nbOfPlayer 
+        FROM map`,
         (err, result, fields) => {
           if (err) {
             return reject(err);
@@ -53,12 +58,28 @@ class MapDAO extends AbstractDAO {
   getFreeSlot() {
     return new Promise((resolve, reject) => {
       this.connection.query(
-        `SELECT slot FROM ${this.table} WHERE player_id is NULL`,
+        `SELECT slot FROM ${this.table} 
+        WHERE player_id is NULL`,
         (err, result, fields) => {
           if (err) {
             return reject(err);
           }
 
+          return resolve(result);
+        }
+      );
+    });
+  }
+  getIdBySlot(slot) {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT id FROM ${this.table} 
+        WHERE slot = ?`,
+        [slot],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
           return resolve(result);
         }
       );

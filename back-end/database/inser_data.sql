@@ -72,15 +72,3 @@
 
 -- -- insert into player_resource 
 
--- INSERT INTO `player_resource` (`player_ID`, `resource_ID`, `quantity`)
--- VALUES
--- (1, 1, 50),
--- (1, 2, 30),
--- (1, 3, 40),
--- (1, 4, 25),
--- (1, 5, 35),
--- (2, 1, 20),
--- (2, 2, 15),
--- (3, 1, 10),
--- (3, 4, 50),
--- (1, 10, 3);

@@ -1,6 +1,7 @@
 import UserDAO from '../models/UserDAO.js';
 
 import error from '../services/errors/error.js';
+import MapConfig from '../services/map/MapConfig.js';
 import { hashPassword } from '../utils/auth.js';
 import AbstractController from './AbsractController.js';
 
@@ -8,6 +9,7 @@ class UserController extends AbstractController {
   constructor() {
     super();
     this.model = new UserDAO();
+    this.init = new MapConfig();
   }
   add = async (req, res) => {
     const { username, email, password } = req.body;
@@ -15,7 +17,8 @@ class UserController extends AbstractController {
 
     await this.model
       .create(username, email, hashedPassword)
-      .then(() => {
+      .then((result) => {
+        this.init.addPlayer(result.insertId);
         return res.status(200).json({ message: 'PLAYER créé avec succès' });
       })
       .catch((err) => {

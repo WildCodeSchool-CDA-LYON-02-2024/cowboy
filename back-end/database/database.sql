@@ -3,6 +3,15 @@
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
+-- Schema book
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `book` ;
+
+-- -----------------------------------------------------
+-- Schema book
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `book` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+-- -----------------------------------------------------
 -- Schema cowboy
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `cowboy` ;
@@ -11,6 +20,198 @@ DROP SCHEMA IF EXISTS `cowboy` ;
 -- Schema cowboy
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `cowboy` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `book` ;
+
+-- -----------------------------------------------------
+-- Table `book`.`author`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`author` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 31
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`author_media`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`author_media` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `authorId` INT NULL DEFAULT NULL,
+  `mediaId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`editor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`editor` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`genre`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`genre` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`language`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`language` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`loan`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`loan` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `dateStart` DATE NOT NULL,
+  `dateEnd` DATE NOT NULL,
+  `userId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`media`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`media` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `isbn` INT NOT NULL,
+  `shelf` INT NOT NULL,
+  `price` INT NOT NULL,
+  `dateOfPublication` DATE NOT NULL,
+  `editorId` INT NOT NULL,
+  `typeId` INT NOT NULL,
+  `sectorId` INT NOT NULL,
+  `languageId` INT NOT NULL,
+  `genreId` INT NOT NULL,
+  `loanId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`reservation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`reservation` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `dateStart` DATE NOT NULL,
+  `dateEnd` DATE NOT NULL,
+  `userId` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`reservation_media`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`reservation_media` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `reservationId` INT NULL DEFAULT NULL,
+  `mediaId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`role` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`sector`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`sector` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`type` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(100) NOT NULL,
+  `lastname` VARCHAR(100) NOT NULL,
+  `age` DATE NOT NULL,
+  `role` INT NOT NULL,
+  `phone` VARCHAR(100) NULL DEFAULT NULL,
+  `password` VARCHAR(250) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `book`.`user_role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `book`.`user_role` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NULL DEFAULT NULL,
+  `roleId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
 USE `cowboy` ;
 
 -- -----------------------------------------------------
@@ -46,6 +247,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cowboy`.`building_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -113,8 +315,9 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`building` (
   `level` INT NULL DEFAULT NULL,
   `building_type_id` INT NOT NULL,
   `colony_id` INT NOT NULL,
-  `action_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `building_type_id`, `colony_id`, `action_id`),
+  `action_id` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `building_type_id`, `colony_id`),
+  UNIQUE INDEX `action_id_UNIQUE` (`action_id` ASC) VISIBLE,
   INDEX `fk_building_building_type1_idx` (`building_type_id` ASC) VISIBLE,
   INDEX `fk_building_colony1_idx` (`colony_id` ASC) VISIBLE,
   INDEX `fk_building_action1_idx` (`action_id` ASC) VISIBLE,
@@ -195,7 +398,6 @@ CREATE TABLE IF NOT EXISTS `cowboy`.`resource` (
   `resource_type_id` INT NOT NULL,
   `colony_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `resource_type_id`),
-  UNIQUE INDEX `colony_id_UNIQUE` (`colony_id` ASC) VISIBLE,
   INDEX `fk_resource_resource_type1_idx` (`resource_type_id` ASC) VISIBLE,
   INDEX `fk_resource_colony1_idx` (`colony_id` ASC) VISIBLE,
   CONSTRAINT `fk_resource_colony1`

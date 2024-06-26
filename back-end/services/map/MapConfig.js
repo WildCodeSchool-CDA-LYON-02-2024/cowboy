@@ -1,16 +1,23 @@
+import ColonyDAO from '../../models/ColonyDAO.js';
 import MapDAO from '../../models/MapDAO.js';
+import BuildingConfig from '../buildings/BuildingConfig.js';
+import Ressource from '../ressources/Ressource.js';
 
 class MapConfig {
   constructor() {
-    this.slot = 10;
-    this.model = new MapDAO();
+    this.maxSlot = 10;
+    this.map = new MapDAO();
+    this.colony = new ColonyDAO();
+    this.building = new BuildingConfig();
+    this.ressource = new Ressource();
     this.nbOfPlayer = null;
     this.maxPlayer = 5;
     this.freeSlotsArray = [];
-    this.playerId = 3;
+    this.slot = null;
+    this.slotId = null;
   }
 
-  addPlayer() {
+  addPlayer(playerId) {
     // Verification du nombre de joueurs sur la map
     this.getNbOfPlayer()
       .then((nb) => {
@@ -19,19 +26,54 @@ class MapConfig {
         }
         // Création d'un tableau avec les slots disponible
         this.freeSlots()
-          .then(
-            () => this.affectRandomSlot(this.freeSlotsArray) // Affectation d'un slot aux joueurs
-          )
-          .catch((err) => console.error(err));
+          .then(() => {
+            // Affectation du joueur sur un slot de map
+            this.affectRandomSlot(this.freeSlotsArray, playerId);
+            // Recuperation de l'id du slot sur la table map
+            this.getIdBySlot()
+              .then(() => {
+                // Insertion de l'id de la table map, dans la table colony, afin de relier le nouveau joueur a sa colonie
+                this.affectPlayerToColony()
+                  .then((res) => {
+                    // Init des building de la colonie
+                    this.building.initBuilding(res.insertId).then(() => {
+                      this.ressource
+                        .initRessourceBuilding(
+                          res.insertId,
+                          this.building.ressource.initQuantity
+                        )
+                        .then((res) => console.log(res))
+                        .catch((err) => console.error(err));
+                      console.log(
+                        'building config : ',
+                        this.building.ressource.initQuantity
+                      );
+                    });
+                  })
+                  .catch((err) => console.error(err));
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
+  initGame() {
+    this.ressource.initType();
+    this.generateMap();
+  }
   // Generation de la map
   generateMap() {
     console.log('Start init map');
-    for (let i = 1; i < this.slot + 1; i++) {
-      this.model
+    for (let i = 1; i < this.maxSlot + 1; i++) {
+      this.map
         .create(i)
         .then(() => {
           console.log(`Slot n°${i} created`);
@@ -46,17 +88,18 @@ class MapConfig {
   }
 
   // Affectation d'un slot de manière aleatoire
-  affectRandomSlot(array) {
+  affectRandomSlot(array, playerId) {
+    console.log('playerId : ', playerId);
     const position = Math.floor(Math.random() * array.length);
-    const slot = array[position].slot;
+    this.slot = array[position].slot;
 
-    this.model
-      .update(this.playerId, slot)
-      .then(() =>
+    this.map
+      .update(playerId, this.slot)
+      .then(() => {
         console.log(
-          `The played id ${this.playerId} was affected to the slot n°${slot}`
-        )
-      )
+          `The played id ${playerId} was affected to the slot n°${this.slot}`
+        );
+      })
       .catch((err) => {
         console.error(err);
       });
@@ -65,7 +108,7 @@ class MapConfig {
   // Combien de slots sont disponible
   freeSlots() {
     return new Promise((resolve, reject) => {
-      this.model
+      this.map
         .getFreeSlot()
         .then((res) => {
           // Si il n'y a plus de slot disponible = erreur
@@ -85,13 +128,45 @@ class MapConfig {
     });
   }
 
+  // Verification du nombre de joueur
   getNbOfPlayer() {
     return new Promise((resolve, reject) => {
-      this.model
+      this.map
         .countPlayerId()
         .then((nb) => {
           this.nbOfPlayer = nb[0].nbOfPlayer;
           resolve(this.nbOfPlayer);
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });
+  }
+
+  // Recuperation de l'id du slot
+  getIdBySlot() {
+    return new Promise((resolve, reject) => {
+      this.map
+        .getIdBySlot(this.slot)
+        .then((res) => {
+          this.slotId = res[0].id;
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  // Insertion de l'id de la table map, dans la table colony, afin de relier le nouveau joueur a sa colonie
+  affectPlayerToColony() {
+    return new Promise((resolve, reject) => {
+      console.log('slotId : ', this.slotId);
+      this.colony
+        .create('test', this.slotId)
+        .then((res) => {
+          resolve(res);
         })
         .catch((err) => {
           console.error(err);

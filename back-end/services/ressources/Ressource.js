@@ -1,5 +1,6 @@
 import RessourceTypeDAO from '../../models/RessourceTypeDAO.js';
 import ResourceDAO from '../../models/ResourceDAO.js';
+import ressourcesPosition from './ressourcesPosition.js';
 
 class Ressource {
   constructor(name, quantity) {
@@ -10,6 +11,7 @@ class Ressource {
     this.initQuantity = 50;
     this.cost = null;
     this.typeArray = ['gold', 'metal', 'stone', 'wood'];
+    this.initPosition = ressourcesPosition;
   }
 
   initRessourceBuilding(colonyId, qtity) {
@@ -36,6 +38,29 @@ class Ressource {
           .insert(value)
           .then((result) => resolve(result))
           .catch((err) => reject(err));
+      }
+    });
+  }
+
+  // Initialisation des ressources a la création de la map
+  initRessourceOnMap() {
+    return new Promise((resolove, reject) => {
+        for (let i = 0; i < this.initPosition.length; i++) {
+        let ressourceSet = this.initPosition[i];
+        const mapId = ressourceSet.slot;
+        for (let key in ressourceSet) {
+          if (key !== 'slot') {
+            const ressourceTypeId = key;
+            const quantity = ressourceSet[key];
+            this.model
+              .insertRessourceOnMap(quantity, ressourceTypeId, mapId)
+              .then((result) => resolove(result))
+              .catch((err) => {
+                console.error(err);
+                reject(err);
+              });
+          }
+        }
       }
     });
   }

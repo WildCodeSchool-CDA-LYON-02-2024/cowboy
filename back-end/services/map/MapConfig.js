@@ -65,7 +65,7 @@ class MapConfig {
       });
   }
 
-  initGame() {
+  initMap() {
     this.ressource.initType();
     this.generateMap();
   }

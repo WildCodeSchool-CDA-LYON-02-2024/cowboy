@@ -7,19 +7,28 @@ class ResourceModel extends AbstractDAO {
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
-    /*console.log(
-      'quantity :',
-      quantity,
-      'resourceTypeId : ',
-      ressourceTypeId,
-      'colony :',
-      colonyId
-    );*/
     return new Promise((resolve, reject) => {
       this.connection.execute(
-        `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id) VALUES (?,?,?)
+        `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id)
+         VALUES (?,?,?)
         `,
         [quantity, ressourceTypeId, colonyId],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        }
+      );
+    });
+  }
+
+  insertRessourceOnMap(quantity, ressourceypeId, mapId) {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `INSERT INTO ${this.table} (quantity, resource_type_id,map_id)
+         VALUES (?,?,?)`,
+        [quantity, ressourceypeId, mapId],
         (err, result, fields) => {
           if (err) {
             return reject(err);

@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
 import BottomNavbar from "./components/BottomNavbar";
+import Header from "./components/Header";
+import GeneralRessources from "./components/ressources/GeneralRessources";
 function App() {
   return (
     <>
       <Header />
+      <GeneralRessources />
       <Outlet />
       <BottomNavbar />
     </>

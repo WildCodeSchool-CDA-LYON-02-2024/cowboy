@@ -1,5 +1,6 @@
 import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
+import { useState } from "react";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import Bullet from "../../assets/images/cowboys/bullet.png";
@@ -8,6 +9,12 @@ import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
 import CardContainer from "./CardContainer";
 
 export default function CowboysContainer() {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
   return (
     <Container
       component="section"
@@ -17,16 +24,20 @@ export default function CowboysContainer() {
     >
       <Box
         sx={{
+          width: "100%",
           height: "15vh",
           backgroundColor: "black",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "fixed",
+          zIndex: 1,
         }}
       >
         <Typography
           variant="h2"
           sx={{
+            pt: "1.5rem",
             display: "flex",
             color: "white",
             fontFamily: "Pixelify",
@@ -65,6 +76,8 @@ export default function CowboysContainer() {
         </Typography>
       </Box>
       <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
         sx={{
           "&.MuiPaper-root": {
             margin: 0,
@@ -73,6 +86,7 @@ export default function CowboysContainer() {
           textShadow:
             "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           color: "white",
+          paddingTop: "8.5rem",
         }}
       >
         <AccordionSummary
@@ -110,6 +124,8 @@ export default function CowboysContainer() {
       </Accordion>
 
       <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleChange("panel2")}
         sx={{
           "&.MuiPaper-root": {
             margin: 0,
@@ -156,6 +172,8 @@ export default function CowboysContainer() {
       </Accordion>
 
       <Accordion
+        expanded={expanded === "panel3"}
+        onChange={handleChange("panel3")}
         sx={{
           "&.MuiPaper-root": {
             margin: 0,
@@ -202,6 +220,8 @@ export default function CowboysContainer() {
       </Accordion>
 
       <Accordion
+        expanded={expanded === "panel4"}
+        onChange={handleChange("panel4")}
         sx={{
           "&.MuiPaper-root": {
             margin: 0,

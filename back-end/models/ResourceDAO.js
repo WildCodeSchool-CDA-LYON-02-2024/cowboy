@@ -31,22 +31,46 @@ class ResourceModel extends AbstractDAO {
   }
 
   getGold(id) {
+  return new Promise((resolve, reject) => {
+     const query = `SELECT SUM(resource.quantity) AS total_of_gold
+    FROM resource
+    JOIN resource_type ON resource.resource_type_id = resource_type.id
+    JOIN colony ON resource.colony_id = colony.id
+  JOIN map ON colony.map_id = map.id
+   WHERE map.player_id = ? AND resource_type.name = "gold";`;
+      this.connection.execute(query, [id], (error, result) => {
+         if (error) {
+          reject(error);
+       } else {
+           if (result.length > 0) {
+             resolve(result[0]);
+         } else {
+           resolve({
+             total_of_gold: 0,
+            });
+        }
+         }
+     });
+     });
+ }
+  
+  getResources(id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT SUM(resource.quantity) AS total_of_gold 
-                   FROM resource
+      const query = `SELECT resource_type.name, resource.quantity
+                  FROM resource
                    JOIN resource_type ON resource.resource_type_id = resource_type.id
                    JOIN colony ON resource.colony_id = colony.id
                    JOIN map ON colony.map_id = map.id
-                   WHERE map.player_id = ? AND resource_type.name = "gold"`;
+                   WHERE map.player_id = ? ;`;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);
         } else {
           if (result.length > 0) {
-            resolve(result[0]);
+            resolve(result);
           } else {
             resolve({
-              total_of_gold: 0,
+              message: "pas de ressources disponibles",
             });
           }
         }

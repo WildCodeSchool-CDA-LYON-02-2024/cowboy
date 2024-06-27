@@ -38,7 +38,7 @@ export default function BoardContainer() {
         <Typography
           variant="h2"
           sx={{
-            pt: "1rem",
+            pt: "1.5rem",
             display: "flex",
             color: "white",
             fontFamily: "Pixelify",

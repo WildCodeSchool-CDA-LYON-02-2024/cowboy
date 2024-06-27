@@ -1,10 +1,42 @@
 import { Box, Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Bois from "../../assets/images/ressources/buche-bois.png";
 import Gold from "../../assets/images/ressources/pepite-or.png";
 import Iron from "../../assets/images/ressources/steel.png";
 import Stone from "../../assets/images/ressources/stone.png";
+import { usePlayerContext } from "../../context/PlayerContext";
+import { fetchGlobalResource } from "../../services/ResourceService";
 
 export default function GeneralRessources() {
+  const [resources, setResources] = useState({
+    wood: 0,
+    stone: 0,
+    metal: 0,
+    gold: 0,
+  });
+
+  const { playerData } = usePlayerContext();
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        if (playerData && playerData.token) {
+          const result = await fetchGlobalResource(playerData.token);
+          setResources({
+            wood: result[3].quantity,
+            stone: result[2].quantity,
+            metal: result[1].quantity,
+            gold: result[0].quantity,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch resources:", err);
+      }
+    };
+
+    fetchResources();
+  }, [playerData]);
+
   return (
     <Container
       sx={{
@@ -44,7 +76,7 @@ export default function GeneralRessources() {
             textAlign: "center",
           }}
         >
-          116 k{" "}
+          {resources.wood} k
           {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
@@ -76,7 +108,7 @@ export default function GeneralRessources() {
             textAlign: "center",
           }}
         >
-          191 k{" "}
+          {resources.stone} k
           {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
@@ -108,7 +140,7 @@ export default function GeneralRessources() {
             textAlign: "center",
           }}
         >
-          181 k{" "}
+          {resources.metal} k
           {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
@@ -140,7 +172,7 @@ export default function GeneralRessources() {
             textAlign: "center",
           }}
         >
-          200 k{" "}
+          {resources.gold} k
           {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>

@@ -1,9 +1,11 @@
 import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import WesternCity from "../../assets/images/western-city.jpeg";
+import { usePlayerContext } from "../../context/PlayerContext.jsx";
+import { fetchBuildingLevel } from "../../services/BuildingService.js";
 import ArmurerieUp from "./ArmurerieUp";
 import EcurieUp from "./EcurieUp";
 import EntrepotUp from "./EntrepotUp";
@@ -11,6 +13,23 @@ import SaloonUp from "./SaloonUp";
 
 export default function BoardContainer() {
   const [expanded, setExpanded] = useState(false);
+  const [building, setBuilding] = useState([]);
+  const { playerData } = usePlayerContext();
+
+  useEffect(() => {
+    const fetchLevel = async () => {
+      try {
+        if (playerData && playerData.token) {
+          const result = await fetchBuildingLevel(playerData.token);
+          setBuilding(result);
+        }
+      } catch (err) {
+        console.error("Failed to fetch resources:", err);
+      }
+    };
+
+    fetchLevel();
+  }, [playerData]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -87,7 +106,7 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION SALOON*/}
-          <SaloonUp />
+          {building.length > 1 && <SaloonUp building={building[0]} />}
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -118,7 +137,7 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ARMURERIE*/}
-          <ArmurerieUp />
+          {building.length > 1 && <ArmurerieUp building={building[1]} />}
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -149,7 +168,7 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ECURIE*/}
-          <EcurieUp />
+          {building.length > 1 && <EcurieUp building={building[2]} />}
         </AccordionDetails>
       </Accordion>{" "}
       <Accordion
@@ -185,7 +204,7 @@ export default function BoardContainer() {
           }}
         >
           {/*COMPOSANT D AMELIORATION ENTREPOT*/}
-          <EntrepotUp />
+          {building.length > 1 && <EntrepotUp building={building[3]} />}
         </AccordionDetails>
       </Accordion>
       <Box

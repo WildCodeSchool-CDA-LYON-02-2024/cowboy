@@ -1,8 +1,9 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
+import PropTypes from "prop-types";
 
-export default function ArmurerieUp() {
+export default function ArmurerieUp({ building }) {
   return (
     <Container disableGutters>
       <Box
@@ -21,9 +22,9 @@ export default function ArmurerieUp() {
             display: "flex",
           }}
         >
-          lvl:{" "}
+          lvl:
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            10{" "}
+            {building.level}{" "}
             <Box
               component="img"
               src={fleche}
@@ -34,7 +35,7 @@ export default function ArmurerieUp() {
                 mr: "0.3rem",
               }}
             />{" "}
-            11
+            {building.level + 1}
           </span>{" "}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
@@ -167,3 +168,6 @@ export default function ArmurerieUp() {
     </Container>
   );
 }
+ArmurerieUp.propTypes = {
+  building: PropTypes.object.isRequired,
+};

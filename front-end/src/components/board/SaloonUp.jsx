@@ -1,8 +1,9 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
+import PropTypes from "prop-types";
 
-export default function SaloonUp() {
+export default function SaloonUp({ building }) {
   return (
     <Container disableGutters>
       <Box
@@ -23,7 +24,7 @@ export default function SaloonUp() {
         >
           lvl:{" "}
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            10{" "}
+            {building.level}{" "}
             <Box
               component="img"
               src={fleche}
@@ -34,7 +35,7 @@ export default function SaloonUp() {
                 mr: "0.3rem",
               }}
             />{" "}
-            11
+            {building.level + 1}
           </span>{" "}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
@@ -123,3 +124,6 @@ export default function SaloonUp() {
     </Container>
   );
 }
+SaloonUp.propTypes = {
+  building: PropTypes.object.isRequired,
+};

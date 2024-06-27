@@ -7,19 +7,48 @@ class ResourceModel extends AbstractDAO {
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
-    /*console.log(
-      'quantity :',
-      quantity,
-      'resourceTypeId : ',
-      ressourceTypeId,
-      'colony :',
-      colonyId
-    );*/
     return new Promise((resolve, reject) => {
       this.connection.execute(
-        `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id) VALUES (?,?,?)
+        `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id)
+         VALUES (?,?,?)
         `,
         [quantity, ressourceTypeId, colonyId],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        }
+      );
+    });
+  }
+
+  findAll() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT ${this.table}.quantity, 
+         ${this.table}.resource_type_id, 
+         resource_type.name,
+         ${this.table}.colony_id, 
+         ${this.table}.map_id 
+         FROM ${this.table}
+        JOIN resource_type ON resource_type.id = resource.resource_type_id WHERE ${this.table}.colony_id is NULL`,
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
+        }
+      );
+    });
+  }
+
+  insertRessourceOnMap(quantity, ressourceypeId, mapId) {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `INSERT INTO ${this.table} (quantity, resource_type_id,map_id)
+         VALUES (?,?,?)`,
+        [quantity, ressourceypeId, mapId],
         (err, result, fields) => {
           if (err) {
             return reject(err);

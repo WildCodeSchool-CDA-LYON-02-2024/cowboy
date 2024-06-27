@@ -1,9 +1,9 @@
-import AbstractDAO from './AbstractDAO.js';
+import AbstractDAO from "./AbstractDAO.js";
 
 class BuildingDAO extends AbstractDAO {
   constructor() {
     super();
-    this.table = 'building';
+    this.table = "building";
   }
 
   create(level, buildingTypeId, colonyId) {
@@ -22,13 +22,14 @@ class BuildingDAO extends AbstractDAO {
     });
   }
 
-  getLevel(buildingTypeId, colonyId) {
+  getLevel(colonyId) {
     return new Promise((resolve, reject) => {
       this.connection.query(
-        `SELECT level FROM ${this.table}
-         WHERE building_type_id = ? 
-         AND colony_id = ? `,
-        [buildingTypeId, colonyId],
+        `SELECT building.building_type_id, building.level, building_type.name
+         FROM ${this.table}
+         JOIN building_type ON building.building_type_id = building_type.id
+         WHERE building.colony_id = ? `,
+        [colonyId],
         (err, result, fields) => {
           if (err) {
             return reject(err);

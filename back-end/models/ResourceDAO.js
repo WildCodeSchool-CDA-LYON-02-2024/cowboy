@@ -23,6 +23,26 @@ class ResourceModel extends AbstractDAO {
     });
   }
 
+  findAll() {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT ${this.table}.quantity, 
+         ${this.table}.resource_type_id, 
+         resource_type.name,
+         ${this.table}.colony_id, 
+         ${this.table}.map_id 
+         FROM ${this.table}
+        JOIN resource_type ON resource_type.id = resource.resource_type_id WHERE ${this.table}.colony_id is NULL`,
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
+        }
+      );
+    });
+  }
+
   insertRessourceOnMap(quantity, ressourceypeId, mapId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(

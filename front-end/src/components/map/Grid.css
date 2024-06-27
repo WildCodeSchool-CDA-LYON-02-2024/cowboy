@@ -1,7 +1,9 @@
 /* Styles pour le conteneur scrollable */
 .scroll-container {
+  position: absolute;
+  top: 65px;
   width: 100%;
-  height: 85vh;
+  height: 84%;
   overflow: auto;
   border: 1px solid gray;
 }

@@ -9,9 +9,11 @@ const Grid = ({ rows, cols }) => {
 
   // Génération de la grille
   const grid = [];
+  let idCounter = 1;
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-      const id = `${row}-${col}`;
+      const id = idCounter++;
+      // const id = `${row}-${col}`;
       grid.push(<Cell key={id} id={id} onClick={handleClick} />);
     }
   }

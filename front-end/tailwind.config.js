@@ -1,10 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'map-bg': "url('/public/map.jpeg')",
+      },
+    },
     fontFamily: {
-      pixelife: ['"Red Rose"', "cursive"],
+      pixelife: ['"Red Rose"', 'cursive'],
     },
   },
   plugins: [],

@@ -1,9 +1,21 @@
 import Cell from './cell/Cell.jsx';
 import './Grid.css';
+import useUser from '../../context/useUser.jsx';
+import { useEffect } from 'react';
+import fetchSlots from '../../services/MapService.js';
 
 const Grid = ({ rows, cols }) => {
+  //useUser();
+  console.log(useUser(), 'USER IN GRID.JSX');
+  // const [setSlots, slots] = useUser();
+
+  useEffect(() => {
+    fetchSlots();
+  }, []);
+
   // Gestion du clic sur une case
   const handleClick = (id) => {
+    //  console.log('slot : ', slots && slots);
     console.log(`Case cliquée avec l'ID: ${id}`);
   };
 
@@ -13,7 +25,7 @@ const Grid = ({ rows, cols }) => {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       const id = idCounter++;
-      // const id = `${row}-${col}`;
+
       grid.push(<Cell key={id} id={id} onClick={handleClick} />);
     }
   }

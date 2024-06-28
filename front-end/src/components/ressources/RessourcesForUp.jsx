@@ -39,7 +39,6 @@ export default function RessourcesForUp() {
           }}
         >
           11 k{" "}
-          {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
       <Box
@@ -67,7 +66,6 @@ export default function RessourcesForUp() {
           }}
         >
           11 k{" "}
-          {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
       <Box
@@ -95,7 +93,6 @@ export default function RessourcesForUp() {
           }}
         >
           11 k{" "}
-          {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
       <Box
@@ -123,7 +120,6 @@ export default function RessourcesForUp() {
           }}
         >
           11 k{" "}
-          {/*Passer la valeur réel du cout d amelioration par le cmpnt parent "SaloonUp"  */}
         </Typography>
       </Box>
     </Container>

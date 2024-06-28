@@ -34,6 +34,11 @@ export function PlayerContextProvider({ children }) {
     }
   };
 
+  // const getColonyId = () => {
+  //   return playerData?.colonyId || null;
+  // };
+  // console.log(getColonyId, "ICIIIIII");
+
   const contextValue = useMemo(() => {
     return { playerData, setPlayerData, login, logout, slots, getSlots };
   }, [playerData]);

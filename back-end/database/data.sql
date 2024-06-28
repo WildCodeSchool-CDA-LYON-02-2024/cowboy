@@ -119,7 +119,9 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `quantity` INT NULL DEFAULT NULL,
   `resource_type_id` INT NOT NULL,
   `colony_id` INT NULL DEFAULT NULL,
+  `map_id` INT  NULL DEFAULT NULL, 
   PRIMARY KEY (`id`),
   FOREIGN KEY (`colony_id`) REFERENCES `colony` (`id`),
-  FOREIGN KEY (`resource_type_id`) REFERENCES `resource_type` (`id`)
+  FOREIGN KEY (`resource_type_id`) REFERENCES `resource_type` (`id`),
+  FOREIGN KEY (`map_id`) REFERENCES `map` (`id`)
 );

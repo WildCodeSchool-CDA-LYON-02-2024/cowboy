@@ -1,3 +1,4 @@
+
 import AbstractDAO from "./AbstractDAO.js";
 
 class ResourceModel extends AbstractDAO {
@@ -97,6 +98,24 @@ class ResourceModel extends AbstractDAO {
           resolve(result);
         }
       });
+    });
+  }
+
+
+
+  insertRessourceOnMap(quantity, ressourceypeId, mapId) {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `INSERT INTO ${this.table} (quantity, resource_type_id,map_id)
+         VALUES (?,?,?)`,
+        [quantity, ressourceypeId, mapId],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        }
+      );
     });
   }
 }

@@ -16,7 +16,6 @@ export default function GeneralRessources() {
   });
 
   const { playerData } = usePlayerContext();
-
   useEffect(() => {
     const fetchResources = async () => {
       try {

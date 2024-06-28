@@ -5,7 +5,7 @@ import Ressource from '../ressources/Ressource.js';
 
 class MapConfig {
   constructor() {
-    this.maxSlot = 10;
+    this.maxSlot = 200;
     this.map = new MapDAO();
     this.colony = new ColonyDAO();
     this.building = new BuildingConfig();
@@ -65,7 +65,7 @@ class MapConfig {
       });
   }
 
-  initGame() {
+  initMap() {
     this.ressource.initType();
     this.generateMap();
   }

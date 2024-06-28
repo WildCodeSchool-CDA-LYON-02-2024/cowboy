@@ -6,16 +6,16 @@ import {
   OutlinedInput,
   Paper,
   Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { usePlayerContext } from "../../context/PlayerContext";
-import { loginService } from "../../services/PlayerService";
+} from '@mui/material';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { usePlayerContext } from '../../context/PlayerContext';
+import { loginService } from '../../services/PlayerService';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const { login } = usePlayerContext();
 
@@ -37,83 +37,83 @@ export default function LoginForm() {
     if (success) {
       // Inclure le rôle avec userData lors de la connexion
       login({ ...user, role });
-      console.info("Connecté");
-      navigate("/test");
-      console.info("Connexion réussi");
+      console.info('Connecté');
+      navigate('/map');
+      console.info('Connexion réussi');
     } else {
       setError(error);
-      console.info("Echec de la connexion big enflure");
+      console.info('Echec de la connexion big enflure');
     }
   };
 
   return (
     <Box
-      component="form"
+      component='form'
       onSubmit={handleSubmit}
       sx={{
-        border: "2px black",
-        height: "33rem",
-        width: "20rem",
-        paddingTop: "3rem",
+        border: '2px black',
+        height: '33rem',
+        width: '20rem',
+        paddingTop: '3rem',
       }}
     >
       <Paper
         sx={{
-          width: "100%",
-          height: "100%",
-          borderRadius: "1rem",
-          backgroundColor: "#565656B3",
-          "&.MuiBox-root ": {
-            fontFamily: "Pixelify",
+          width: '100%',
+          height: '100%',
+          borderRadius: '1rem',
+          backgroundColor: '#565656B3',
+          '&.MuiBox-root ': {
+            fontFamily: 'Pixelify',
             fontWeight: 400,
           },
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: '100%',
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              pt: "2rem",
-              gap: "2rem",
-              width: "100%",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              pt: '2rem',
+              gap: '2rem',
+              width: '100%',
             }}
           >
             <Typography
-              variant="h4"
-              className=" text-center text-white"
+              variant='h4'
+              className=' text-center text-white'
               sx={{
-                pt: "1rem",
-                fontFamily: "Pixelify",
+                pt: '1rem',
+                fontFamily: 'Pixelify',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
               }}
             >
               BON RETOUR COWBOY
             </Typography>
             <FormControl
               sx={{
-                width: "80%",
-                mt: "0.5rem",
-                fontFamily: "Pixelify",
+                width: '80%',
+                mt: '0.5rem',
+                fontFamily: 'Pixelify',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
               }}
             >
               <InputLabel
                 sx={{
-                  color: "white",
-                  fontFamily: "Pixelify",
-                  "&.Mui-focused": {
-                    color: "white",
+                  color: 'white',
+                  fontFamily: 'Pixelify',
+                  '&.Mui-focused': {
+                    color: 'white',
                   },
                 }}
               >
@@ -122,41 +122,41 @@ export default function LoginForm() {
               <OutlinedInput
                 required
                 onChange={handleMailChange}
-                type="email"
+                type='email'
                 value={email}
-                label="Email"
+                label='Email'
                 sx={{
-                  height: "3rem",
-                  "& input": {
-                    color: "white",
-                    fontFamily: "Pixelify",
+                  height: '3rem',
+                  '& input': {
+                    color: 'white',
+                    fontFamily: 'Pixelify',
                   },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
                 }}
               />
             </FormControl>
             <FormControl
               sx={{
-                width: "80%",
-                fontFamily: "Pixelify",
+                width: '80%',
+                fontFamily: 'Pixelify',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
               }}
             >
               <InputLabel
                 sx={{
-                  color: "white",
-                  fontFamily: "Pixelify",
-                  "&.Mui-focused": {
-                    color: "white",
+                  color: 'white',
+                  fontFamily: 'Pixelify',
+                  '&.Mui-focused': {
+                    color: 'white',
                   },
                 }}
               >
@@ -166,36 +166,36 @@ export default function LoginForm() {
                 required
                 onChange={handlePasswordChange}
                 value={password}
-                type="password"
-                label="Mot de passe"
+                type='password'
+                label='Mot de passe'
                 sx={{
-                  height: "3rem",
-                  "& input": {
-                    color: "white",
-                    fontFamily: "Pixelify",
+                  height: '3rem',
+                  '& input': {
+                    color: 'white',
+                    fontFamily: 'Pixelify',
                   },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
                   },
                 }}
               />
             </FormControl>
           </Box>
-          <Link to={"/register"}>
+          <Link to={'/register'}>
             <Typography
               sx={{
-                fontSize: "0.7rem",
-                pt: "1rem",
-                fontFamily: "Pixelify",
-                color: "white",
+                fontSize: '0.7rem',
+                pt: '1rem',
+                fontFamily: 'Pixelify',
+                color: 'white',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
               }}
             >
               Pas encore de compte? Inscrivez vous !
@@ -204,33 +204,33 @@ export default function LoginForm() {
           {error && (
             <Typography
               sx={{
-                marginTop: "2rem",
-                fontSize: "0.7rem",
-                textAlign: "center",
-                fontFamily: "Pixelify",
+                marginTop: '2rem',
+                fontSize: '0.7rem',
+                textAlign: 'center',
+                fontFamily: 'Pixelify',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
               }}
-              color="error"
+              color='error'
             >
               {error}
             </Typography>
           )}
 
           <Button
-            variant="contained"
+            variant='contained'
             sx={{
-              mt: "2rem",
-              width: "60%",
-              backgroundColor: "#1D1C1C",
-              "&:hover": {
-                backgroundColor: "#333333",
+              mt: '2rem',
+              width: '60%',
+              backgroundColor: '#1D1C1C',
+              '&:hover': {
+                backgroundColor: '#333333',
               },
-              fontFamily: "Pixelify",
+              fontFamily: 'Pixelify',
               textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
             }}
-            type="submit"
+            type='submit'
           >
             Se connecter
           </Button>

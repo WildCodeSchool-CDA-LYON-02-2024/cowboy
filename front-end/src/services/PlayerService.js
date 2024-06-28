@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 export const registerService = async ({ username, email, password }) => {
   try {
@@ -61,8 +61,7 @@ export const loginService = async (email, password) => {
       localStorage.setItem("authToken", token);
 
       // Décoder le jeton pour extraire le rôle
-      const decodedToken = jwtDecode(token);
-      console.log(decodedToken, "DECODED TOKEN");
+      // const decodedToken = jwtDecode(token);
       // const role = decodedToken.adherent.adherentRole;
       // console.log(role, "ROLE");
 

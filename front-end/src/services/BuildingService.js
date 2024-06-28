@@ -1,7 +1,11 @@
+import { jwtDecode } from "jwt-decode";
+
 export const fetchBuildingLevel = async (token) => {
+  const decodedToken = jwtDecode(token);
+  const colonyId = decodedToken.payload.sub.colonyId;
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/building/${2}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/building/${colonyId}}`,
       {
         method: "GET",
         headers: {
@@ -10,7 +14,6 @@ export const fetchBuildingLevel = async (token) => {
         },
       }
     );
-    console.log(response, "COLONY");
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

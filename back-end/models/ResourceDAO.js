@@ -31,29 +31,29 @@ class ResourceModel extends AbstractDAO {
   }
 
   getGold(id) {
-  return new Promise((resolve, reject) => {
-     const query = `SELECT SUM(resource.quantity) AS total_of_gold
+    return new Promise((resolve, reject) => {
+      const query = `SELECT SUM(resource.quantity) AS total_of_gold
     FROM resource
     JOIN resource_type ON resource.resource_type_id = resource_type.id
     JOIN colony ON resource.colony_id = colony.id
   JOIN map ON colony.map_id = map.id
    WHERE map.player_id = ? AND resource_type.name = "gold";`;
       this.connection.execute(query, [id], (error, result) => {
-         if (error) {
+        if (error) {
           reject(error);
-       } else {
-           if (result.length > 0) {
-             resolve(result[0]);
-         } else {
-           resolve({
-             total_of_gold: 0,
+        } else {
+          if (result.length > 0) {
+            resolve(result[0]);
+          } else {
+            resolve({
+              total_of_gold: 0,
             });
+          }
         }
-         }
-     });
-     });
- }
-  
+      });
+    });
+  }
+
   getResources(id) {
     return new Promise((resolve, reject) => {
       const query = `SELECT resource_type.name, resource.quantity
@@ -73,6 +73,28 @@ class ResourceModel extends AbstractDAO {
               message: "pas de ressources disponibles",
             });
           }
+        }
+      });
+    });
+  }
+
+  // get resource by ever hour
+
+  getResourceHour() {
+    return new Promise((resolve, reject) => {
+      const query = `
+        UPDATE resource
+          JOIN colony ON resource.colony_id = colony.id
+          JOIN map ON colony.map_id = map.id
+          SET resource.quantity = resource.quantity + 1
+          WHERE map.player_id IS NOT NULL;
+`;
+
+      this.connection.execute(query, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
         }
       });
     });

@@ -82,9 +82,7 @@ class ResourceModel extends AbstractDAO {
     return new Promise((resolve, reject) => {
       const query = `SELECT resource_type.name, resource.quantity
                   FROM resource
-                   JOIN resource_type ON resource.resource_type_id = resource_type.id
-                   JOIN colony ON resource.colony_id = colony.id
-                
+                   JOIN resource_type ON resource_type.id = resource.resource_type_id
                    WHERE resource.map_id = ? ;`;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {

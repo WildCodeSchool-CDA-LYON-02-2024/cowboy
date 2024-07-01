@@ -1,9 +1,9 @@
-import argon2 from "argon2";
-import jwt from "jsonwebtoken";
+import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 
 const generateToken = (payload = {}) => {
-  const token = jwt.sign(payload, "secret", {
-    expiresIn: "1h",
+  const token = jwt.sign(payload, 'secret', {
+    expiresIn: '1h',
   });
   return token;
 };
@@ -22,10 +22,10 @@ const hashPassword = async (password) => {
 };
 
 const verifyPassword = (req, res, next) => {
-  const { id, username, email, colony_id } = req.user[0];
+  const { id, username, email, colony_id, slot, password } = req.user;
 
   argon2
-    .verify(req.user[0].password, req.body.password)
+    .verify(password, req.body.password)
     .then((isVerified) => {
       if (isVerified) {
         const payload = {
@@ -34,9 +34,10 @@ const verifyPassword = (req, res, next) => {
             userame: username,
             email: email,
             colonyId: colony_id,
+            slot: slot,
           },
         };
-
+        console.log('payLoad : ', payload);
         res.send({ token: generateToken({ payload }) });
       } else {
         return res.sendStatus(401);

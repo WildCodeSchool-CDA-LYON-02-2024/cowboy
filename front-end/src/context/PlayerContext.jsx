@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { jwtDecode } from 'jwt-decode';
 
 const playerContext = createContext();
 
 export function PlayerContextProvider({ children }) {
   const [playerData, setPlayerData] = useLocalStorage('player', null);
-  const [slots, getSlots] = useState(null);
+  const [decodedToken, setDecodedToken] = useState();
 
   const login = (userInfo) => {
+    console.log('user infos :', userInfo);
     setPlayerData(userInfo);
+    setDecodedToken(jwtDecode(playerData.token));
   };
 
   const logout = async () => {
@@ -40,7 +43,7 @@ export function PlayerContextProvider({ children }) {
   // console.log(getColonyId, "ICIIIIII");
 
   const contextValue = useMemo(() => {
-    return { playerData, setPlayerData, login, logout, slots, getSlots };
+    return { playerData, setPlayerData, login, logout, decodedToken };
   }, [playerData]);
 
   return (

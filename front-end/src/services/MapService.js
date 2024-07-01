@@ -1,5 +1,5 @@
 // Je recupere tous les slots de map
-const fetchSlots = ( setSlots ) => {
+const fetchSlots = (setSlots, slots) => {
   fetch(`${import.meta.env.VITE_BACKEND_URL}/api/map/slot`, {
     method: 'GET',
     headers: {

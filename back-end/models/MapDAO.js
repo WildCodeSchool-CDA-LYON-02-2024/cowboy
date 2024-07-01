@@ -22,6 +22,24 @@ class MapDAO extends AbstractDAO {
     });
   }
 
+  findSlotByPlayerId(id) {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `SELECT slot FROM ${this.table}
+        WHERE player_id = ?
+        `,
+        [id],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(result);
+        }
+      );
+    });
+  }
+
   update(playerId, slot) {
     return new Promise((resolve, reject) => {
       console.log('playerId :', playerId, 'slot : ', slot);

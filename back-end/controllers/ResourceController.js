@@ -28,7 +28,8 @@ const find = (req, res) => {
   const id = req.params.id;
   Resource.getResourcesSlot(id)
     .then((rows) => {
-      res.send(rows);
+      console.log('rows :', rows);
+      res.json(rows);
     })
     .catch((err) => {
       console.error(err);

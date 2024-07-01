@@ -77,6 +77,31 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
+  getResourcesSlot(id) {
+    console.log(id);
+    return new Promise((resolve, reject) => {
+      const query = `SELECT resource_type.name, resource.quantity
+                  FROM resource
+                   JOIN resource_type ON resource.resource_type_id = resource_type.id
+                   JOIN colony ON resource.colony_id = colony.id
+                
+                   WHERE resource.map_id = ? ;`;
+      this.connection.execute(query, [id], (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          if (result.length > 0) {
+            console.log('result :', result);
+            resolve(result);
+          } else {
+            resolve({
+              message: 'pas de ressources disponibles',
+            });
+          }
+        }
+      });
+    });
+  }
   insertRessourceOnMap(quantity, ressourceypeId, mapId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(

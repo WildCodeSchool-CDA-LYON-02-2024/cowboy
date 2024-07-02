@@ -29,7 +29,7 @@
 
 .modal-container {
   position: fixed;
-  top: 50%;
+  top: 40%;
   z-index: 5;
   background-color: #333333;
   opacity: 0.9;
@@ -49,7 +49,7 @@
   display: flex;
   justify-content: space-between;
   /* border: 1px solid black; */
-  border-bottom: 1px solid gray;
+  /* border-bottom: 1px solid gray; */
 }
 
 .resource-li {
@@ -65,12 +65,30 @@
 
 .btn-container {
   width: 100%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid grey;
+  padding: 1rem 0;
 }
 
 .collect-btn {
   text-align: center;
+  width: 30%;
+  /* border: 1px solid blue; */
+}
+
+.colony-container {
   display: flex;
-  justify-content: center;
-  border: 1px solid blue;
+  flex-direction: column;
+  align-items: center;
+}
+
+.h2-needed-ressources {
+  text-align: center;
+}
+
+.h2-colony {
+  text-align: center;
 }

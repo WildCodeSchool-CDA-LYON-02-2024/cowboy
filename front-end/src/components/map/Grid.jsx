@@ -1,4 +1,8 @@
 import Cell from './cell/Cell.jsx';
+import Bois from '../../assets/images/ressources/buche-bois.png';
+import Gold from '../../assets/images/ressources/pepite-or.png';
+import Iron from '../../assets/images/ressources/steel.png';
+import Stone from '../../assets/images/ressources/stone.png';
 import './Grid.css';
 import { useEffect, useState } from 'react';
 import fetchSlots from '../../services/MapService.js';
@@ -11,6 +15,7 @@ const Grid = ({ rows, cols }) => {
   const [slots, setSlots] = useState([]);
   const [resourceSlot, setResourceSlot] = useState();
   const [slotId, setSlotId] = useState();
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     fetchSlots(setSlots);
@@ -21,6 +26,7 @@ const Grid = ({ rows, cols }) => {
   const handleClick = (id) => {
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
+    setModal(true);
   };
 
   // Génération de la grille
@@ -46,6 +52,36 @@ const Grid = ({ rows, cols }) => {
         }}
       >
         {grid}
+        {modal && resourceSlot && (
+          <div className='modal-container'>
+            <h2 className='h1-modal'>Ressources disponible</h2>
+            <div className='resource-list-container'>
+              <div className='resource-li'>
+                <img src={Gold} alt='Lingot or' style={{ height: '1rem' }} />
+                <li> {resourceSlot[0].quantity} k </li>
+              </div>
+              <div className='resource-li'>
+                <img src={Iron} alt='Metal' style={{ height: '1rem' }} />
+                <li> {resourceSlot[1].quantity} k</li>
+              </div>
+              <div className='resource-li'>
+                <img src={Stone} alt='Pierre' style={{ height: '1rem' }} />
+                <li>{resourceSlot[2].quantity} k</li>
+              </div>
+              <div className='resource-li'>
+                <img
+                  src={Bois}
+                  alt='Buche de bois'
+                  style={{ height: '1rem' }}
+                />
+                <li> {resourceSlot[3].quantity} k </li>
+              </div>
+            </div>
+            <div className='btn-container'>
+              <button className='collect-btn'>Collect</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

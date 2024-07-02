@@ -8,19 +8,30 @@ import './Grid.css';
 import { useEffect, useState } from 'react';
 import fetchSlots from '../../services/MapService.js';
 import { usePlayerContext } from '../../context/PlayerContext.jsx';
-import { fetchResourceOnSlot } from '../../services/ResourceService.js';
+import {
+  fetchResourceOnSlot,
+  collectResource,
+  fetchGlobalResource,
+} from '../../services/ResourceService.js';
 
 const Grid = ({ rows, cols }) => {
-  const { decodedToken } = usePlayerContext();
+  const { decodedToken, playerData } = usePlayerContext();
   const [playerSlot, setPlayerSlot] = useState();
   const [slots, setSlots] = useState([]);
   const [resourceSlot, setResourceSlot] = useState();
   const [slotId, setSlotId] = useState();
   const [modal, setModal] = useState(false);
+  const [playerId, setPlayerId] = useState();
+  const [colonyId, setColonyId] = useState();
+  const [globalResources, setGlobalResources] = useState();
 
   useEffect(() => {
+    fetchGlobalResource(playerData.token, setGlobalResources);
+
     fetchSlots(setSlots);
     setPlayerSlot(decodedToken.payload.sub.slot);
+    setPlayerId(decodedToken.payload.sub.id);
+    setColonyId(decodedToken.payload.sub.colonyId);
   }, [slotId]);
 
   // Gestion du clic sur une case
@@ -28,6 +39,11 @@ const Grid = ({ rows, cols }) => {
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
+  };
+
+  const handleCollect = () => {
+    console.log('global resource:', globalResources);
+    collectResource(playerId, resourceSlot, colonyId);
   };
 
   const handleClose = () => {
@@ -84,6 +100,7 @@ const Grid = ({ rows, cols }) => {
             </div>
             <div className='btn-container'>
               <Button
+                onClick={handleCollect}
                 variant='contained'
                 sx={{
                   width: '60%',

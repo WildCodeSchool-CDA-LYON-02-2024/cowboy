@@ -1,6 +1,7 @@
 import RessourceTypeDAO from '../../models/RessourceTypeDAO.js';
 import ResourceDAO from '../../models/ResourceDAO.js';
 import ressourcesPosition from './ressourcesPosition.js';
+import { collectResource } from '../../../front-end/src/services/ResourceService.js';
 
 class Ressource {
   constructor(name, quantity) {
@@ -84,6 +85,49 @@ class Ressource {
 
     // Affiche le résultat final dans la console
     console.log(resourceMap);
+  }
+
+  collectResources(req) {
+    //Je recupere toutes les infos dans mon req.body
+    const payload = req.body;
+    const playerId = payload.playerId;
+    const colonyId = payload.colonyId;
+
+    // Je recupere toutes les ressources du joueurs
+    this.getGlobalResources(playerId)
+      .then((res) => {
+        const result = res;
+
+        return new Promise((resolve, reject) => {
+          for (let i = 0; i < payload.resource.length; i++) {
+            console.log('quantity : ', payload.resource[i].quantity);
+            this.model
+              // J'additionne les ressources du joueurs, avec les nouvelles ressources
+              .updateResourcePlayer(
+                payload.resource[i].quantity + result[i].quantity,
+                i + 1,
+                colonyId
+              )
+              .then((result) => resolve(result))
+              .catch((err) => {
+                console.error(err);
+                reject(err);
+              });
+          }
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  getGlobalResources(id) {
+    return new Promise((resolve, reject) => {
+      this.model
+        .getResources(id)
+        .then((result) => resolve(result))
+        .catch((err) => reject(err));
+    });
   }
 }
 

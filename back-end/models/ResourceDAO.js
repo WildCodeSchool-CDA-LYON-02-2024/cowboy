@@ -7,14 +7,6 @@ class ResourceModel extends AbstractDAO {
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
-    /*console.log(
-      'quantity :',
-      quantity,
-      'resourceTypeId : ',
-      ressourceTypeId,
-      'colony :',
-      colonyId
-    );*/
     return new Promise((resolve, reject) => {
       this.connection.execute(
         `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id) VALUES (?,?,?)
@@ -77,6 +69,7 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
+
   getResourcesSlot(id) {
     console.log(id);
     return new Promise((resolve, reject) => {
@@ -106,6 +99,22 @@ class ResourceModel extends AbstractDAO {
         `INSERT INTO ${this.table} (quantity, resource_type_id,map_id)
          VALUES (?,?,?)`,
         [quantity, ressourceypeId, mapId],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        }
+      );
+    });
+  }
+
+  updateResourcePlayer(resource, ressourceTypeId, colonyId = '1') {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `
+        UPDATE ${this.table} SET quantity = ? WHERE resource_type_id = ? AND colony_id = ? `,
+        [resource, ressourceTypeId, colonyId],
         (err, result, fields) => {
           if (err) {
             return reject(err);

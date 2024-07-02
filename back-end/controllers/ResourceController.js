@@ -1,5 +1,7 @@
 import ResourceModel from '../models/ResourceDAO.js';
 import jwt from 'jsonwebtoken';
+import RessourceService from '../services/ressources/Ressource.js';
+const resourceService = new RessourceService();
 
 const Resource = new ResourceModel();
 /* get all cowboys */
@@ -37,4 +39,7 @@ const find = (req, res) => {
     });
 };
 
-export default { browse, find };
+const update = (req, res) => {
+  resourceService.collectResources(req);
+};
+export default { browse, find, update };

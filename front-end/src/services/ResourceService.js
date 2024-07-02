@@ -33,8 +33,29 @@ export const fetchResourceOnSlot = (id, setSlotResource) => {
       return res.json();
     })
     .then((data) => {
-      console.log('data : ', data);
       setSlotResource(data);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const collectResource = (playerId, resource, colonyId) => {
+  fetch(
+    `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/resource/player/${playerId}/take-resources`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ resource, playerId, colonyId }),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log('data : ', data);
     })
     .catch((err) => console.error(err));
 };

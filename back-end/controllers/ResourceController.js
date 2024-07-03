@@ -40,6 +40,6 @@ const find = (req, res) => {
 };
 
 const update = (req, res) => {
-  resourceService.collectResources(req);
+  resourceService.collectResources(req, res);
 };
 export default { browse, find, update };

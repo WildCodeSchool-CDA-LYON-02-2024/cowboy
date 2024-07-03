@@ -87,7 +87,7 @@ class Ressource {
     console.log(resourceMap);
   }
 
-  collectResources(req) {
+  collectResources(req, res) {
     //Je recupere toutes les infos dans mon req.body
     const payload = req.body;
     const playerId = payload.playerId;
@@ -108,7 +108,10 @@ class Ressource {
                 i + 1,
                 colonyId
               )
-              .then((result) => resolve(result))
+              .then((result) => {
+                res.sendStatus(204);
+                resolve(result);
+              })
               .catch((err) => {
                 console.error(err);
                 reject(err);
@@ -126,7 +129,10 @@ class Ressource {
       this.model
         .getResources(id)
         .then((result) => resolve(result))
-        .catch((err) => reject(err));
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
     });
   }
 }

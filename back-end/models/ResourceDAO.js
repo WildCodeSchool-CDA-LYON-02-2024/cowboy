@@ -1,9 +1,10 @@
-import AbstractDAO from './AbstractDAO.js';
+
+import AbstractDAO from "./AbstractDAO.js";
 
 class ResourceModel extends AbstractDAO {
   constructor() {
     super();
-    this.table = 'resource';
+    this.table = "resource";
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
@@ -70,13 +71,38 @@ class ResourceModel extends AbstractDAO {
             resolve(result);
           } else {
             resolve({
-              message: 'pas de ressources disponibles',
+              message: "pas de ressources disponibles",
             });
           }
         }
       });
     });
   }
+
+  // get resource by ever hour
+
+  getResourceHour() {
+    return new Promise((resolve, reject) => {
+      const query = `
+        UPDATE resource
+          JOIN colony ON resource.colony_id = colony.id
+          JOIN map ON colony.map_id = map.id
+          SET resource.quantity = resource.quantity + 1
+          WHERE map.player_id IS NOT NULL;
+`;
+
+      this.connection.execute(query, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
+
+
   insertRessourceOnMap(quantity, ressourceypeId, mapId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(

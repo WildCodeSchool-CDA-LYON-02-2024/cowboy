@@ -1,23 +1,27 @@
-export const fetchGlobalResource = async (token) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+// export const fetchGlobalResource = (token) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       const eventSource = new EventSource(
+//         `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
+//       eventSource.onmessage = (event) => {
+//         const newData = JSON.parse(event.data);
+//         resolve(newData); 
+//       };
 
-    return await response.json();
-  } catch (err) {
-    console.error("Network error:", err);
-    throw err;
-  }
-};
+//       eventSource.onerror = (err) => {
+//         console.error("EventSource error:", err);
+//         reject(err); 
+//       };
+//     } catch (err) {
+//       console.error("EventSource setup error:", err);
+//       reject(err); 
+//     }
+//   });
+// };

@@ -6,6 +6,7 @@ import BarilletImg from "../../assets/images/barillet-sbg.png";
 import WesternCity from "../../assets/images/western-city.jpeg";
 import { usePlayerContext } from "../../context/PlayerContext.jsx";
 import { fetchBuildingLevel } from "../../services/BuildingService.js";
+import { fetchGlobalResource } from "../../services/ResourceService.js";
 import ArmurerieUp from "./ArmurerieUp";
 import EcurieUp from "./EcurieUp";
 import EntrepotUp from "./EntrepotUp";
@@ -14,6 +15,7 @@ import SaloonUp from "./SaloonUp";
 export default function BoardContainer() {
   const [expanded, setExpanded] = useState(false);
   const [building, setBuilding] = useState([]);
+  const [playerResources, setPlayerResources] = useState(null);
   const { playerData } = usePlayerContext();
 
   useEffect(() => {
@@ -22,6 +24,10 @@ export default function BoardContainer() {
         if (playerData && playerData.token) {
           const result = await fetchBuildingLevel(playerData.token);
           setBuilding(result);
+
+          const resources = await fetchGlobalResource(playerData.token);
+          setPlayerResources(resources);
+          console.log(resources, "PLAYER RESSOURCES BOARD CONTAINER ");
         }
       } catch (err) {
         console.error("Failed to fetch resources:", err);
@@ -106,7 +112,13 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION SALOON*/}
-          {building.length > 1 && <SaloonUp building={building[0]} />}
+          {building.length > 1 && playerResources && (
+            <SaloonUp
+              building={building[0]}
+              buildingTypeId={building[0].building_type_id}
+              playerResources={playerResources}
+            />
+          )}
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -137,7 +149,13 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ARMURERIE*/}
-          {building.length > 1 && <ArmurerieUp building={building[1]} />}
+          {building.length > 1 && playerResources && (
+            <ArmurerieUp
+              building={building[1]}
+              buildingTypeId={building[1].building_type_id}
+              playerResources={playerResources}
+            />
+          )}
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -168,7 +186,13 @@ export default function BoardContainer() {
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
           {/*COMPOSANT D AMELIORATION ECURIE*/}
-          {building.length > 1 && <EcurieUp building={building[2]} />}
+          {building.length > 1 && playerResources && (
+            <EcurieUp
+              building={building[2]}
+              buildingTypeId={building[2].building_type_id}
+              playerResources={playerResources}
+            />
+          )}
         </AccordionDetails>
       </Accordion>{" "}
       <Accordion
@@ -204,7 +228,13 @@ export default function BoardContainer() {
           }}
         >
           {/*COMPOSANT D AMELIORATION ENTREPOT*/}
-          {building.length > 1 && <EntrepotUp building={building[3]} />}
+          {building.length > 1 && playerResources && (
+            <EntrepotUp
+              building={building[3]}
+              buildingTypeId={building[3].building_type_id}
+              playerResources={playerResources}
+            />
+          )}
         </AccordionDetails>
       </Accordion>
       <Box

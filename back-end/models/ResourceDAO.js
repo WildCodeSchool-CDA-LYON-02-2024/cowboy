@@ -1,9 +1,9 @@
-import AbstractDAO from './AbstractDAO.js';
+import AbstractDAO from "./AbstractDAO.js";
 
 class ResourceModel extends AbstractDAO {
   constructor() {
     super();
-    this.table = 'resource';
+    this.table = "resource";
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
@@ -61,7 +61,7 @@ class ResourceModel extends AbstractDAO {
                    JOIN resource_type ON resource.resource_type_id = resource_type.id
                    JOIN colony ON resource.colony_id = colony.id
                    JOIN map ON colony.map_id = map.id
-                   WHERE map.player_id = ? ;`;
+                   WHERE map.player_id = ? `;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);
@@ -70,7 +70,7 @@ class ResourceModel extends AbstractDAO {
             resolve(result);
           } else {
             resolve({
-              message: 'pas de ressources disponibles',
+              message: "pas de ressources disponibles",
             });
           }
         }
@@ -88,6 +88,24 @@ class ResourceModel extends AbstractDAO {
             return reject(err);
           }
           return resolve(result);
+        }
+      );
+    });
+  }
+
+  updateResource(colonyId, resources) {
+    return new Promise((resolve, reject) => {
+      const { wood, stone, gold, metal } = resources;
+      db.query(
+        `UPDATE ${this.table}
+       SET wood = ?, stone = ?, gold = ?, metal = ?
+       WHERE colony_id = ?`,
+        [wood, stone, gold, metal, colonyId],
+        (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
         }
       );
     });

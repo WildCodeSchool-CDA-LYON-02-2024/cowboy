@@ -26,4 +26,28 @@ const browse = async (req, res) => {
   }
 };
 
-export default { browse };
+const upgradeLevel = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+
+  let loggedPlayerId;
+
+  try {
+    const decodedToken = jwt.verify(token, "secret");
+    loggedPlayerId = decodedToken.payload.sub.id;
+  } catch (error) {
+    return res.status(401).json({ message: "Token invalide ou expiré" });
+  }
+
+  const colonyId = req.params.colonyId;
+  const buildingTypeId = parseInt(req.params.buildingTypeId);
+
+  try {
+    const upgrade = await Building.updateLevel(colonyId, buildingTypeId);
+    res.json(upgrade);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
+  }
+};
+
+export default { browse, upgradeLevel };

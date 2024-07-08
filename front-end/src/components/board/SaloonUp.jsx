@@ -1,9 +1,87 @@
 import { Box, Button, Container, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
-import PropTypes from "prop-types";
+import { usePlayerContext } from "../../context/PlayerContext.jsx";
+import { upgradeBuilding } from "../../services/BuildingService.js";
+import { resourceTiers } from "../../services/ResourceService.js";
+import { reducTiers } from "../../services/StatsService.js";
 
-export default function SaloonUp({ building }) {
+export default function SaloonUp({
+  building,
+  buildingTypeId,
+  playerResources,
+}) {
+  const { playerData } = usePlayerContext();
+
+  const [canUpgrade, setCanUpgrade] = useState(false);
+
+  useEffect(() => {
+    const checkResources = () => {
+      const nextLevel = building.level + 1;
+      const requiredResources = resourceTiers.find(
+        (tier) => tier.level === nextLevel
+      );
+
+      if (!requiredResources) {
+        setCanUpgrade(false);
+        return;
+      }
+
+      // Filtrer les ressources nécessaires pour exclure "level"
+      const filteredResources = Object.keys(requiredResources)
+        .filter((key) => key !== "level")
+        .reduce((obj, key) => {
+          obj[key] = requiredResources[key];
+          return obj;
+        }, {});
+
+      const hasEnoughResources = Object.keys(filteredResources).every(
+        (resource) => {
+          const playerResource = playerResources.find(
+            (res) => res.name === resource
+          );
+          return (
+            playerResource &&
+            playerResource.quantity >= filteredResources[resource]
+          );
+        }
+      );
+
+      setCanUpgrade(hasEnoughResources);
+    };
+
+    checkResources();
+  }, [building.level, playerResources]);
+
+  console.log(playerResources, "RESSOURCE DANS SALOON");
+  const handleUpgrade = async () => {
+    try {
+      if (playerData && playerData.token) {
+        const updatedBuilding = await upgradeBuilding(
+          playerData.token,
+          buildingTypeId
+        );
+        console.log("Building upgraded successfully:", updatedBuilding);
+      }
+    } catch (err) {
+      console.error("Failed to upgrade building:", err);
+    }
+  };
+  const stats = reducTiers.find((tier) => tier.level === building.level);
+
+  if (!stats) {
+    return null; // Gestion de cas où le niveau n'est pas trouvé
+  }
+
+  const { reducBonus } = stats;
+
+  // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
+  const nextLevelStats = reducTiers.find(
+    (tier) => tier.level === building.level + 1
+  );
+
   return (
     <Container disableGutters>
       <Box
@@ -83,7 +161,7 @@ export default function SaloonUp({ building }) {
             }}
           >
             {" "}
-            -5%{"  "}
+            -{reducBonus}%{"  "}
             <Box
               component="img"
               src={fleche}
@@ -95,13 +173,13 @@ export default function SaloonUp({ building }) {
               }}
             />
             {"  "}
-            -10%
+            {nextLevelStats && `-${nextLevelStats.reducBonus}%`}
           </span>{" "}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
 
-      <RessourcesForUp />
+      <RessourcesForUp level={building.level} />
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -115,8 +193,11 @@ export default function SaloonUp({ building }) {
             fontFamily: "Pixelify",
             textShadow:
               "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            color: "white",
           }}
-          // type="submit"
+          type="submit"
+          onClick={handleUpgrade}
+          disabled={!canUpgrade}
         >
           AMÉLIORER
         </Button>
@@ -126,4 +207,12 @@ export default function SaloonUp({ building }) {
 }
 SaloonUp.propTypes = {
   building: PropTypes.object.isRequired,
+  buildingTypeId: PropTypes.number.isRequired,
+  playerResources: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      quantity: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  onUpdatePlayerResources: PropTypes.func.isRequired,
 };

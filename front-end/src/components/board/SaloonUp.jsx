@@ -5,7 +5,12 @@ import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
 import { usePlayerContext } from "../../context/PlayerContext.jsx";
 import { upgradeBuilding } from "../../services/BuildingService.js";
-import { resourceTiers } from "../../services/ResourceService.js";
+import {
+  checkIfCanUpgrade,
+  removeResourcesForUpgrade,
+  resourceTiers,
+  updatePlayerResources,
+} from "../../services/ResourceService.js";
 import { reducTiers } from "../../services/StatsService.js";
 
 export default function SaloonUp({
@@ -18,57 +23,63 @@ export default function SaloonUp({
   const [canUpgrade, setCanUpgrade] = useState(false);
 
   useEffect(() => {
-    const checkResources = () => {
-      const nextLevel = building.level + 1;
-      const requiredResources = resourceTiers.find(
-        (tier) => tier.level === nextLevel
-      );
+    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
+  }, [building.level, playerResources]);
 
-      if (!requiredResources) {
-        setCanUpgrade(false);
+  console.log(playerResources, "RESSOURCE DANS SALOON AVANT");
+
+  const handleUpgrade = async () => {
+    try {
+      if (!playerData || !playerData.token) {
+        console.error("Player data or token missing.");
         return;
       }
 
-      // Filtrer les ressources nécessaires pour exclure "level"
-      const filteredResources = Object.keys(requiredResources)
-        .filter((key) => key !== "level")
-        .reduce((obj, key) => {
-          obj[key] = requiredResources[key];
-          return obj;
-        }, {});
-
-      const hasEnoughResources = Object.keys(filteredResources).every(
-        (resource) => {
-          const playerResource = playerResources.find(
-            (res) => res.name === resource
-          );
-          return (
-            playerResource &&
-            playerResource.quantity >= filteredResources[resource]
-          );
-        }
+      const canUpgradeResult = checkIfCanUpgrade(
+        playerResources,
+        building.level
       );
 
-      setCanUpgrade(hasEnoughResources);
-    };
-
-    checkResources();
-  }, [building.level, playerResources]);
-
-  console.log(playerResources, "RESSOURCE DANS SALOON");
-  const handleUpgrade = async () => {
-    try {
-      if (playerData && playerData.token) {
-        const updatedBuilding = await upgradeBuilding(
-          playerData.token,
-          buildingTypeId
-        );
-        console.log("Building upgraded successfully:", updatedBuilding);
+      if (!canUpgradeResult.canUpgrade) {
+        console.error("Cannot upgrade building:", canUpgradeResult.message);
+        return;
       }
+
+      const updatedBuilding = await upgradeBuilding(
+        playerData.token,
+        buildingTypeId
+      );
+
+      if (updatedBuilding.error) {
+        console.error("Failed to upgrade building:", updatedBuilding.error);
+        return;
+      }
+
+      console.log("Building upgraded successfully:", updatedBuilding);
+
+      // Utilisation du service pour déduire les ressources nécessaires
+      const updatedResources = removeResourcesForUpgrade(
+        playerResources,
+        building.level,
+        resourceTiers
+      );
+
+      // Mettre à jour les ressources du joueur avec les nouvelles valeurs
+      const updatedPlayerResources = await updatePlayerResources(
+        playerData.token,
+        updatedResources
+      );
+
+      console.log(
+        "Player resources updated successfully:",
+        updatedPlayerResources
+      );
     } catch (err) {
       console.error("Failed to upgrade building:", err);
     }
   };
+  console.log(playerResources, "RESSOURCE DANS SALOON APRES");
+
   const stats = reducTiers.find((tier) => tier.level === building.level);
 
   if (!stats) {
@@ -214,5 +225,4 @@ SaloonUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
-  onUpdatePlayerResources: PropTypes.func.isRequired,
 };

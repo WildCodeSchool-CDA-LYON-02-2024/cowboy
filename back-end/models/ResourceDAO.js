@@ -93,23 +93,25 @@ class ResourceModel extends AbstractDAO {
     });
   }
 
-  updateResource(colonyId, resources) {
+  updateResource(colonyId, resourceName, quantity) {
+    console.log("COLONY:", colonyId, "RESOURCE:", resourceName, quantity);
     return new Promise((resolve, reject) => {
-      const { wood, stone, gold, metal } = resources;
-      db.query(
-        `UPDATE ${this.table}
-       SET wood = ?, stone = ?, gold = ?, metal = ?
-       WHERE colony_id = ?`,
-        [wood, stone, gold, metal, colonyId],
+      const query = `UPDATE ${this.table}
+      JOIN resource_type ON ${this.table}.resource_type_id = resource_type.id
+      SET ${this.table}.quantity = ?
+      WHERE ${this.table}.colony_id = ? AND resource_type.name = ?`;
+      this.connection.execute(
+        query,
+        [quantity, colonyId, resourceName],
         (err, result) => {
           if (err) {
-            return reject(err);
+            reject(err);
+          } else {
+            resolve(result);
           }
-          resolve(result);
         }
       );
     });
   }
 }
-
 export default ResourceModel;

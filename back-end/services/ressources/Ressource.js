@@ -88,39 +88,48 @@ class Ressource {
   }
 
   collectResources(req, res) {
-    //Je recupere toutes les infos dans mon req.body
+    // Je recupere toutes les infos dans mon req.body
     const payload = req.body;
     const playerId = payload.playerId;
     const colonyId = payload.colonyId;
 
     // Je recupere toutes les ressources du joueurs
     this.getGlobalResources(playerId)
-      .then((res) => {
-        const result = res;
+      .then((globalResources) => {
+        const result = globalResources;
+        console.log('RES : ', globalResources);
 
         return new Promise((resolve, reject) => {
+          let promises = [];
           for (let i = 0; i < payload.resource.length; i++) {
             console.log('quantity : ', payload.resource[i].quantity);
-            this.model
+            let updatedQuantity =
+              payload.resource[i].quantity + result[i].quantity;
+            let promise = this.model
               // J'additionne les ressources du joueurs, avec les nouvelles ressources
-              .updateResourcePlayer(
-                payload.resource[i].quantity + result[i].quantity,
-                i + 1,
-                colonyId
-              )
-              .then((result) => {
-                res.sendStatus(204);
-                resolve(result);
-              })
-              .catch((err) => {
-                console.error(err);
-                reject(err);
-              });
+              .updateResourcePlayer(updatedQuantity, i + 1, colonyId);
+
+            promises.push(promise);
           }
+
+          Promise.all(promises)
+            .then((results) => {
+              console.log('RESULTS : ', results);
+              res.sendStatus(204);
+              resolve(results);
+            })
+            .catch((err) => {
+              console.error(err);
+              res
+                .status(500)
+                .send('An error occurred while updating resources.');
+              reject(err);
+            });
         });
       })
       .catch((err) => {
         console.error(err);
+        res.status(500).send('An error occurred while retrieving resources.');
       });
   }
 

@@ -93,6 +93,7 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
+
   insertRessourceOnMap(quantity, ressourceypeId, mapId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
@@ -109,7 +110,29 @@ class ResourceModel extends AbstractDAO {
     });
   }
 
-  updateResourcePlayer(resource, ressourceTypeId, colonyId = '1') {
+  // get resource by ever hour
+
+  getResourceHour() {
+    return new Promise((resolve, reject) => {
+      const query = `
+          UPDATE resource
+            JOIN colony ON resource.colony_id = colony.id
+            JOIN map ON colony.map_id = map.id
+            SET resource.quantity = resource.quantity + 1
+            WHERE map.player_id IS NOT NULL;
+  `;
+
+      this.connection.execute(query, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
+  updateResourcePlayer(resource, ressourceTypeId, colonyId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
         `
@@ -119,6 +142,7 @@ class ResourceModel extends AbstractDAO {
           if (err) {
             return reject(err);
           }
+
           return resolve(result);
         }
       );

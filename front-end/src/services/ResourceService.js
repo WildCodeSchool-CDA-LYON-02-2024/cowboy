@@ -1,4 +1,5 @@
 export const fetchGlobalResource = async (token) => {
+  console.log('TOKEN : ', token);
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/resource`,

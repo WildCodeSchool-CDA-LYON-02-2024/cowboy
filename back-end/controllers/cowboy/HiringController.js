@@ -1,27 +1,18 @@
 import CowboyModel from "../../models/CowboyDAO.js";
 import PlayerModel from "../../models/UserDAO.js";
 import ResourceModel from "../../models/ResourceDAO.js";
-import jwt from "jsonwebtoken";
 
 const Cowboy = new CowboyModel();
 const Player = new PlayerModel();
 const Resource = new ResourceModel();
 
 const hiringCowboy = (req, res) => {
-
   const cowboyId = parseInt(req.params.id);
-  const token = req.headers.authorization.split(" ")[1];
+  let loggedPlayerId = req.loggedPlayerId;
 
-  let loggedPlayerId;
 
-  try {
-    const decodedToken = jwt.verify(token, "secret"); 
-    loggedPlayerId = decodedToken.payload.sub.id;
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
 
-  Player.read(loggedPlayerId) 
+  Player.read(loggedPlayerId)
     .then((player) => {
       if (!player) {
         throw { status: 404, message: "Le joueur n'exist pas " };

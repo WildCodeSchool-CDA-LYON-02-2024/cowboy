@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // Variable a changer, en lien avec le fichier .env
+    origin: process.env.CLIENT_URL, 
     optionsSuccessStatus: 200,
     credentials: true,
   })

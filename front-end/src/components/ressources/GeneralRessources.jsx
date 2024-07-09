@@ -5,36 +5,58 @@ import Gold from "../../assets/images/ressources/pepite-or.png";
 import Iron from "../../assets/images/ressources/steel.png";
 import Stone from "../../assets/images/ressources/stone.png";
 import { usePlayerContext } from "../../context/PlayerContext";
+import { subscribeToResourceUpdates } from "../../services/ResourceService";
 
 export default function GeneralRessources() {
   const [resources, setResources] = useState([]);
   const { playerData } = usePlayerContext();
 
+  // useEffect(() => {
+  //   if (!playerData.token) return;
+
+  //   const eventSourceUrl = `${
+  //     import.meta.env.VITE_BACKEND_URL
+  //   }/api/resource?token=${encodeURIComponent(playerData.token)}`;
+
+  //   //Logique SSE pour traiter les mises à jour des données
+  //   const eventSource = new EventSource(eventSourceUrl);
+
+  //   //  Logique SSE pour traiter les données
+  //   eventSource.onmessage = (event) => {
+  //     const newData = JSON.parse(event.data);
+  //     setResources(newData);
+  //   };
+
+  //   eventSource.onerror = (err) => {
+  //     console.error("EventSource error:", err);
+  //     eventSource.close();
+  //   };
+
+  //   return () => {
+  //     eventSource.close();
+  //   };
+  // }, [playerData]);
+
   useEffect(() => {
     if (!playerData.token) return;
 
-    const eventSourceUrl = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/api/resource?token=${encodeURIComponent(playerData.token)}`;
+    // Abonnement aux mises à jour SSE
+    const eventSource = subscribeToResourceUpdates(
+      playerData.token,
+      (newData) => {
+        setResources(newData);
+      },
+      (err) => {
+        console.error("SSE error:", err);
+      }
+    );
 
-    //Logique SSE pour traiter les mises à jour des données
-    const eventSource = new EventSource(eventSourceUrl);
-
-    //  Logique SSE pour traiter les données
-    eventSource.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
-      setResources(newData);
-    };
-
-    eventSource.onerror = (err) => {
-      console.error("EventSource error:", err);
-      eventSource.close();
-    };
-
+    // Nettoyage lors du démontage du composant
     return () => {
       eventSource.close();
     };
-  }, [playerData]);
+  }, [playerData.token]);
+
   // Définir une correspondance du nom de la ressource à l'image
   const resourceImageMap = {
     gold: Gold,

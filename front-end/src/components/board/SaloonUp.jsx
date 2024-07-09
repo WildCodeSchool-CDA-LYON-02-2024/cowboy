@@ -39,7 +39,7 @@ export default function SaloonUp({
       );
 
       if (!canUpgradeResult.canUpgrade) {
-        console.error("Amélioration impossible:", canUpgradeResult.message);
+        console.error("Cannot upgrade building:", canUpgradeResult.message);
         return;
       }
 
@@ -55,17 +55,12 @@ export default function SaloonUp({
 
       console.log("Building upgraded successfully:", updatedBuilding);
 
-      // Calculer les ressources mises à jour nécessaires
+      // Utilisation du service pour déduire les ressources nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
         building.level,
         resourceTiers
       );
-
-      if (!updatedResources) {
-        console.error("Updated resources is undefined or null.");
-        return;
-      }
 
       // Mettre à jour les ressources du joueur avec les nouvelles valeurs
       const updatedPlayerResources = await updatePlayerResources(

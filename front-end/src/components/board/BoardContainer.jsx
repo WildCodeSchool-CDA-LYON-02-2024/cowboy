@@ -110,7 +110,6 @@ export default function BoardContainer() {
         <AccordionDetails
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
-          {/*COMPOSANT D AMELIORATION SALOON*/}
           {building.length > 1 && playerResources && (
             <SaloonUp
               building={building[0]}
@@ -147,7 +146,6 @@ export default function BoardContainer() {
         <AccordionDetails
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
-          {/*COMPOSANT D AMELIORATION ARMURERIE*/}
           {building.length > 1 && playerResources && (
             <ArmurerieUp
               building={building[1]}
@@ -184,7 +182,6 @@ export default function BoardContainer() {
         <AccordionDetails
           sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
         >
-          {/*COMPOSANT D AMELIORATION ECURIE*/}
           {building.length > 1 && playerResources && (
             <EcurieUp
               building={building[2]}
@@ -226,7 +223,6 @@ export default function BoardContainer() {
             height: "18.1rem",
           }}
         >
-          {/*COMPOSANT D AMELIORATION ENTREPOT*/}
           {building.length > 1 && playerResources && (
             <EntrepotUp
               building={building[3]}

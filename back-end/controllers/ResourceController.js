@@ -78,4 +78,16 @@ const updateResources = async (req, res) => {
     });
 };
 
-export default { browse, updateResources };
+const browseSimple = (req, res) => {
+  const loggedPlayerId = req.loggedPlayerId;
+
+  Resource.getResources(loggedPlayerId)
+    .then((resource) => {
+      res.json(resource);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+export default { browse, updateResources, browseSimple };

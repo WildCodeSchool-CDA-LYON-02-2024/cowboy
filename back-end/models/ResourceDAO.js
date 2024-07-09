@@ -142,6 +142,5 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
-
 }
 export default ResourceModel;

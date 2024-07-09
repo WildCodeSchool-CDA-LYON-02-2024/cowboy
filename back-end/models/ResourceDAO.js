@@ -96,32 +96,45 @@ class ResourceModel extends AbstractDAO {
   updateResources(colonyId, resources) {
     return new Promise((resolve, reject) => {
       const queries = resources.map((resource) => {
+        console.log(
+          `Updating resource: ${resource.id} with quantity: ${resource.quantity}`
+        );
         return this.updateResource(colonyId, resource.quantity, resource.id);
       });
       Promise.all(queries)
-        .then(() => resolve())
-        .catch((err) => reject(err));
+        .then((results) => {
+          console.log("All resources updated successfully:", results);
+          resolve(results);
+        })
+        .catch((err) => {
+          console.error("Error updating resources:", err);
+          reject(err);
+        });
     });
   }
 
   updateResource(colonyId, quantity, resourceTypeId) {
     return new Promise((resolve, reject) => {
-      const query = `UPDATE ${this.table}     
-      SET quantity = ?
-      WHERE colony_id = ? AND resource_type_id = ?`;
+      const query = `UPDATE resource SET quantity = ? WHERE colony_id = ? AND resource_type_id = ?`;
+      console.log(
+        `Executing query: ${query} with values: [${quantity}, ${colonyId}, ${resourceTypeId}]`
+      );
       this.connection.execute(
         query,
         [quantity, colonyId, resourceTypeId],
         (err, result) => {
           if (err) {
+            console.error("Error executing query:", err);
             reject(err);
           } else {
+            console.log("Query executed successfully:", result);
             resolve(result);
           }
         }
       );
     });
   }
+
   //****************************************************** */
   getResourceHour() {
     return new Promise((resolve, reject) => {
@@ -142,6 +155,5 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
-
 }
 export default ResourceModel;

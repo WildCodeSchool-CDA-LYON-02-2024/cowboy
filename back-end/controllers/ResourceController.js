@@ -12,18 +12,19 @@ const Resource = new ResourceModel();
 //   res.write(`data: ${JSON.stringify(data)}\n\n`);
 // };
 
-// // // La méthode pour gérer les erreurs SSE
+// // La méthode pour gérer les erreurs SSE
 
 // const sendError = (res, message) => {
 //   res.write(`event: error\ndata: ${JSON.stringify({ message })}\n\n`);
 // };
 
-// // ici je fetch les données sans sse headers
+// ici je fetch les données sans sse headers
 // const getResources1 = (res, loggedPlayerId) => {
 //   Resource.getResources(loggedPlayerId)
 //     .then((resources) => {
 //       // res.json(resources);
-//       sendData(res, resources);
+//       // sendData(res, resources);
+//       res.json(resources);
 //     })
 //     .catch((err) => {
 //       console.error("Error fetching initial resources:", err);
@@ -43,13 +44,14 @@ const Resource = new ResourceModel();
 //   const getResource2 = setInterval(() => {
 //     Resource.getResources(loggedPlayerId)
 //       .then((resources) => {
+//         console.log(resources, "CONTROLLER RESOURCE", res, "RESPONSE");
 //         sendData(res, resources);
 //       })
 //       .catch((err) => {
 //         console.error("Error fetching resources 2:", err);
 //         sendError(res, "Error fetching resources 2 ");
 //       });
-//   }, 1000);
+//   }, 60000);
 
 //   req.on("close", () => {
 //     clearInterval(getResource2);
@@ -77,11 +79,11 @@ const browseSimple = (req, res) => {
 };
 //UPDATE RESOURCES KEEP IT
 const updateResources = async (req, res) => {
-  const loggedPlayerId = req.loggedPlayerId;
-
-  Resource.getResources(loggedPlayerId)
-    .then((resources) => {
-      sendData(res, resources);
+  const { colonyId } = parseInt(req.params);
+  const { resources } = req.body;
+  Resource.updateResource(colonyId, resources)
+    .then((result) => {
+      res.json({ message: "Ressource mise à jour avec succès", result });
     })
     .catch((err) => {
       console.error("Failed to update resource:", err);
@@ -89,4 +91,4 @@ const updateResources = async (req, res) => {
     });
 };
 
-export default { browse, browseSimple, updateResources };
+export default { browseSimple, updateResources };

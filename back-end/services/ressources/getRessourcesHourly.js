@@ -1,4 +1,4 @@
-import ResourceModel from '../../models/ResourceDAO.js';
+import ResourceModel from "../../models/ResourceDAO.js";
 
 function updateResources() {
   const resourceModel = new ResourceModel();
@@ -15,5 +15,5 @@ function updateResources() {
 
 export function startScheduledTasks() {
   updateResources();
-  setInterval(updateResources, 10000); 
+  setInterval(updateResources, 120000);
 }

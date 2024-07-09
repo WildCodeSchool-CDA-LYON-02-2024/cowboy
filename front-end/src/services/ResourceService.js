@@ -12,7 +12,6 @@ export const fetchGlobalResource = async (token) => {
         },
       }
     );
-    console.log(response, "REPONSE");
 
     return await response.json();
   } catch (err) {
@@ -20,6 +19,30 @@ export const fetchGlobalResource = async (token) => {
     throw err;
   }
 };
+
+export const subscribeToResourceUpdates = (token, onMessage, onError) => {
+  const eventSourceUrl = `${
+    import.meta.env.VITE_BACKEND_URL
+  }/api/resource?token=${encodeURIComponent(token)}`;
+
+  const eventSource = new EventSource(eventSourceUrl);
+
+  eventSource.onmessage = (event) => {
+    const newData = JSON.parse(event.data);
+    onMessage(newData);
+  };
+
+  eventSource.onerror = (err) => {
+    console.error("EventSource error:", err);
+    if (onError) {
+      onError(err);
+    }
+    eventSource.close();
+  };
+
+  return eventSource;
+};
+
 export const updatePlayerResources = async (token, updatedResources) => {
   console.log(updatedResources, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   const decodedToken = jwtDecode(token);
@@ -88,8 +111,9 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
     }
     const requiredAmount = requiredResources[key];
     const resourceId = parseInt(key, 10);
+    console.log(resourceId, "RESOURCEID SERVICE");
     const playerResource = playerResources.find((res) => res.id === resourceId);
-    console.log(playerResource, "PLAYER RESSOURCE");
+    console.log(playerResource.quantity, "QUANTITY PLAYER");
     return playerResource && playerResource.quantity >= requiredAmount;
   });
 

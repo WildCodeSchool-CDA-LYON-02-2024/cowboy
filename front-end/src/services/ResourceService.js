@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 export const fetchGlobalResource = async (token) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/resource/simple`,
       {
         method: "GET",
         headers: {
@@ -12,6 +12,7 @@ export const fetchGlobalResource = async (token) => {
         },
       }
     );
+    console.log(response, "REPONSE");
 
     return await response.json();
   } catch (err) {
@@ -19,7 +20,6 @@ export const fetchGlobalResource = async (token) => {
     throw err;
   }
 };
-
 export const updatePlayerResources = async (token, updatedResources) => {
   console.log(updatedResources, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   const decodedToken = jwtDecode(token);
@@ -89,6 +89,7 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
     const requiredAmount = requiredResources[key];
     const resourceId = parseInt(key, 10);
     const playerResource = playerResources.find((res) => res.id === resourceId);
+    console.log(playerResource, "PLAYER RESSOURCE");
     return playerResource && playerResource.quantity >= requiredAmount;
   });
 

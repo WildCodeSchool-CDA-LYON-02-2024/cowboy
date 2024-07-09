@@ -29,15 +29,15 @@ export const speedTiers = [
 // ENTREPOT STATS
 export const storageCapacityTiers = [
   { level: 1, storageCapacity: 100 },
-  { level: 2, storageCapacity: 200 },
-  { level: 3, storageCapacity: 240 },
-  { level: 4, storageCapacity: 300 },
-  { level: 5, storageCapacity: 380 },
-  { level: 6, storageCapacity: 415 },
-  { level: 7, storageCapacity: 550 },
-  { level: 8, storageCapacity: 620 },
-  { level: 9, storageCapacity: 700 },
-  { level: 10, storageCapacity: 999 },
+  { level: 2, storageCapacity: 120 },
+  { level: 3, storageCapacity: 140 },
+  { level: 4, storageCapacity: 160 },
+  { level: 5, storageCapacity: 180 },
+  { level: 6, storageCapacity: 200 },
+  { level: 7, storageCapacity: 220 },
+  { level: 8, storageCapacity: 240 },
+  { level: 9, storageCapacity: 260 },
+  { level: 10, storageCapacity: 300 },
 ];
 
 // SALOON STATS

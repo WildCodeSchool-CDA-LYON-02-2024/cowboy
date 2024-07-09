@@ -47,7 +47,7 @@ export default function RessourcesForUp({ level }) {
             textAlign: "center",
           }}
         >
-          {resources[4]} k{" "}
+          {resources?.wood} k{" "}
         </Typography>
       </Box>
       <Box
@@ -74,7 +74,7 @@ export default function RessourcesForUp({ level }) {
             textAlign: "center",
           }}
         >
-          {resources[3]} k{" "}
+          {resources?.stone} k{" "}
         </Typography>
       </Box>
       <Box
@@ -101,7 +101,7 @@ export default function RessourcesForUp({ level }) {
             textAlign: "center",
           }}
         >
-          {resources[2]} k{" "}
+          {resources?.metal} k{" "}
         </Typography>
       </Box>
       <Box
@@ -128,7 +128,7 @@ export default function RessourcesForUp({ level }) {
             textAlign: "center",
           }}
         >
-          {resources[1]} k{" "}
+          {resources?.gold} k{" "}
         </Typography>
       </Box>
     </Container>

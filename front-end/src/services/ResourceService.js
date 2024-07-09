@@ -79,16 +79,16 @@ export const updatePlayerResources = async (token, updatedResources) => {
 };
 
 export const resourceTiers = [
-  { level: 1, 4: 25, 3: 10, 2: 9, 1: 2 },
-  { level: 2, 4: 30, 3: 25, 2: 10, 1: 5 },
-  { level: 3, 4: 40, 3: 30, 2: 17, 1: 7 },
-  { level: 4, 4: 47, 3: 33, 2: 20, 1: 9 },
-  { level: 5, 4: 60, 3: 45, 2: 33, 1: 11 },
-  { level: 6, 4: 80, 3: 50, 2: 42, 1: 13 },
-  { level: 7, 4: 95, 3: 57, 2: 49, 1: 15 },
-  { level: 8, 4: 125, 3: 80, 2: 54, 1: 17 },
-  { level: 9, 4: 190, 3: 95, 2: 59, 1: 19 },
-  { level: 10, 4: 280, 3: 100, 2: 67, 1: 35 },
+  { level: 1, wood: 25, stone: 10, metal: 9, gold: 2 },
+  { level: 2, wood: 30, stone: 25, metal: 10, gold: 5 },
+  { level: 3, wood: 40, stone: 30, metal: 17, gold: 7 },
+  { level: 4, wood: 47, stone: 33, metal: 20, gold: 9 },
+  { level: 5, wood: 60, stone: 45, metal: 33, gold: 11 },
+  { level: 6, wood: 80, stone: 50, metal: 42, gold: 13 },
+  { level: 7, wood: 95, stone: 57, metal: 49, gold: 15 },
+  { level: 8, wood: 125, stone: 80, metal: 54, gold: 17 },
+  { level: 9, wood: 190, stone: 95, metal: 59, gold: 19 },
+  { level: 10, wood: 280, stone: 100, metal: 67, gold: 35 },
 ];
 
 //verif des ressources
@@ -101,30 +101,33 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
   if (!requiredResources) {
     return {
       canUpgrade: false,
-      message: "Niveau max atteint, aucune amélioration possible.",
+      message: "Maximum level reached, cannot upgrade further.",
     };
   }
 
-  const hasEnoughResources = Object.keys(requiredResources).every((key) => {
-    if (key === "level") {
-      return true;
+  const hasEnoughResources = Object.keys(requiredResources).every(
+    (resource) => {
+      if (resource === "level") {
+        return true;
+      }
+      const requiredAmount = requiredResources[resource];
+      const playerResource = playerResources.find(
+        (res) => res.name === resource
+      );
+      return playerResource && playerResource.quantity >= requiredAmount;
     }
-    const requiredAmount = requiredResources[key];
-    const resourceId = parseInt(key, 10);
-    const playerResource = playerResources.find((res) => res.id === resourceId);
-    return playerResource && playerResource.quantity >= requiredAmount;
-  });
+  );
 
   if (!hasEnoughResources) {
     return {
       canUpgrade: false,
-      message: "Resources insuffisante pour l'amélioration.",
+      message: "Insufficient resources to upgrade.",
     };
   }
 
   return {
     canUpgrade: true,
-    message: "Amélioration possible.",
+    message: "Ready to upgrade.",
   };
 };
 
@@ -139,21 +142,16 @@ export const removeResourcesForUpgrade = (
   );
 
   if (!requiredResources) {
-    console.error("Cannot find required resources for next level upgrade.");
-    return null;
+    throw new Error("Cannot find required resources for next level upgrade.");
   }
 
-  // MAJ DES RESSOURCES
+  // Déduire les ressources nécessaires des ressources actuelles du joueur
   const updatedResources = playerResources.map((resource) => {
-    const resourceId = resource.id;
     const resourceName = resource.name;
-    const requiredAmount = requiredResources[resourceId];
-
-    console.log("REQUIRED AMOUNT:", resourceName, requiredAmount);
-
+    console.log(resourceName, "RESOURCE NAME");
+    const requiredAmount = requiredResources[resourceName];
     if (requiredAmount && resource.quantity >= requiredAmount) {
       return {
-        id: resourceId,
         name: resourceName,
         quantity: resource.quantity - requiredAmount,
       };
@@ -162,6 +160,5 @@ export const removeResourcesForUpgrade = (
     }
   });
 
-  console.log("RESOURCES APRES AMELIORATION:", updatedResources);
   return updatedResources;
 };

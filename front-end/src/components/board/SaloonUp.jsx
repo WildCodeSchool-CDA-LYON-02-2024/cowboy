@@ -26,6 +26,8 @@ export default function SaloonUp({
     setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
   }, [building.level, playerResources]);
 
+  console.log(playerResources, "RESSOURCE DANS SALOON AVANT");
+
   const handleUpgrade = async () => {
     try {
       if (!playerData || !playerData.token) {
@@ -76,6 +78,7 @@ export default function SaloonUp({
       console.error("Failed to upgrade building:", err);
     }
   };
+  console.log(playerResources, "RESSOURCE DANS SALOON APRES");
 
   const stats = reducTiers.find((tier) => tier.level === building.level);
 

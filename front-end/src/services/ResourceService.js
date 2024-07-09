@@ -13,10 +13,6 @@ export const fetchGlobalResource = async (token) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
     return await response.json();
   } catch (err) {
     console.error("Network error:", err);

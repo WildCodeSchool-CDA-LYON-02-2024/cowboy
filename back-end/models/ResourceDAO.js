@@ -56,12 +56,12 @@ class ResourceModel extends AbstractDAO {
 
   getResources(id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT resource_type.name, resource.quantity
-                  FROM resource
-                   JOIN resource_type ON resource.resource_type_id = resource_type.id
-                   JOIN colony ON resource.colony_id = colony.id
-                   JOIN map ON colony.map_id = map.id
-                   WHERE map.player_id = ? `;
+      const query = `SELECT resource_type.id, resource_type.name, resource.quantity
+              FROM resource
+              JOIN resource_type ON resource.resource_type_id = resource_type.id
+              JOIN colony ON resource.colony_id = colony.id
+              JOIN map ON colony.map_id = map.id
+              WHERE map.player_id = ?`;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);
@@ -92,17 +92,26 @@ class ResourceModel extends AbstractDAO {
       );
     });
   }
-
-  updateResource(colonyId, resourceName, quantity) {
-    console.log("COLONY:", colonyId, "RESOURCE:", resourceName, quantity);
+  //UPDATE RESOURCES KEEP IT
+  updateResources(colonyId, resources) {
     return new Promise((resolve, reject) => {
-      const query = `UPDATE ${this.table}
-      JOIN resource_type ON ${this.table}.resource_type_id = resource_type.id
-      SET ${this.table}.quantity = ?
-      WHERE ${this.table}.colony_id = ? AND resource_type.name = ?`;
+      const queries = resources.map((resource) => {
+        return this.updateResource(colonyId, resource.quantity, resource.id);
+      });
+      Promise.all(queries)
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    });
+  }
+
+  updateResource(colonyId, quantity, resourceTypeId) {
+    return new Promise((resolve, reject) => {
+      const query = `UPDATE ${this.table}     
+      SET quantity = ?
+      WHERE colony_id = ? AND resource_type_id = ?`;
       this.connection.execute(
         query,
-        [quantity, colonyId, resourceName],
+        [quantity, colonyId, resourceTypeId],
         (err, result) => {
           if (err) {
             reject(err);
@@ -113,5 +122,6 @@ class ResourceModel extends AbstractDAO {
       );
     });
   }
+  //****************************************************** */
 }
 export default ResourceModel;

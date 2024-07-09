@@ -26,8 +26,6 @@ export default function SaloonUp({
     setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
   }, [building.level, playerResources]);
 
-  console.log(playerResources, "RESSOURCE DANS SALOON AVANT");
-
   const handleUpgrade = async () => {
     try {
       if (!playerData || !playerData.token) {
@@ -41,7 +39,7 @@ export default function SaloonUp({
       );
 
       if (!canUpgradeResult.canUpgrade) {
-        console.error("Cannot upgrade building:", canUpgradeResult.message);
+        console.error("Amélioration impossible:", canUpgradeResult.message);
         return;
       }
 
@@ -57,12 +55,17 @@ export default function SaloonUp({
 
       console.log("Building upgraded successfully:", updatedBuilding);
 
-      // Utilisation du service pour déduire les ressources nécessaires
+      // Calculer les ressources mises à jour nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
         building.level,
         resourceTiers
       );
+
+      if (!updatedResources) {
+        console.error("Updated resources is undefined or null.");
+        return;
+      }
 
       // Mettre à jour les ressources du joueur avec les nouvelles valeurs
       const updatedPlayerResources = await updatePlayerResources(
@@ -78,7 +81,6 @@ export default function SaloonUp({
       console.error("Failed to upgrade building:", err);
     }
   };
-  console.log(playerResources, "RESSOURCE DANS SALOON APRES");
 
   const stats = reducTiers.find((tier) => tier.level === building.level);
 

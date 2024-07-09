@@ -27,7 +27,6 @@ export default function BoardContainer() {
 
           const resources = await fetchGlobalResource(playerData.token);
           setPlayerResources(resources);
-          console.log(resources, "PLAYER RESSOURCES BOARD CONTAINER ");
         }
       } catch (err) {
         console.error("Failed to fetch resources:", err);

@@ -16,7 +16,9 @@ export const fetchGlobalResource = async (token) => {
       throw new Error('Network response was not ok');
     }
 
-    return await response.json();
+    const data = await response.json(); // Récupération des données JSON
+
+    return data; // Retourner les données récupérées
   } catch (err) {
     console.error('Network error:', err);
     throw err;
@@ -40,6 +42,14 @@ export const fetchResourceOnSlot = (id, setSlotResource) => {
 };
 
 export const collectResource = (playerId, resource, colonyId) => {
+  console.log(
+    'playerId : ',
+    playerId,
+    'resource :',
+    resource,
+    'colonyId : ',
+    colonyId
+  );
   fetch(
     `${
       import.meta.env.VITE_BACKEND_URL
@@ -57,6 +67,37 @@ export const collectResource = (playerId, resource, colonyId) => {
     })
     .then((data) => {
       console.log('data : ', data);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const buildRessource = (
+  playerId,
+  colonyId,
+  slotId,
+  setSlotNewColony,
+  setMessage
+) => {
+  fetch(
+    `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/resource/player/${playerId}/add-colony`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ playerId, colonyId, slotId }),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      if (data !== "You don't have enough gold") {
+        setSlotNewColony((prevSlots) => [...prevSlots, data]);
+      }
+      setMessage("Tu n'as pas assez d'argent");
     })
     .catch((err) => console.error(err));
 };

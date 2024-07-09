@@ -1,9 +1,9 @@
-import AbstractDAO from "./AbstractDAO.js";
+import AbstractDAO from './AbstractDAO.js';
 
 class UserDAO extends AbstractDAO {
   constructor() {
     super();
-    this.table = "player";
+    this.table = 'player';
   }
 
   findAll() {
@@ -51,17 +51,17 @@ class UserDAO extends AbstractDAO {
     return new Promise((resolve, reject) => {
       this.connection.query(
         `SELECT player.id, player.username, player.email, player.password, colony.id AS colony_id
-FROM ${this.table}
-JOIN map ON map.player_id = player.id
-JOIN colony ON colony.map_id = map.id
-WHERE player.email = ?; 
-          `,
+             FROM ${this.table}
+             JOIN map ON map.player_id = player.id
+             JOIN colony ON colony.map_id = map.id
+             WHERE player.email = ?
+             ORDER BY colony.id ASC;`,
         [email],
         (err, result, field) => {
           if (err) {
             return reject(err);
           }
-
+      
           resolve(result);
         }
       );

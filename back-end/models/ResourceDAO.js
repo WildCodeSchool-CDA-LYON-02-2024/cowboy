@@ -49,29 +49,27 @@ class ResourceModel extends AbstractDAO {
   getResources(id) {
     return new Promise((resolve, reject) => {
       const query = `SELECT resource_type.name, resource.quantity
-                  FROM resource
-                   JOIN resource_type ON resource.resource_type_id = resource_type.id
-                   JOIN colony ON resource.colony_id = colony.id
-                   JOIN map ON colony.map_id = map.id
-                   WHERE map.player_id = ? ;`;
+                    FROM resource
+                    JOIN resource_type ON resource.resource_type_id = resource_type.id
+                    JOIN colony ON resource.colony_id = colony.id
+                    JOIN map ON colony.map_id = map.id
+                    WHERE map.player_id = ? ;`;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);
+        } else if (result.length > 0) {
+          return resolve(result);
         } else {
-          if (result.length > 0) {
-            resolve(result);
-          } else {
-            resolve({
-              message: 'pas de ressources disponibles',
-            });
-          }
+          resolve({
+            message: 'pas de ressources disponibles',
+          });
         }
       });
     });
   }
 
   getResourcesSlot(id) {
-    console.log(id);
+    console.log('ID :', id);
     return new Promise((resolve, reject) => {
       const query = `SELECT resource_type.name, resource.quantity
                   FROM resource
@@ -81,9 +79,10 @@ class ResourceModel extends AbstractDAO {
         if (error) {
           reject(error);
         } else {
+          console.log('result : ', result);
           if (result.length > 0) {
-            console.log('result :', result);
-            resolve(result);
+            console.log('result : ', result);
+            return resolve(result);
           } else {
             resolve({
               message: 'pas de ressources disponibles',
@@ -140,6 +139,7 @@ class ResourceModel extends AbstractDAO {
         [resource, ressourceTypeId, colonyId],
         (err, result, fields) => {
           if (err) {
+            console.error(err);
             return reject(err);
           }
 

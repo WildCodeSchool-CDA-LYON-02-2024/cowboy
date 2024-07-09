@@ -39,10 +39,14 @@ class UserController extends AbstractController {
           res.status(404).json({ error: 'Utilisateur non trouvé' });
         } else {
           // Je recupere le slot qui a été affecté au player pour le renvoyer dans le front
+
           this.map
             .findSlotByPlayerId(rows[0].id)
+
             .then((data) => {
-              slotId = data[0].slot;
+              console.log('data slot');
+              slotId = data.map((slotObj) => slotObj.slot);
+      
               req.user = {
                 id: rows[0].id,
                 username: rows[0].username,

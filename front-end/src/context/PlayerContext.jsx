@@ -10,7 +10,6 @@ export function PlayerContextProvider({ children }) {
   const [decodedToken, setDecodedToken] = useState();
 
   const login = (userInfo) => {
-    console.log('user infos :', userInfo);
     setPlayerData(userInfo);
     setDecodedToken(jwtDecode(playerData.token));
   };

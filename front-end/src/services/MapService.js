@@ -7,7 +7,6 @@ const fetchSlots = (setSlots, slots) => {
     },
   })
     .then((res) => {
-      console.log('res : ', res);
       return res.json();
     })
     .then((data) => {

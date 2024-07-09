@@ -97,12 +97,10 @@ class Ressource {
     this.getGlobalResources(playerId)
       .then((globalResources) => {
         const result = globalResources;
-        console.log('RES : ', globalResources);
 
         return new Promise((resolve, reject) => {
           let promises = [];
           for (let i = 0; i < payload.resource.length; i++) {
-            console.log('quantity : ', payload.resource[i].quantity);
             let updatedQuantity =
               payload.resource[i].quantity + result[i].quantity;
             let promise = this.model
@@ -114,7 +112,6 @@ class Ressource {
 
           Promise.all(promises)
             .then((results) => {
-              console.log('RESULTS : ', results);
               res.sendStatus(204);
               resolve(results);
             })

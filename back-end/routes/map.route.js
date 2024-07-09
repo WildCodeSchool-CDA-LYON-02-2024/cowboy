@@ -7,4 +7,5 @@ const router = Router();
 router.get('/', mapController.getRessource);
 router.get('/slot', mapController.browse);
 
+
 export default router;

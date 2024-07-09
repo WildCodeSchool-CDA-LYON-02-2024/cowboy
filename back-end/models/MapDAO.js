@@ -33,7 +33,7 @@ class MapDAO extends AbstractDAO {
           if (err) {
             return reject(err);
           }
-
+     
           return resolve(result);
         }
       );
@@ -42,7 +42,7 @@ class MapDAO extends AbstractDAO {
 
   update(playerId, slot) {
     return new Promise((resolve, reject) => {
-      console.log('playerId :', playerId, 'slot : ', slot);
+
       this.connection.execute(
         `UPDATE ${this.table} set player_id = ? 
         WHERE slot = ?`,

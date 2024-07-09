@@ -4,6 +4,7 @@ import Bois from '../../assets/images/ressources/buche-bois.png';
 import Gold from '../../assets/images/ressources/pepite-or.png';
 import Iron from '../../assets/images/ressources/steel.png';
 import Stone from '../../assets/images/ressources/stone.png';
+import resourcesForColony from '../../../../back-end/services/ressources/resourcesForColony.js';
 import './Grid.css';
 import { useEffect, useState } from 'react';
 import fetchSlots from '../../services/MapService.js';
@@ -12,42 +13,54 @@ import {
   fetchResourceOnSlot,
   collectResource,
   fetchGlobalResource,
+  buildRessource,
 } from '../../services/ResourceService.js';
 
 const Grid = ({ rows, cols }) => {
   const { decodedToken, playerData } = usePlayerContext();
   const [playerSlot, setPlayerSlot] = useState();
   const [slots, setSlots] = useState([]);
-  const [resourceSlot, setResourceSlot] = useState();
+  const [resourceSlot, setResourceSlot] = useState([]);
   const [slotId, setSlotId] = useState();
+  const [slotNewColony, setSlotNewColony] = useState([]);
+  const [message, setMessage] = useState('');
+
   const [modal, setModal] = useState(false);
   const [playerId, setPlayerId] = useState();
   const [colonyId, setColonyId] = useState();
-  const [globalResources, setGlobalResources] = useState();
 
   useEffect(() => {
-    fetchGlobalResource(playerData.token, setGlobalResources);
+    fetchGlobalResource(playerData.token);
 
     fetchSlots(setSlots);
     setPlayerSlot(decodedToken.payload.sub.slot);
     setPlayerId(decodedToken.payload.sub.id);
     setColonyId(decodedToken.payload.sub.colonyId);
-  }, [slotId]);
+  }, [slotId, slotNewColony]);
 
   // Gestion du clic sur une case
   const handleClick = (id) => {
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
+    console.log('resource solot : ', resourceSlot);
   };
 
   const handleCollect = () => {
-    console.log('global resource:', globalResources);
     collectResource(playerId, resourceSlot, colonyId);
+    setModal(false);
+  };
+
+  const handleBuild = () => {
+    buildRessource(playerId, colonyId, slotId, setSlotNewColony, setMessage);
+    if (!message === "Tu n'as pas assez d'argent") {
+      setModal(false);
+    }
   };
 
   const handleClose = () => {
     setModal(false);
+    setMessage('');
   };
 
   // Génération de la grille
@@ -58,7 +71,13 @@ const Grid = ({ rows, cols }) => {
       const slot = slots[idCounter - 1]; // Correspond à l'index dans le tableau des slots
       const id = slot ? slot.id : idCounter; // Utilise l'ID du slot ou un ID par défaut si les slots ne sont pas encore chargés
       grid.push(
-        <Cell key={id} id={id} onClick={handleClick} playerSlot={playerSlot} />
+        <Cell
+          key={id}
+          id={id}
+          onClick={handleClick}
+          playerSlot={playerSlot}
+          slotNewColony={slotNewColony}
+        />
       );
       idCounter++;
     }
@@ -73,7 +92,7 @@ const Grid = ({ rows, cols }) => {
         }}
       >
         {grid}
-        {modal && resourceSlot && (
+        {modal && resourceSlot && resourceSlot.length > 0 && (
           <div className='modal-container'>
             <h2 className='h1-modal'>Ressources disponible</h2>
             <div className='resource-list-container'>
@@ -125,15 +144,15 @@ const Grid = ({ rows, cols }) => {
                 {/*TODO :  Changer le nommbre de ressources avec les ressources necessaire  */}
                 <div className='resource-li'>
                   <img src={Gold} alt='Lingot or' style={{ height: '1rem' }} />
-                  <li> {resourceSlot[0].quantity} k </li>
+                  <li> {resourcesForColony[0].quantity} k </li>
                 </div>
                 <div className='resource-li'>
                   <img src={Iron} alt='Metal' style={{ height: '1rem' }} />
-                  <li> {resourceSlot[1].quantity} k</li>
+                  <li> {resourcesForColony[1].quantity} k</li>
                 </div>
                 <div className='resource-li'>
                   <img src={Stone} alt='Pierre' style={{ height: '1rem' }} />
-                  <li>{resourceSlot[2].quantity} k</li>
+                  <li>{resourcesForColony[2].quantity} k</li>
                 </div>
                 <div className='resource-li'>
                   <img
@@ -141,12 +160,13 @@ const Grid = ({ rows, cols }) => {
                     alt='Buche de bois'
                     style={{ height: '1rem' }}
                   />
-                  <li> {resourceSlot[3].quantity} k </li>
+                  <li> {resourcesForColony[3].quantity} k </li>
                 </div>
               </div>
             </div>
             <div className='btn-container'>
               <Button
+                onClick={handleBuild}
                 variant='contained'
                 sx={{
                   width: '60%',
@@ -161,6 +181,7 @@ const Grid = ({ rows, cols }) => {
               >
                 Construire
               </Button>
+              {message && <h6>{message}</h6>}
             </div>
             <div className='btn-container'>
               <Button

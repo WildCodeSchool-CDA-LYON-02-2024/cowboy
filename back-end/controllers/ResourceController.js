@@ -89,7 +89,7 @@ const browseSimple = (req, res) => {
       console.error(err);
     });
 };
-
+//UPDATE RESOURCES KEEP IT
 const updateResources = async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
 
@@ -103,7 +103,7 @@ const updateResources = async (req, res) => {
   }
 
   const { colonyId } = req.params;
-  const { resourceName, quantity } = req.body;
+  const resources = req.body;
 
   Resource.updateResource(colonyId, resourceName, quantity);
   console

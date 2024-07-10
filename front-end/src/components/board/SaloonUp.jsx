@@ -17,14 +17,26 @@ export default function SaloonUp({
   building,
   buildingTypeId,
   playerResources,
+  // onUpdateBuilding,
+  // onUpdatePlayerResources,
 }) {
   const { playerData } = usePlayerContext();
 
   const [canUpgrade, setCanUpgrade] = useState(false);
+  const [buildingLevel, setBuildingLevel] = useState(building.level);
+  const [displayLevel, setDisplayLevel] = useState(building.level);
+  const [maxLevelReached, setMaxLevelReached] = useState(false);
+
+  const maxLevel = 10;
 
   useEffect(() => {
-    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
-  }, [building.level, playerResources]);
+    if (buildingLevel >= maxLevel) {
+      setMaxLevelReached(true);
+    } else {
+      setMaxLevelReached(false);
+      setCanUpgrade(checkIfCanUpgrade(playerResources, buildingLevel));
+    }
+  }, [buildingLevel, playerResources]);
 
   const handleUpgrade = async () => {
     try {
@@ -35,7 +47,7 @@ export default function SaloonUp({
 
       const canUpgradeResult = checkIfCanUpgrade(
         playerResources,
-        building.level
+        buildingLevel
       );
 
       if (!canUpgradeResult.canUpgrade) {
@@ -55,10 +67,14 @@ export default function SaloonUp({
 
       console.log("Building upgraded successfully:", updatedBuilding);
 
+      setBuildingLevel((prevLevel) => prevLevel + 1);
+
+      setDisplayLevel(buildingLevel + 1);
+
       // Calculer les ressources mises à jour nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
-        building.level,
+        buildingLevel,
         resourceTiers
       );
 
@@ -82,7 +98,7 @@ export default function SaloonUp({
     }
   };
 
-  const stats = reducTiers.find((tier) => tier.level === building.level);
+  const stats = reducTiers.find((tier) => tier.level === buildingLevel);
 
   if (!stats) {
     return null; // Gestion de cas où le niveau n'est pas trouvé
@@ -92,7 +108,7 @@ export default function SaloonUp({
 
   // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
   const nextLevelStats = reducTiers.find(
-    (tier) => tier.level === building.level + 1
+    (tier) => tier.level === buildingLevel + 1
   );
 
   return (
@@ -115,19 +131,25 @@ export default function SaloonUp({
         >
           lvl:{" "}
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            {building.level}{" "}
-            <Box
-              component="img"
-              src={fleche}
-              sx={{
-                height: "1.2rem",
-                mt: "0.4rem",
-                ml: "0.3rem",
-                mr: "0.3rem",
-              }}
-            />{" "}
-            {building.level + 1}
-          </span>{" "}
+            {maxLevelReached ? (
+              "MAX"
+            ) : (
+              <>
+                {displayLevel}
+                <Box
+                  component="img"
+                  src={fleche}
+                  sx={{
+                    height: "1.2rem",
+                    mt: "0.4rem",
+                    ml: "0.3rem",
+                    mr: "0.3rem",
+                  }}
+                />
+                {displayLevel + 1}
+              </>
+            )}
+          </span>
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
@@ -148,6 +170,7 @@ export default function SaloonUp({
             color: "white",
             textAlign: "center",
             width: "90%",
+            fontSize: "1.2rem",
           }}
         >
           Réduit le coût de recrutement des nouveaux cow-boys
@@ -162,6 +185,7 @@ export default function SaloonUp({
             justifyContent: "center",
             textAlign: "center",
             pt: "1rem",
+            fontSize: "1.2rem",
           }}
         >
           Coût de recrutement:{" "}
@@ -179,10 +203,11 @@ export default function SaloonUp({
               component="img"
               src={fleche}
               sx={{
-                height: "0.7rem",
+                height: "0.9rem",
                 mt: "0.4rem",
                 ml: "0.3rem",
                 mr: "0.3rem",
+                display: maxLevelReached ? "none" : "",
               }}
             />
             {"  "}
@@ -192,7 +217,7 @@ export default function SaloonUp({
         </Typography>
       </Box>
 
-      <RessourcesForUp level={building.level} />
+      {!maxLevelReached && <RessourcesForUp level={buildingLevel} />}
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -200,17 +225,19 @@ export default function SaloonUp({
           sx={{
             width: "60%",
             backgroundColor: "#1D1C1C",
+            "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
             "&:hover": {
               backgroundColor: "#333333",
             },
             fontFamily: "Pixelify",
-            textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            textShadow: maxLevelReached
+              ? ""
+              : "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
             color: "white",
           }}
           type="submit"
           onClick={handleUpgrade}
-          disabled={!canUpgrade}
+          disabled={!canUpgrade || maxLevelReached}
         >
           AMÉLIORER
         </Button>
@@ -227,4 +254,6 @@ SaloonUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
+  // onUpdateBuilding: PropTypes.func, // Ajouter cette prop pour permettre la mise à jour des données parentales
+  // onUpdatePlayerResources: PropTypes.func,
 };

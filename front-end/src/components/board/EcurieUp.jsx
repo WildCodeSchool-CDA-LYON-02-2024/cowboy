@@ -21,10 +21,20 @@ export default function EcurieUp({
   const { playerData } = usePlayerContext();
 
   const [canUpgrade, setCanUpgrade] = useState(false);
+  const [buildingLevel, setBuildingLevel] = useState(building.level);
+  const [displayLevel, setDisplayLevel] = useState(building.level);
+  const [maxLevelReached, setMaxLevelReached] = useState(false);
+
+  const maxLevel = 10;
 
   useEffect(() => {
-    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
-  }, [building.level, playerResources]);
+    if (buildingLevel >= maxLevel) {
+      setMaxLevelReached(true);
+    } else {
+      setMaxLevelReached(false);
+      setCanUpgrade(checkIfCanUpgrade(playerResources, buildingLevel));
+    }
+  }, [buildingLevel, playerResources]);
 
   const handleUpgrade = async () => {
     try {
@@ -35,7 +45,7 @@ export default function EcurieUp({
 
       const canUpgradeResult = checkIfCanUpgrade(
         playerResources,
-        building.level
+        buildingLevel
       );
 
       if (!canUpgradeResult.canUpgrade) {
@@ -55,10 +65,14 @@ export default function EcurieUp({
 
       console.log("Building upgraded successfully:", updatedBuilding);
 
+      setBuildingLevel((prevLevel) => prevLevel + 1);
+
+      setDisplayLevel(buildingLevel + 1);
+
       // Calculer les ressources mises à jour nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
-        building.level,
+        buildingLevel,
         resourceTiers
       );
 
@@ -82,7 +96,7 @@ export default function EcurieUp({
     }
   };
 
-  const stats = speedTiers.find((tier) => tier.level === building.level);
+  const stats = speedTiers.find((tier) => tier.level === buildingLevel);
 
   if (!stats) {
     return null; // Gestion de cas où le niveau n'est pas trouvé
@@ -92,7 +106,7 @@ export default function EcurieUp({
 
   // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
   const nextLevelStats = speedTiers.find(
-    (tier) => tier.level === building.level + 1
+    (tier) => tier.level === buildingLevel + 1
   );
 
   return (
@@ -115,19 +129,25 @@ export default function EcurieUp({
         >
           lvl:{" "}
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            {building.level}{" "}
-            <Box
-              component="img"
-              src={fleche}
-              sx={{
-                height: "1.2rem",
-                mt: "0.4rem",
-                ml: "0.3rem",
-                mr: "0.3rem",
-              }}
-            />{" "}
-            {building.level + 1}
-          </span>{" "}
+            {maxLevelReached ? (
+              "MAX"
+            ) : (
+              <>
+                {displayLevel}
+                <Box
+                  component="img"
+                  src={fleche}
+                  sx={{
+                    height: "1.2rem",
+                    mt: "0.4rem",
+                    ml: "0.3rem",
+                    mr: "0.3rem",
+                  }}
+                />
+                {displayLevel + 1}
+              </>
+            )}
+          </span>
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
@@ -148,6 +168,7 @@ export default function EcurieUp({
             color: "white",
             textAlign: "center",
             width: "90%",
+            fontSize: "1.2rem",
           }}
         >
           Augmente la vitesse de déplacement de tes cowboys
@@ -169,6 +190,7 @@ export default function EcurieUp({
               display: "flex",
               justifyContent: "center",
               textAlign: "center",
+              fontSize: "1.2rem",
             }}
           >
             Vitesse de déplacement:
@@ -177,6 +199,7 @@ export default function EcurieUp({
                 display: "flex",
                 justifyContent: "space-between",
                 color: "#33E264",
+                marginLeft: "0.3rem",
               }}
             >
               {" "}
@@ -184,7 +207,13 @@ export default function EcurieUp({
               <Box
                 component="img"
                 src={fleche}
-                sx={{ height: "0.7rem", mt: "0.5rem" }}
+                sx={{
+                  height: "0.9rem",
+                  mt: "0.5rem",
+                  ml: "0.3rem",
+                  mr: "0.3rem",
+                  display: maxLevelReached ? "none" : "",
+                }}
               />
               {"  "}
               {nextLevelStats && `${nextLevelStats.speedBonus}%`}
@@ -194,7 +223,7 @@ export default function EcurieUp({
         </Box>
       </Box>
 
-      <RessourcesForUp level={building.level} />
+      <RessourcesForUp level={buildingLevel} />
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -202,16 +231,18 @@ export default function EcurieUp({
           sx={{
             width: "60%",
             backgroundColor: "#1D1C1C",
+            "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
             "&:hover": {
               backgroundColor: "#333333",
             },
             fontFamily: "Pixelify",
-            textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            textShadow: maxLevelReached
+              ? ""
+              : "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           }}
           type="submit"
           onClick={handleUpgrade}
-          disabled={!canUpgrade}
+          disabled={!canUpgrade || maxLevelReached}
         >
           AMÉLIORER
         </Button>

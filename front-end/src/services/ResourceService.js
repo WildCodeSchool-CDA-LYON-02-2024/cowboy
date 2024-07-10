@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 export const fetchGlobalResource = async (token) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/resource/simple`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
       {
         method: "GET",
         headers: {
@@ -18,29 +18,6 @@ export const fetchGlobalResource = async (token) => {
     console.error("Network error:", err);
     throw err;
   }
-};
-
-export const subscribeToResourceUpdates = (token, onMessage, onError) => {
-  const eventSourceUrl = `${
-    import.meta.env.VITE_BACKEND_URL
-  }/api/resource?token=${encodeURIComponent(token)}`;
-
-  const eventSource = new EventSource(eventSourceUrl);
-
-  eventSource.onmessage = (event) => {
-    const newData = JSON.parse(event.data);
-    onMessage(newData);
-  };
-
-  eventSource.onerror = (err) => {
-    console.error("EventSource error:", err);
-    if (onError) {
-      onError(err);
-    }
-    eventSource.close();
-  };
-
-  return eventSource;
 };
 
 export const updatePlayerResources = async (token, updatedResources) => {
@@ -167,3 +144,26 @@ export const removeResourcesForUpgrade = (
   console.log("RESOURCES APRES AMELIORATION:", updatedResources);
   return updatedResources;
 };
+
+// export const subscribeToResourceUpdates = (token, onMessage, onError) => {
+//   const eventSourceUrl = `${
+//     import.meta.env.VITE_BACKEND_URL
+//   }/api/resource?token=${encodeURIComponent(token)}`;
+
+//   const eventSource = new EventSource(eventSourceUrl);
+
+//   eventSource.onmessage = (event) => {
+//     const newData = JSON.parse(event.data);
+//     onMessage(newData);
+//   };
+
+//   eventSource.onerror = (err) => {
+//     console.error("EventSource error:", err);
+//     if (onError) {
+//       onError(err);
+//     }
+//     eventSource.close();
+//   };
+
+//   return eventSource;
+// };

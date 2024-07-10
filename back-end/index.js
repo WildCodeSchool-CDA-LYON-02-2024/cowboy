@@ -1,7 +1,7 @@
 import app from "./app.js";
 import http2 from "http2";
 import dotenv from "dotenv";
-import { startScheduledTasks } from "./services/ressources/getRessourcesHourly.js";
+// import { startScheduledTasks } from "./services/ressources/getRessourcesHourly.js";
 dotenv.config();
 
 const port = process.env.APP_PORT;
@@ -15,4 +15,4 @@ app.listen(port, (err) => {
   }
 });
 
-startScheduledTasks();
+// startScheduledTasks();

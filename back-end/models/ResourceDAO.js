@@ -96,9 +96,7 @@ class ResourceModel extends AbstractDAO {
   updateResources(colonyId, resources) {
     return new Promise((resolve, reject) => {
       const queries = resources.map((resource) => {
-        console.log(
-          `Updating resource: ${resource.id} with quantity: ${resource.quantity}`
-        );
+        console.log(resource, "RESOURCES IN DAO");
         return this.updateResource(colonyId, resource.quantity, resource.id);
       });
       Promise.all(queries)
@@ -115,10 +113,7 @@ class ResourceModel extends AbstractDAO {
 
   updateResource(colonyId, quantity, resourceTypeId) {
     return new Promise((resolve, reject) => {
-      const query = `UPDATE resource SET quantity = ? WHERE colony_id = ? AND resource_type_id = ?`;
-      console.log(
-        `Executing query: ${query} with values: [${quantity}, ${colonyId}, ${resourceTypeId}]`
-      );
+      const query = `UPDATE ${this.table} SET quantity = ? WHERE colony_id = ? AND resource_type_id = ?`;
       this.connection.execute(
         query,
         [quantity, colonyId, resourceTypeId],
@@ -136,24 +131,24 @@ class ResourceModel extends AbstractDAO {
   }
 
   //****************************************************** */
-  getResourceHour() {
-    return new Promise((resolve, reject) => {
-      const query = `
-        UPDATE resource
-          JOIN colony ON resource.colony_id = colony.id
-          JOIN map ON colony.map_id = map.id
-          SET resource.quantity = resource.quantity + 1
-          WHERE map.player_id IS NOT NULL;
-`;
+  //   getResourceHour() {
+  //     return new Promise((resolve, reject) => {
+  //       const query = `
+  //         UPDATE resource
+  //           JOIN colony ON resource.colony_id = colony.id
+  //           JOIN map ON colony.map_id = map.id
+  //           SET resource.quantity = resource.quantity + 1
+  //           WHERE map.player_id IS NOT NULL;
+  // `;
 
-      this.connection.execute(query, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-  }
+  //       this.connection.execute(query, (error, result) => {
+  //         if (error) {
+  //           reject(error);
+  //         } else {
+  //           resolve(result);
+  //         }
+  //       });
+  //     });
+  //   }
 }
 export default ResourceModel;

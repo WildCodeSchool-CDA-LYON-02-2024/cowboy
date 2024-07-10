@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import ResourceModel from "../models/ResourceDAO.js";
 const Resource = new ResourceModel();
 // sse headers
@@ -66,9 +67,16 @@ const Resource = new ResourceModel();
 //   });
 // };
 
-const browseSimple = (req, res) => {
-  const loggedPlayerId = req.loggedPlayerId;
+const browse = (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
 
+  let loggedPlayerId;
+  try {
+    const decodedToken = jwt.verify(token, "secret");
+    loggedPlayerId = decodedToken.payload.sub.id;
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
   Resource.getResources(loggedPlayerId)
     .then((resource) => {
       res.json(resource);
@@ -79,9 +87,24 @@ const browseSimple = (req, res) => {
 };
 //UPDATE RESOURCES KEEP IT
 const updateResources = async (req, res) => {
-  const { colonyId } = parseInt(req.params);
-  const { resources } = req.body;
-  Resource.updateResource(colonyId, resources)
+  const token = req.headers.authorization.split(" ")[1];
+
+  let loggedPlayerId;
+  try {
+    const decodedToken = jwt.verify(token, "secret");
+    loggedPlayerId = decodedToken.payload.sub.id;
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+  const { colonyId } = req.params;
+  const resources = req.body;
+  console.log(
+    "RESOURCES CONTROLLER:",
+    resources,
+    "COLONYID CONTROLLER:",
+    colonyId
+  );
+  Resource.updateResources(colonyId, resources)
     .then((result) => {
       res.json({ message: "Ressource mise à jour avec succès", result });
     })
@@ -91,4 +114,4 @@ const updateResources = async (req, res) => {
     });
 };
 
-export default { browseSimple, updateResources };
+export default { browse, updateResources };

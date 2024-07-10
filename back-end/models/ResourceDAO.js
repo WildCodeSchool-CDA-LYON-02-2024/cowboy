@@ -7,14 +7,6 @@ class ResourceModel extends AbstractDAO {
   }
 
   insert(quantity, ressourceTypeId, colonyId) {
-    /*console.log(
-      'quantity :',
-      quantity,
-      'resourceTypeId : ',
-      ressourceTypeId,
-      'colony :',
-      colonyId
-    );*/
     return new Promise((resolve, reject) => {
       this.connection.execute(
         `INSERT INTO ${this.table} (quantity, resource_type_id, colony_id) VALUES (?,?,?)
@@ -131,24 +123,24 @@ class ResourceModel extends AbstractDAO {
   }
 
   //****************************************************** */
-  //   getResourceHour() {
-  //     return new Promise((resolve, reject) => {
-  //       const query = `
-  //         UPDATE resource
-  //           JOIN colony ON resource.colony_id = colony.id
-  //           JOIN map ON colony.map_id = map.id
-  //           SET resource.quantity = resource.quantity + 1
-  //           WHERE map.player_id IS NOT NULL;
-  // `;
+  getResourceHour() {
+    return new Promise((resolve, reject) => {
+      const query = `
+          UPDATE resource
+            JOIN colony ON resource.colony_id = colony.id
+            JOIN map ON colony.map_id = map.id
+            SET resource.quantity = resource.quantity + 1
+            WHERE map.player_id IS NOT NULL;
+  `;
 
-  //       this.connection.execute(query, (error, result) => {
-  //         if (error) {
-  //           reject(error);
-  //         } else {
-  //           resolve(result);
-  //         }
-  //       });
-  //     });
-  //   }
+      this.connection.execute(query, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
 }
 export default ResourceModel;

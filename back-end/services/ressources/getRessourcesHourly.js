@@ -1,19 +1,19 @@
-// import ResourceModel from "../../models/ResourceDAO.js";
+import ResourceModel from "../../models/ResourceDAO.js";
 
-// function updateResources() {
-//   const resourceModel = new ResourceModel();
+function updateResources() {
+  const resourceModel = new ResourceModel();
 
-//   resourceModel
-//     .getResourceHour()
-//     .then(() => {
-//       console.log("Database updated.");
-//     })
-//     .catch((error) => {
-//       console.error("Error updating database:", error);
-//     });
-// }
+  resourceModel
+    .getResourceHour()
+    .then(() => {
+      console.log("Database updated.");
+    })
+    .catch((error) => {
+      console.error("Error updating database:", error);
+    });
+}
 
-// export function startScheduledTasks() {
-//   updateResources();
-//   setInterval(updateResources, 120000);
-// }
+export function startScheduledTasks() {
+  updateResources();
+  setInterval(updateResources, 120000);
+}

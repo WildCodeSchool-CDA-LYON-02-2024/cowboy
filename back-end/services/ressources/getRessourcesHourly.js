@@ -15,5 +15,5 @@ function updateResources() {
 
 export function startScheduledTasks() {
   updateResources();
-  setInterval(updateResources, 120000);
+  setInterval(updateResources, 12000);
 }

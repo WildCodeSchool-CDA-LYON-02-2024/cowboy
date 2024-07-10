@@ -44,7 +44,6 @@ export const subscribeToResourceUpdates = (token, onMessage, onError) => {
 };
 
 export const updatePlayerResources = async (token, updatedResources) => {
-  console.log(updatedResources, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   const decodedToken = jwtDecode(token);
   const colonyId = decodedToken.payload.sub.colonyId;
 
@@ -59,11 +58,6 @@ export const updatePlayerResources = async (token, updatedResources) => {
         },
         body: JSON.stringify(updatedResources),
       }
-    );
-    console.log(
-      `Request URL: ${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/resource/${colonyId}`
     );
 
     if (!response.ok) {
@@ -111,9 +105,7 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
     }
     const requiredAmount = requiredResources[key];
     const resourceId = parseInt(key, 10);
-    console.log(resourceId, "RESOURCEID SERVICE");
     const playerResource = playerResources.find((res) => res.id === resourceId);
-    console.log(playerResource.quantity, "QUANTITY PLAYER");
     return playerResource && playerResource.quantity >= requiredAmount;
   });
 
@@ -151,8 +143,6 @@ export const removeResourcesForUpgrade = (
     const resourceName = resource.name;
     const requiredAmount = requiredResources[resourceId];
 
-    console.log("REQUIRED AMOUNT:", resourceName, requiredAmount);
-
     if (requiredAmount && resource.quantity >= requiredAmount) {
       return {
         id: resourceId,
@@ -164,6 +154,5 @@ export const removeResourcesForUpgrade = (
     }
   });
 
-  console.log("RESOURCES APRES AMELIORATION:", updatedResources);
   return updatedResources;
 };

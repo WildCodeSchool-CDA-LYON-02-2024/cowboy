@@ -35,7 +35,7 @@ export default function BoardContainer() {
 
     fetchLevel();
   }, [playerData]);
-  console.log(playerResources, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };

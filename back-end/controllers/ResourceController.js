@@ -35,7 +35,6 @@ const getResources1 = (res, loggedPlayerId) => {
 
 const browseSSE = (req, res) => {
   const loggedPlayerId = req.loggedPlayerId;
-  console.log(loggedPlayerId, "PLAYER CONNECTE");
   setSSEHeaders(res);
 
   getResources1(res, loggedPlayerId);
@@ -50,7 +49,7 @@ const browseSSE = (req, res) => {
         console.error("Error fetching resources 2:", err);
         sendError(res, "Error fetching resources 2 ");
       });
-  }, 1000);
+  }, 500);
 
   req.on("close", () => {
     clearInterval(getResource2);

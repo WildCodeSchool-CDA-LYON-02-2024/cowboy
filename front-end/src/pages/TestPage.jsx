@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import Barillet from "../assets/images/barillet-sbg.png";
+import Barillet from "../assets/images/";
 
 export default function TestPage() {
   return (

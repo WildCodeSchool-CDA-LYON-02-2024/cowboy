@@ -17,14 +17,18 @@ export default function SaloonUp({
   building,
   buildingTypeId,
   playerResources,
+  // onUpdateBuilding,
+  // onUpdatePlayerResources,
 }) {
   const { playerData } = usePlayerContext();
 
   const [canUpgrade, setCanUpgrade] = useState(false);
+  const [buildingLevel, setBuildingLevel] = useState(building.level);
+  const [displayLevel, setDisplayLevel] = useState(building.level);
 
   useEffect(() => {
-    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
-  }, [building.level, playerResources]);
+    setCanUpgrade(checkIfCanUpgrade(playerResources, buildingLevel));
+  }, [buildingLevel, playerResources]);
 
   const handleUpgrade = async () => {
     try {
@@ -35,7 +39,7 @@ export default function SaloonUp({
 
       const canUpgradeResult = checkIfCanUpgrade(
         playerResources,
-        building.level
+        buildingLevel
       );
 
       if (!canUpgradeResult.canUpgrade) {
@@ -55,10 +59,14 @@ export default function SaloonUp({
 
       console.log("Building upgraded successfully:", updatedBuilding);
 
+      setBuildingLevel((prevLevel) => prevLevel + 1);
+
+      setDisplayLevel(buildingLevel + 1);
+
       // Calculer les ressources mises à jour nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
-        building.level,
+        buildingLevel,
         resourceTiers
       );
 
@@ -82,7 +90,7 @@ export default function SaloonUp({
     }
   };
 
-  const stats = reducTiers.find((tier) => tier.level === building.level);
+  const stats = reducTiers.find((tier) => tier.level === buildingLevel);
 
   if (!stats) {
     return null; // Gestion de cas où le niveau n'est pas trouvé
@@ -92,8 +100,97 @@ export default function SaloonUp({
 
   // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
   const nextLevelStats = reducTiers.find(
-    (tier) => tier.level === building.level + 1
+    (tier) => tier.level === buildingLevel + 1
   );
+
+  // const { playerData } = usePlayerContext();
+
+  // const [canUpgrade, setCanUpgrade] = useState(false);
+  // const [currentBuilding, setCurrentBuilding] = useState(building);
+  // const [currentResources, setCurrentResources] = useState(playerResources);
+
+  // useEffect(() => {
+  //   setCanUpgrade(
+  //     checkIfCanUpgrade(currentResources, currentBuilding.level).canUpgrade
+  //   );
+  // }, [currentBuilding.level, currentResources]);
+
+  // const handleUpgrade = async () => {
+  //   try {
+  //     if (!playerData || !playerData.token) {
+  //       console.error("Player data or token missing.");
+  //       return;
+  //     }
+
+  //     const canUpgradeResult = checkIfCanUpgrade(
+  //       currentResources,
+  //       currentBuilding.level
+  //     );
+
+  //     if (!canUpgradeResult.canUpgrade) {
+  //       console.error("Amélioration impossible:", canUpgradeResult.message);
+  //       return;
+  //     }
+
+  //     const updatedBuilding = await upgradeBuilding(
+  //       playerData.token,
+  //       buildingTypeId
+  //     );
+
+  //     if (updatedBuilding.error) {
+  //       console.error("Failed to upgrade building:", updatedBuilding.error);
+  //       return;
+  //     }
+
+  //     // Calculer les ressources mises à jour nécessaires
+  //     const updatedResources = removeResourcesForUpgrade(
+  //       currentResources,
+  //       currentBuilding.level,
+  //       resourceTiers
+  //     );
+
+  //     if (!updatedResources) {
+  //       console.error("Updated resources is undefined or null.");
+  //       return;
+  //     }
+
+  //     // Mettre à jour les ressources du joueur avec les nouvelles valeurs
+  //     const updatedPlayerResources = await updatePlayerResources(
+  //       playerData.token,
+  //       updatedResources
+  //     );
+
+  //     // Mettre à jour les états locaux
+  //     setCurrentBuilding(updatedBuilding);
+  //     setCurrentResources(updatedPlayerResources);
+
+  //     // Appeler les callbacks pour mettre à jour les données parentales si nécessaires
+  //     if (onUpdateBuilding) onUpdateBuilding(updatedBuilding);
+  //     if (onUpdatePlayerResources)
+  //       onUpdatePlayerResources(updatedPlayerResources);
+
+  //     console.log("Building upgraded successfully:", updatedBuilding);
+  //     console.log(
+  //       "Player resources updated successfully:",
+  //       updatedPlayerResources
+  //     );
+  //   } catch (err) {
+  //     console.error("Failed to upgrade building:", err);
+  //   }
+  // };
+
+  // const stats = reducTiers.find((tier) => tier.level === currentBuilding.level);
+
+  // if (!stats) {
+  //   return null; // Gestion de cas où le niveau n'est pas trouvé
+  // }
+
+  // const { reducBonus } = stats;
+
+  // // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
+  // const nextLevelStats = reducTiers.find(
+  //   (tier) => tier.level === currentBuilding.level + 1
+  // );
 
   return (
     <Container disableGutters>
@@ -115,7 +212,7 @@ export default function SaloonUp({
         >
           lvl:{" "}
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            {building.level}{" "}
+            {displayLevel}{" "}
             <Box
               component="img"
               src={fleche}
@@ -126,7 +223,7 @@ export default function SaloonUp({
                 mr: "0.3rem",
               }}
             />{" "}
-            {building.level + 1}
+            {displayLevel + 1}
           </span>{" "}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
@@ -192,7 +289,7 @@ export default function SaloonUp({
         </Typography>
       </Box>
 
-      <RessourcesForUp level={building.level} />
+      <RessourcesForUp level={buildingLevel} />
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -227,4 +324,6 @@ SaloonUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
+  // onUpdateBuilding: PropTypes.func, // Ajouter cette prop pour permettre la mise à jour des données parentales
+  // onUpdatePlayerResources: PropTypes.func,
 };

@@ -69,7 +69,6 @@ class ResourceModel extends AbstractDAO {
   }
 
   getResourcesSlot(id) {
-    console.log('ID :', id);
     return new Promise((resolve, reject) => {
       const query = `SELECT resource_type.name, resource.quantity
                   FROM resource
@@ -79,9 +78,7 @@ class ResourceModel extends AbstractDAO {
         if (error) {
           reject(error);
         } else {
-          console.log('result : ', result);
           if (result.length > 0) {
-            console.log('result : ', result);
             return resolve(result);
           } else {
             resolve({

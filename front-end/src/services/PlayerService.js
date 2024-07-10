@@ -5,9 +5,9 @@ export const registerService = async ({ username, email, password }) => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/user/register`,
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, email, password }),
       }
@@ -24,10 +24,10 @@ export const registerService = async ({ username, email, password }) => {
       return { success: false, error };
     }
   } catch (err) {
-    console.error("Network error:", err);
+    console.error('Network error:', err);
     return {
       success: false,
-      error: "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+      error: 'Erreur de connexion au serveur. Veuillez réessayer plus tard.',
     };
   }
 };
@@ -37,10 +37,10 @@ export const loginService = async (email, password) => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
       {
-        method: "POST",
-        credentials: "include",
+        method: 'POST',
+        credentials: 'include',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       }
@@ -58,7 +58,7 @@ export const loginService = async (email, password) => {
       }
 
       // Stocker le token dans le localStorage pour les requêtes ultérieures
-      localStorage.setItem("authToken", token);
+      localStorage.setItem('authToken', token);
 
       // Décoder le jeton pour extraire le rôle
       // const decodedToken = jwtDecode(token);
@@ -73,11 +73,11 @@ export const loginService = async (email, password) => {
       const error = await response.json();
       return {
         success: false,
-        error: error.message || "Email ou mot de passe incorrect",
+        error: error.message || 'Email ou mot de passe incorrect',
       };
     }
   } catch (err) {
-    console.error("Login service error:", err);
+    console.error('Login service error:', err);
     return { success: false, error: err.message };
   }
 };

@@ -13,6 +13,7 @@ class UserController extends AbstractController {
     this.init = new MapConfig();
     this.map = new MapDAO();
   }
+
   add = async (req, res) => {
     const { username, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
@@ -44,9 +45,8 @@ class UserController extends AbstractController {
             .findSlotByPlayerId(rows[0].id)
 
             .then((data) => {
-              console.log('data slot');
               slotId = data.map((slotObj) => slotObj.slot);
-      
+
               req.user = {
                 id: rows[0].id,
                 username: rows[0].username,

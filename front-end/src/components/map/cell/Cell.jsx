@@ -3,7 +3,6 @@
 import home from '../../../assets/map/home.png';
 
 const Cell = ({ id, onClick, playerSlot, slotNewColony }) => {
-  console.log('SLOT new COLONY :', slotNewColony);
   // Créer un tableau combiné de playerSlot et slotNewColony
   const combinedSlots = Array.isArray(playerSlot)
     ? [...playerSlot, ...slotNewColony]

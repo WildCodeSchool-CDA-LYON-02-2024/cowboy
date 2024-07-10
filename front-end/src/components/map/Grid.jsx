@@ -24,6 +24,7 @@ const Grid = ({ rows, cols }) => {
   const [slotId, setSlotId] = useState();
   const [slotNewColony, setSlotNewColony] = useState([]);
   const [message, setMessage] = useState('');
+  const [buildAuthorisation, setBuildAuthorisation] = useState(true);
 
   const [modal, setModal] = useState(false);
   const [playerId, setPlayerId] = useState();
@@ -40,10 +41,10 @@ const Grid = ({ rows, cols }) => {
 
   // Gestion du clic sur une case
   const handleClick = (id) => {
+    console.log('message click :', message);
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
-    console.log('resource solot : ', resourceSlot);
   };
 
   const handleCollect = () => {
@@ -52,15 +53,22 @@ const Grid = ({ rows, cols }) => {
   };
 
   const handleBuild = () => {
-    buildRessource(playerId, colonyId, slotId, setSlotNewColony, setMessage);
-    if (!message === "Tu n'as pas assez d'argent") {
-      setModal(false);
-    }
+    buildRessource(
+      playerId,
+      colonyId,
+      slotId,
+      setSlotNewColony,
+      setMessage,
+      setBuildAuthorisation,
+      setModal
+    );
+    console.log('build : ', buildAuthorisation);
   };
 
   const handleClose = () => {
     setModal(false);
     setMessage('');
+    setBuildAuthorisation(true);
   };
 
   // Génération de la grille
@@ -165,22 +173,24 @@ const Grid = ({ rows, cols }) => {
               </div>
             </div>
             <div className='btn-container'>
-              <Button
-                onClick={handleBuild}
-                variant='contained'
-                sx={{
-                  width: '60%',
-                  backgroundColor: '#1D1C1C',
-                  '&:hover': {
-                    backgroundColor: '#333333',
-                  },
-                  fontFamily: 'Pixelify',
-                  textShadow:
-                    '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
-                }}
-              >
-                Construire
-              </Button>
+              {buildAuthorisation && (
+                <Button
+                  onClick={handleBuild}
+                  variant='contained'
+                  sx={{
+                    width: '60%',
+                    backgroundColor: '#1D1C1C',
+                    '&:hover': {
+                      backgroundColor: '#333333',
+                    },
+                    fontFamily: 'Pixelify',
+                    textShadow:
+                      '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+                  }}
+                >
+                  Construire
+                </Button>
+              )}
               {message && <h6>{message}</h6>}
             </div>
             <div className='btn-container'>

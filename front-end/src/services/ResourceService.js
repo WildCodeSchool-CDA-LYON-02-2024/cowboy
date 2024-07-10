@@ -1,5 +1,4 @@
 export const fetchGlobalResource = async (token) => {
-  console.log('TOKEN : ', token);
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
@@ -76,7 +75,9 @@ export const buildRessource = (
   colonyId,
   slotId,
   setSlotNewColony,
-  setMessage
+  setMessage,
+  setBuildAuthorisation,
+  setModal
 ) => {
   fetch(
     `${
@@ -94,10 +95,19 @@ export const buildRessource = (
       return res.json();
     })
     .then((data) => {
-      if (data !== "You don't have enough gold") {
-        setSlotNewColony((prevSlots) => [...prevSlots, data]);
+      if (data.message === 'Il y a déjà une colonie sur cet emplacement') {
+        setMessage(data.message);
+        setBuildAuthorisation(false);
+        setModal(true);
+      } else if (data.message != "You don't have enough gold") {
+        setBuildAuthorisation(true);
+        setSlotNewColony((prevSlots) => [...prevSlots, data.slot[0]]);
+        setModal(false);
+      } else {
+        setMessage("Tu n'as pas assez d'argent");
+        setBuildAuthorisation(false);
+        setModal(true);
       }
-      setMessage("Tu n'as pas assez d'argent");
     })
     .catch((err) => console.error(err));
 };

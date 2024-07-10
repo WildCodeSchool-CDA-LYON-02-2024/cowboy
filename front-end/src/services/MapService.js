@@ -10,7 +10,6 @@ const fetchSlots = (setSlots, slots) => {
       return res.json();
     })
     .then((data) => {
-      console.log('data :', data);
       setSlots(data);
     })
     .catch((err) => console.error(err));

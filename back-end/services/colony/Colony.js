@@ -24,14 +24,14 @@ class Colony extends Ressource {
           this.getGlobalResources(id)
             .then((globalResources) => {
               // J'effectue un calcul
-              const calc = this.calcResource(
+              const calcResult = this.calcResource(
                 globalResources,
                 colonyId,
                 id,
                 slotId,
                 res
               );
-              resolve(calc);
+              resolve(calcResult);
             })
             .catch((err) => {
               reject(err);
@@ -39,26 +39,28 @@ class Colony extends Ressource {
             });
 
           // Si le slot n'est pas disponible
-        } else console.error('Il y a déjà une colonie sur cet emplacement');
+        } else {
+          resolve({ message: 'Il y a déjà une colonie sur cet emplacement' });
+        }
       });
       // Je recupere les golds du joueur
     });
   }
 
   calcResource(globalResources, colonyId, id, slotId, res, cost = this.cost) {
-    let message = '';
     const goldPlayer = globalResources[0].quantity;
+
     const goldCost = cost[0].quantity;
+
     // Je verifie si mon joueur a assez de gold pour construire une colony
     const calc = goldPlayer - goldCost;
     if (calc >= 0) {
-      console.log('CALC :', calc);
       this.map.update(id, slotId);
       this.colony.create('colony', slotId);
       this.model.updateResourcePlayer(calc, 1, colonyId);
-      return (message = "J'ai asser de sous");
+      return { slot: [slotId], message: "J'ai asser de sous" };
     } else {
-      return (message = "You don't have enough gold");
+      return { message: "You don't have enough gold" };
     }
   }
 }

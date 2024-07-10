@@ -5,7 +5,6 @@ import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import Bullet from "../../assets/images/cowboys/bullet.png";
 import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
-
 import CardContainer from "./CardContainer";
 
 export default function CowboysContainer() {
@@ -135,6 +134,7 @@ export default function CowboysContainer() {
             "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           color: "white",
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
@@ -183,6 +183,7 @@ export default function CowboysContainer() {
             "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           color: "white",
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
@@ -231,6 +232,7 @@ export default function CowboysContainer() {
             "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           color: "white",
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}

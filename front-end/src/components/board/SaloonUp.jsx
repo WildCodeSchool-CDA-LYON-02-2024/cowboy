@@ -1,9 +1,100 @@
 import { Box, Button, Container, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
-import PropTypes from "prop-types";
+import { usePlayerContext } from "../../context/PlayerContext.jsx";
+import { upgradeBuilding } from "../../services/BuildingService.js";
+import {
+  checkIfCanUpgrade,
+  removeResourcesForUpgrade,
+  resourceTiers,
+  updatePlayerResources,
+} from "../../services/ResourceService.js";
+import { reducTiers } from "../../services/StatsService.js";
 
-export default function SaloonUp({ building }) {
+export default function SaloonUp({
+  building,
+  buildingTypeId,
+  playerResources,
+}) {
+  const { playerData } = usePlayerContext();
+
+  const [canUpgrade, setCanUpgrade] = useState(false);
+
+  useEffect(() => {
+    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
+  }, [building.level, playerResources]);
+
+  const handleUpgrade = async () => {
+    try {
+      if (!playerData || !playerData.token) {
+        console.error("Player data or token missing.");
+        return;
+      }
+
+      const canUpgradeResult = checkIfCanUpgrade(
+        playerResources,
+        building.level
+      );
+
+      if (!canUpgradeResult.canUpgrade) {
+        console.error("Amélioration impossible:", canUpgradeResult.message);
+        return;
+      }
+
+      const updatedBuilding = await upgradeBuilding(
+        playerData.token,
+        buildingTypeId
+      );
+
+      if (updatedBuilding.error) {
+        console.error("Failed to upgrade building:", updatedBuilding.error);
+        return;
+      }
+
+      console.log("Building upgraded successfully:", updatedBuilding);
+
+      // Calculer les ressources mises à jour nécessaires
+      const updatedResources = removeResourcesForUpgrade(
+        playerResources,
+        building.level,
+        resourceTiers
+      );
+
+      if (!updatedResources) {
+        console.error("Updated resources is undefined or null.");
+        return;
+      }
+
+      // Mettre à jour les ressources du joueur avec les nouvelles valeurs
+      const updatedPlayerResources = await updatePlayerResources(
+        playerData.token,
+        updatedResources
+      );
+
+      console.log(
+        "Player resources updated successfully:",
+        updatedPlayerResources
+      );
+    } catch (err) {
+      console.error("Failed to upgrade building:", err);
+    }
+  };
+
+  const stats = reducTiers.find((tier) => tier.level === building.level);
+
+  if (!stats) {
+    return null; // Gestion de cas où le niveau n'est pas trouvé
+  }
+
+  const { reducBonus } = stats;
+
+  // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
+  const nextLevelStats = reducTiers.find(
+    (tier) => tier.level === building.level + 1
+  );
+
   return (
     <Container disableGutters>
       <Box
@@ -83,7 +174,7 @@ export default function SaloonUp({ building }) {
             }}
           >
             {" "}
-            -5%{"  "}
+            -{reducBonus}%{"  "}
             <Box
               component="img"
               src={fleche}
@@ -95,13 +186,13 @@ export default function SaloonUp({ building }) {
               }}
             />
             {"  "}
-            -10%
+            {nextLevelStats && `-${nextLevelStats.reducBonus}%`}
           </span>{" "}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
 
-      <RessourcesForUp />
+      <RessourcesForUp level={building.level} />
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -115,8 +206,11 @@ export default function SaloonUp({ building }) {
             fontFamily: "Pixelify",
             textShadow:
               "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            color: "white",
           }}
-          // type="submit"
+          type="submit"
+          onClick={handleUpgrade}
+          disabled={!canUpgrade}
         >
           AMÉLIORER
         </Button>
@@ -126,4 +220,11 @@ export default function SaloonUp({ building }) {
 }
 SaloonUp.propTypes = {
   building: PropTypes.object.isRequired,
+  buildingTypeId: PropTypes.number.isRequired,
+  playerResources: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      quantity: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };

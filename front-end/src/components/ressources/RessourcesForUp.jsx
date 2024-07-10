@@ -3,8 +3,17 @@ import Bois from "../../assets/images/ressources/buche-bois.png";
 import Gold from "../../assets/images/ressources/pepite-or.png";
 import Iron from "../../assets/images/ressources/steel.png";
 import Stone from "../../assets/images/ressources/stone.png";
+import { resourceTiers } from "../../services/ResourceService";
+import PropTypes from "prop-types";
 
-export default function RessourcesForUp() {
+export default function RessourcesForUp({ level }) {
+  const nextLevel = level + 1;
+  const resources = resourceTiers.find((tier) => tier.level === nextLevel);
+
+  if (!resources) {
+    return null; // Gérer le cas où les ressources pour le niveau suivant ne sont pas disponibles
+  }
+
   return (
     <Container
       sx={{
@@ -38,7 +47,7 @@ export default function RessourcesForUp() {
             textAlign: "center",
           }}
         >
-          11 k{" "}
+          {resources[4]} k{" "}
         </Typography>
       </Box>
       <Box
@@ -65,7 +74,7 @@ export default function RessourcesForUp() {
             textAlign: "center",
           }}
         >
-          11 k{" "}
+          {resources[3]} k{" "}
         </Typography>
       </Box>
       <Box
@@ -92,7 +101,7 @@ export default function RessourcesForUp() {
             textAlign: "center",
           }}
         >
-          11 k{" "}
+          {resources[2]} k{" "}
         </Typography>
       </Box>
       <Box
@@ -119,9 +128,13 @@ export default function RessourcesForUp() {
             textAlign: "center",
           }}
         >
-          11 k{" "}
+          {resources[1]} k{" "}
         </Typography>
       </Box>
     </Container>
   );
 }
+
+RessourcesForUp.propTypes = {
+  level: PropTypes.number.isRequired,
+};

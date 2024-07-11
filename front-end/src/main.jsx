@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import RegisterPage from "../src/pages/RegisterPage.jsx";
 import LoginPage from "../src/pages/LoginPage.jsx";
+import RegisterPage from "../src/pages/RegisterPage.jsx";
 import App from "./App.jsx";
+import Grid from "./components/map/Grid.jsx";
 import { PlayerContextProvider } from "./context/PlayerContext.jsx";
 import "./index.css";
 import BoardPage from "./pages/BoardPage.jsx";
 import CowboyPage from "./pages/CowboyPage.jsx";
-import Grid from "./components/map/Grid.jsx";
+import HiringPage from "./pages/HiringPage.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/shop",
         element: <ShopPage />,
+      },
+      {
+        path: "/hire",
+        element: <HiringPage />,
       },
       {
         path: "/map",

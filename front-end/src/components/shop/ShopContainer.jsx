@@ -1,4 +1,6 @@
 import { Box, Container, Paper, Typography } from "@mui/material";
+import BarilletImg from "../../assets/images/barillet-sbg.png";
+// import ShopCardContainer from "./ShopCardContainer";
 import BanditCpnt from "./BanditCpnt";
 import BruteCpnt from "./BruteCpnt";
 import PisteurCpnt from "./PisteurCpnt";
@@ -14,15 +16,59 @@ export default function ShopContainer() {
         width: "100%",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        mt: "2rem",
+        backgroundColor: "#565656",
       }}
     >
+      <Box
+        sx={{
+          width: "100%",
+          height: "9vh",
+          backgroundColor: "black",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "fixed",
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            display: "flex",
+            color: "white",
+            fontFamily: "Pixelify",
+            textShadow:
+              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          }}
+        >
+          SAL{" "}
+          <span>
+            <Box
+              component="img"
+              src={BarilletImg}
+              alt="barillet"
+              sx={{ width: "3rem", height: "3rem", mt: "0.7rem" }}
+            />
+          </span>
+          <span>
+            <Box
+              component="img"
+              src={BarilletImg}
+              alt="barillet"
+              sx={{ width: "3rem", height: "3rem", mt: "0.7rem", ml: "0.3rem" }}
+            />
+          </span>
+          N{" "}
+        </Typography>
+      </Box>
       <Paper
         sx={{
           width: "90%",
-          height: "90%",
+          height: "85%",
           borderRadius: "1rem",
           backgroundColor: "rgb(29,28,28,80%)",
+          mt: "6rem",
         }}
       >
         <Box

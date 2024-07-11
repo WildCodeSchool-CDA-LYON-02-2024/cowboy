@@ -281,6 +281,7 @@ export default function CowboysContainer() {
           height: "10vh",
           backgroundColor: "black",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -313,6 +314,17 @@ export default function CowboysContainer() {
             />
           </span>
           N{" "}
+        </Typography>
+        <Typography
+          sx={{
+            pb: "0.5rem",
+            color: "white",
+            fontFamily: "Pixelify",
+            textShadow:
+              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          }}
+        >
+          De nouveaux cowboys vous attendent !
         </Typography>
       </Box>
       <Box

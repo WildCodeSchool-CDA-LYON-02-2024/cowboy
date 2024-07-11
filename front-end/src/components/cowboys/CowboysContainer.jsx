@@ -1,15 +1,23 @@
 import { Accordion, Box, Container, Typography } from "@mui/material";
 import { AccordionDetails, AccordionSummary } from "@mui/material/";
+import { keyframes } from "@mui/system";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import Bullet from "../../assets/images/cowboys/bullet.png";
 import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
+import RedArrow from "../../assets/images/red-arrow-pix.png";
 import CardContainer from "./CardContainer";
 
 export default function CowboysContainer() {
   const [expanded, setExpanded] = useState(false);
 
+  const moveLeftRight = keyframes`
+  0% { left: 9rem; }
+  50% { left: 11rem; }
+  100% { left: 9rem; }
+`;
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -19,7 +27,7 @@ export default function CowboysContainer() {
       component="section"
       disableGutters
       maxWidth={false}
-      sx={{ pt: "4rem", height: "100%", width: "100%" }}
+      sx={{ pt: "4rem", height: "100%", width: "100%", mb: "4rem" }}
     >
       <Box
         sx={{
@@ -268,15 +276,84 @@ export default function CowboysContainer() {
         </AccordionDetails>
       </Accordion>
       <Box
+        sx={{
+          width: "100%",
+          height: "10vh",
+          backgroundColor: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            display: "flex",
+            color: "white",
+            fontFamily: "Pixelify",
+            textShadow:
+              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+          }}
+        >
+          SAL{" "}
+          <span>
+            <Box
+              component="img"
+              src={BarilletImg}
+              alt="barillet"
+              sx={{ width: "3rem", height: "3rem", mt: "0.7rem" }}
+            />
+          </span>
+          <span>
+            <Box
+              component="img"
+              src={BarilletImg}
+              alt="barillet"
+              sx={{ width: "3rem", height: "3rem", mt: "0.7rem", ml: "0.3rem" }}
+            />
+          </span>
+          N{" "}
+        </Typography>
+      </Box>
+      <Box
         alt="Image de la ville"
         sx={{
+          pb: "1rem",
           height: "18.1rem",
           width: "100%",
           backgroundImage: `url(${WesternSaloon})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      />
+      >
+        <Typography>ENTREZ</Typography>
+        <Box
+          component="img"
+          src={RedArrow}
+          alt="Fleche"
+          sx={{
+            width: "4rem",
+            height: "3rem",
+            position: "relative",
+            top: "11rem",
+
+            animation: `${moveLeftRight} 4s infinite`,
+          }}
+        />
+        <Link
+          to="/shop"
+          style={{
+            display: "block",
+            width: "2rem",
+            height: "2rem",
+            position: "relative",
+            top: "8.5rem",
+            left: "15.5rem",
+          }}
+        >
+          <Box sx={{ height: "2rem", width: "2rem" }} />
+        </Link>
+      </Box>
     </Container>
   );
 }

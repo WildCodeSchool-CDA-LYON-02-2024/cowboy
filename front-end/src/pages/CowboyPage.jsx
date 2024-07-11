@@ -4,7 +4,11 @@ export default function CowboyPage() {
   return (
     <Container
       disableGutters
-      sx={{ height: "100vh", width: "100vw", backgroundColor: "black" }}
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        backgroundColor: "black",
+      }}
     >
       <CowboysContainer />
     </Container>

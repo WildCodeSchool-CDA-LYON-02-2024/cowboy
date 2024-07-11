@@ -57,7 +57,7 @@ class BuildingConfig extends AbstractController {
       .catch((err) => console.error(err));
   }
   nextLevel() {
-   
+    console.log('this table :', this.building);
   }
 }
 

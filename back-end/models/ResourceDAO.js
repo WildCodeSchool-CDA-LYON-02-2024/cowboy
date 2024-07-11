@@ -48,12 +48,12 @@ class ResourceModel extends AbstractDAO {
 
   getResources(id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT resource_type.name, resource.quantity
+      const query = `SELECT resource_type.name, resource.quantity, resource_type.id
                     FROM resource
                     JOIN resource_type ON resource.resource_type_id = resource_type.id
                     JOIN colony ON resource.colony_id = colony.id
                     JOIN map ON colony.map_id = map.id
-                    WHERE map.player_id = ? ;`;
+                    WHERE map.player_id = ? `;
       this.connection.execute(query, [id], (error, result) => {
         if (error) {
           reject(error);
@@ -89,7 +89,6 @@ class ResourceModel extends AbstractDAO {
       });
     });
   }
-
   insertRessourceOnMap(quantity, ressourceypeId, mapId) {
     return new Promise((resolve, reject) => {
       this.connection.execute(
@@ -101,6 +100,43 @@ class ResourceModel extends AbstractDAO {
             return reject(err);
           }
           return resolve(result);
+        }
+      );
+    });
+  }
+
+  updateResources(colonyId, resources) {
+    return new Promise((resolve, reject) => {
+      const queries = resources.map((resource) => {
+        console.log(resource, 'RESOURCES IN DAO');
+        return this.updateResource(colonyId, resource.quantity, resource.id);
+      });
+      Promise.all(queries)
+        .then((results) => {
+          console.log('All resources updated successfully:', results);
+          resolve(results);
+        })
+        .catch((err) => {
+          console.error('Error updating resources:', err);
+          reject(err);
+        });
+    });
+  }
+
+  updateResource(colonyId, quantity, resourceTypeId) {
+    return new Promise((resolve, reject) => {
+      const query = `UPDATE ${this.table} SET quantity = ? WHERE colony_id = ? AND resource_type_id = ?`;
+      this.connection.execute(
+        query,
+        [quantity, colonyId, resourceTypeId],
+        (err, result) => {
+          if (err) {
+            console.error('Error executing query:', err);
+            reject(err);
+          } else {
+            console.log('Query executed successfully:', result);
+            resolve(result);
+          }
         }
       );
     });

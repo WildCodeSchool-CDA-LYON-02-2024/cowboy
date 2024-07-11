@@ -26,8 +26,8 @@ const sendError = (res, message) => {
 const getResources1 = (res, loggedPlayerId) => {
   Resource.getResources(loggedPlayerId)
     .then((resources) => {
-      // res.json(resources);
       sendData(res, resources);
+      // res.json(resources);
     })
     .catch((err) => {
       console.error('Error fetching initial resources:', err);
@@ -53,13 +53,14 @@ const update = (req, res) => {
 
 // le fetch de ressources
 
-const browse = (req, res) => {
+const browseSSE = (req, res) => {
   const loggedPlayerId = req.loggedPlayerId;
+  console.log(loggedPlayerId, 'PLAYER CONNECTE');
   setSSEHeaders(res);
 
   getResources1(res, loggedPlayerId);
 
-  // ici c'est l'envoie du donnéés continue
+  //   // ici c'est l'envoie du donnéés continue
   const getResource2 = setInterval(() => {
     Resource.getResources(loggedPlayerId)
       .then((resources) => {
@@ -83,4 +84,36 @@ const browse = (req, res) => {
     console.error('SSE connection error:', err);
   });
 };
-export default { browse, find, update };
+
+const browse = (req, res) => {
+  const loggedPlayerId = req.loggedPlayerId;
+
+  Resource.getResources(loggedPlayerId)
+    .then((resource) => {
+      res.json(resource);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+//UPDATE RESOURCES KEEP IT
+const updateResources = async (req, res) => {
+  const { colonyId } = req.params;
+  const resources = req.body;
+  console.log(
+    'RESOURCES CONTROLLER:',
+    resources,
+    'COLONYID CONTROLLER:',
+    colonyId
+  );
+  Resource.updateResources(colonyId, resources)
+    .then((result) => {
+      res.json({ message: 'Ressource mise à jour avec succès', result });
+    })
+    .catch((err) => {
+      console.error('Failed to update resource:', err);
+      res.status(500).json({ error: 'Failed to update resource' });
+    });
+};
+
+export default { browse, browseSSE, updateResources, update, find };

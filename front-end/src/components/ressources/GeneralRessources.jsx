@@ -5,6 +5,8 @@ import Gold from '../../assets/images/ressources/pepite-or.png';
 import Iron from '../../assets/images/ressources/steel.png';
 import Stone from '../../assets/images/ressources/stone.png';
 import { usePlayerContext } from '../../context/PlayerContext';
+// import { fetchGlobalResource } from "../../services/ResourceService";
+import { subscribeToResourceUpdates } from '../../services/ResourceService.js';
 
 export default function GeneralRessources() {
   const [resources, setResources] = useState([]);
@@ -13,28 +15,23 @@ export default function GeneralRessources() {
   useEffect(() => {
     if (!playerData.token) return;
 
-    const eventSourceUrl = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/api/resource?token=${encodeURIComponent(playerData.token)}`;
+    // // Abonnement aux mises à jour SSE
+    const eventSource = subscribeToResourceUpdates(
+      playerData.token,
+      (newData) => {
+        setResources(newData);
+      },
+      (err) => {
+        console.error('SSE error:', err);
+      }
+    );
 
-    //Logique SSE pour traiter les mises à jour des données
-    const eventSource = new EventSource(eventSourceUrl);
-
-    //  Logique SSE pour traiter les données
-    eventSource.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
-      setResources(newData);
-    };
-
-    eventSource.onerror = (err) => {
-      console.error('EventSource error:', err);
-      eventSource.close();
-    };
-
+    // Nettoyage lors du démontage du composant
     return () => {
       eventSource.close();
     };
-  }, [playerData]);
+  }, [playerData.token]);
+
   // Définir une correspondance du nom de la ressource à l'image
   const resourceImageMap = {
     gold: Gold,
@@ -56,46 +53,48 @@ export default function GeneralRessources() {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
         zIndex: 2,
         position: 'fixed',
         top: '4.2rem',
         pt: '0.3rem',
       }}
     >
-      {resources.map((resource, index) => (
-        <Box
-          key={index}
-          sx={{
-            width: '20%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '1rem',
-            border: '2px solid #565656',
-            backgroundColor: 'black',
-          }}
-        >
+      {resources &&
+        resources.map((resource, index) => (
           <Box
-            component='img'
-            src={resourceImageMap[resource.name]}
-            alt={resource.name}
-            sx={resourceStylesMap[resource.name]}
-          />
-          <Typography
+            key={index}
             sx={{
-              width: '70%',
-              pl: '0.2rem',
-              fontFamily: 'Pixelify',
-              textShadow:
-                '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
-              color: 'white',
-              textAlign: 'center',
+              width: '20%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '1rem',
+              border: '2px solid #565656',
+              backgroundColor: 'black',
             }}
           >
-            {resource.quantity} k
-          </Typography>
-        </Box>
-      ))}
+            <Box
+              component='img'
+              src={resourceImageMap[resource.name]}
+              alt={resource.name}
+              sx={resourceStylesMap[resource.name]}
+            />
+            <Typography
+              sx={{
+                width: '70%',
+                pl: '0.2rem',
+                fontFamily: 'Pixelify',
+                textShadow:
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+                color: 'white',
+                textAlign: 'center',
+              }}
+            >
+              {resource.quantity} k
+            </Typography>
+          </Box>
+        ))}
     </Container>
   );
 }

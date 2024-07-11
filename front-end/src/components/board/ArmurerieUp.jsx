@@ -1,9 +1,113 @@
 import { Box, Button, Container, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import fleche from "../../assets/images/fleche-verte.png";
 import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
-import PropTypes from "prop-types";
+import { usePlayerContext } from "../../context/PlayerContext.jsx";
+import { upgradeBuilding } from "../../services/BuildingService.js";
+import {
+  checkIfCanUpgrade,
+  removeResourcesForUpgrade,
+  resourceTiers,
+  updatePlayerResources,
+} from "../../services/ResourceService.js";
+import { attackDefenseTiers } from "../../services/StatsService.js";
 
-export default function ArmurerieUp({ building }) {
+export default function ArmurerieUp({
+  building,
+  buildingTypeId,
+  playerResources,
+}) {
+  const { playerData } = usePlayerContext();
+
+  const [canUpgrade, setCanUpgrade] = useState(false);
+  const [buildingLevel, setBuildingLevel] = useState(building.level);
+  const [displayLevel, setDisplayLevel] = useState(building.level);
+  const [maxLevelReached, setMaxLevelReached] = useState(false);
+
+  const maxLevel = 10;
+
+  useEffect(() => {
+    if (buildingLevel >= maxLevel) {
+      setMaxLevelReached(true);
+    } else {
+      setMaxLevelReached(false);
+      setCanUpgrade(checkIfCanUpgrade(playerResources, buildingLevel));
+    }
+  }, [buildingLevel, playerResources]);
+
+  const handleUpgrade = async () => {
+    try {
+      if (!playerData || !playerData.token) {
+        console.error("Player data or token missing.");
+        return;
+      }
+
+      const canUpgradeResult = checkIfCanUpgrade(
+        playerResources,
+        buildingLevel
+      );
+
+      if (!canUpgradeResult.canUpgrade) {
+        console.error("Amélioration impossible:", canUpgradeResult.message);
+        return;
+      }
+
+      const updatedBuilding = await upgradeBuilding(
+        playerData.token,
+        buildingTypeId
+      );
+
+      if (updatedBuilding.error) {
+        console.error("Failed to upgrade building:", updatedBuilding.error);
+        return;
+      }
+
+      console.log("Building upgraded successfully:", updatedBuilding);
+
+      setBuildingLevel((prevLevel) => prevLevel + 1);
+
+      setDisplayLevel(buildingLevel + 1);
+
+      // Calculer les ressources mises à jour nécessaires
+      const updatedResources = removeResourcesForUpgrade(
+        playerResources,
+        buildingLevel,
+        resourceTiers
+      );
+
+      if (!updatedResources) {
+        console.error("Updated resources is undefined or null.");
+        return;
+      }
+
+      // Mettre à jour les ressources du joueur avec les nouvelles valeurs
+      const updatedPlayerResources = await updatePlayerResources(
+        playerData.token,
+        updatedResources
+      );
+
+      console.log(
+        "Player resources updated successfully:",
+        updatedPlayerResources
+      );
+    } catch (err) {
+      console.error("Failed to upgrade building:", err);
+    }
+  };
+
+  const stats = attackDefenseTiers.find((tier) => tier.level === buildingLevel);
+
+  if (!stats) {
+    return null; // Gestion de cas où le niveau n'est pas trouvé
+  }
+
+  const { attackBonus, defenseBonus } = stats;
+
+  const nextLevelStats = attackDefenseTiers.find(
+    (tier) => tier.level === buildingLevel + 1
+  );
+
   return (
     <Container disableGutters>
       <Box
@@ -24,19 +128,25 @@ export default function ArmurerieUp({ building }) {
         >
           lvl:
           <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            {building.level}{" "}
-            <Box
-              component="img"
-              src={fleche}
-              sx={{
-                height: "1.2rem",
-                mt: "0.4rem",
-                ml: "0.3rem",
-                mr: "0.3rem",
-              }}
-            />{" "}
-            {building.level + 1}
-          </span>{" "}
+            {maxLevelReached ? (
+              "MAX"
+            ) : (
+              <>
+                {displayLevel}
+                <Box
+                  component="img"
+                  src={fleche}
+                  sx={{
+                    height: "1.2rem",
+                    mt: "0.4rem",
+                    ml: "0.3rem",
+                    mr: "0.3rem",
+                  }}
+                />
+                {displayLevel + 1}
+              </>
+            )}
+          </span>
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
@@ -57,6 +167,7 @@ export default function ArmurerieUp({ building }) {
             color: "white",
             textAlign: "center",
             width: "90%",
+            fontSize: "1.2rem",
           }}
         >
           Augmente les statistiques d’attaque et défense
@@ -78,31 +189,34 @@ export default function ArmurerieUp({ building }) {
               width: "50%",
               display: "flex",
               justifyContent: "center",
+              fontSize: "1.2rem",
             }}
           >
             Attaque:
             <span
               style={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: maxLevelReached ? "center" : "space-between",
                 color: "#33E264",
                 width: "40%",
+                marginLeft: "0.3rem",
               }}
             >
               {" "}
-              10%{"  "}
+              {attackBonus}%{"  "}
               <Box
                 component="img"
                 src={fleche}
                 sx={{
-                  height: "0.7rem",
+                  height: "0.9rem",
                   mt: "0.4rem",
                   ml: "0.3rem",
                   mr: "0.3rem",
+                  display: maxLevelReached ? "none" : "",
                 }}
               />
               {"  "}
-              14%
+              {nextLevelStats && `${nextLevelStats.attackBonus}%`}
             </span>{" "}
             {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
           </Typography>
@@ -115,37 +229,40 @@ export default function ArmurerieUp({ building }) {
               width: "50%",
               display: "flex",
               justifyContent: "center",
+              fontSize: "1.2rem",
             }}
           >
             Défense:{" "}
             <span
               style={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: maxLevelReached ? "center" : "space-between",
                 color: "#33E264",
                 width: "40%",
+                marginLeft: "0.3rem",
               }}
             >
               {" "}
-              10%{" "}
+              {defenseBonus}%{" "}
               <Box
                 component="img"
                 src={fleche}
                 sx={{
-                  height: "0.7rem",
+                  height: "0.9rem",
                   mt: "0.4rem",
                   ml: "0.3rem",
                   mr: "0.3rem",
+                  display: maxLevelReached ? "none" : "",
                 }}
               />{" "}
-              14%
+              {nextLevelStats && `${nextLevelStats.defenseBonus}%`}
             </span>{" "}
             {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
           </Typography>
         </Box>
       </Box>
 
-      <RessourcesForUp />
+      <RessourcesForUp level={buildingLevel} />
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
         <Button
@@ -153,14 +270,18 @@ export default function ArmurerieUp({ building }) {
           sx={{
             width: "60%",
             backgroundColor: "#1D1C1C",
+            "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
             "&:hover": {
               backgroundColor: "#333333",
             },
             fontFamily: "Pixelify",
-            textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            textShadow: maxLevelReached
+              ? ""
+              : "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
           }}
-          // type="submit"
+          type="submit"
+          onClick={handleUpgrade}
+          disabled={!canUpgrade || maxLevelReached}
         >
           AMÉLIORER
         </Button>
@@ -170,4 +291,11 @@ export default function ArmurerieUp({ building }) {
 }
 ArmurerieUp.propTypes = {
   building: PropTypes.object.isRequired,
+  buildingTypeId: PropTypes.number.isRequired,
+  playerResources: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      quantity: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };

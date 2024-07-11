@@ -21,7 +21,7 @@ class BuildingDAO extends AbstractDAO {
       );
     });
   }
-
+  //recup les niveaux de chaque batiment de la colonie
   getLevel(colonyId) {
     return new Promise((resolve, reject) => {
       this.connection.query(
@@ -31,6 +31,23 @@ class BuildingDAO extends AbstractDAO {
          WHERE building.colony_id = ? `,
         [colonyId],
         (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
+        }
+      );
+    });
+  }
+
+  updateLevel(colonyId, buildingTypeId) {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `UPDATE ${this.table}
+         SET level = level + 1
+         WHERE colony_id = ? AND building_type_id = ?`,
+        [colonyId, buildingTypeId],
+        (err, result) => {
           if (err) {
             return reject(err);
           }

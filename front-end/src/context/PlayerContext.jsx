@@ -8,6 +8,7 @@ const playerContext = createContext();
 export function PlayerContextProvider({ children }) {
   const [playerData, setPlayerData] = useLocalStorage('player', null);
   const [decodedToken, setDecodedToken] = useState();
+  const [slots, getSlots] = useState(null);
 
   const login = (userInfo) => {
     setPlayerData(userInfo);
@@ -43,6 +44,8 @@ export function PlayerContextProvider({ children }) {
       login,
       logout,
       decodedToken,
+      slots,
+      getSlots,
     };
   }, [playerData]);
 

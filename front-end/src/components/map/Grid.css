@@ -1,19 +1,23 @@
 /* Styles pour le conteneur scrollable */
 .scroll-container {
+ 
   width: 100%;
   height: 100%;
   overflow: auto;
-  border: 1px solid gray;
+  background-color:#333333;
 }
 
 /* Styles pour la grille */
 .grid {
+  margin: auto;
+  margin-top: 10px;
   padding-top: 4.2rem;
   padding-bottom: 4.2rem;
   width: 550px;
-  background-image: url('../../../public/map.jpeg');
+  background-image: url('../../../map.jpeg');
   display: grid;
   grid-gap: 5px;
+  border: 2px #565656 solid;
 }
 
 /* Styles pour les cellules */

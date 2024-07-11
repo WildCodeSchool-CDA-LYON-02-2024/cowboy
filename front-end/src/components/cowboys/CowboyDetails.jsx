@@ -1,7 +1,9 @@
+// src/components/CowboyDetails.jsx
 import { Box, Button, Container, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import BigCanyon from "../../assets/images/big-canyon-pix.jpeg";
 import CowboyUpgrade from "./CowboyUpgrade";
+import AudioPlayer from "../AudioPlayer"; // Assurez-vous que le chemin est correct
 
 export default function CowboyDetails({ cowboy, onBack }) {
   const { name, image } = cowboy;
@@ -62,21 +64,23 @@ export default function CowboyDetails({ cowboy, onBack }) {
               pt: "0.3rem",
             }}
           >
-            <Button
-              onClick={onBack}
-              variant="contained"
-              sx={{
-                fontFamily: "Pixelify",
-                fontSize: "1.3rem",
-                fontWeight: 700,
-                minWidth: "2rem",
-                height: "2rem",
-                backgroundColor: "#B91818",
-                padding: 0,
-              }}
-            >
-              x
-            </Button>
+            <AudioPlayer>
+              <Button
+                onClick={onBack}
+                variant="contained"
+                sx={{
+                  fontFamily: "Pixelify",
+                  fontSize: "1.3rem",
+                  fontWeight: 700,
+                  minWidth: "2rem",
+                  height: "2rem",
+                  backgroundColor: "#B91818",
+                  padding: 0,
+                }}
+              >
+                x
+              </Button>
+            </AudioPlayer>
           </Box>
         </Box>
         <Box component="section" sx={{ pt: "0.5rem" }}>

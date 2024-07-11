@@ -1,50 +1,44 @@
-// import { jwtDecode } from "jwt-decode";
+// PlayerService.js
 
 export const registerService = async ({ username, email, password }) => {
+  console.log('registerService called with', { username, email, password });
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/user/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      }
-    );
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
 
     const responseData = await response.json();
 
     if (response.status === 200) {
       return { success: true };
     } else {
-      const error =
-        responseData.message ||
-        "Une erreur est survenue lors de l'inscription.";
+      const error = responseData.message || "Une erreur est survenue lors de l'inscription.";
       return { success: false, error };
     }
   } catch (err) {
-    console.error("Network error:", err);
+    console.error('Network error:', err);
     return {
       success: false,
-      error: "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+      error: 'Erreur de connexion au serveur. Veuillez réessayer plus tard.',
     };
   }
 };
 
 export const loginService = async (email, password) => {
+  console.log('loginService called with', { email, password });
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
     if (response.status === 200) {
       const userData = await response.json();
@@ -53,31 +47,22 @@ export const loginService = async (email, password) => {
       if (!token) {
         return {
           success: false,
-          error: "Aucun jeton d'authentification fourni",
+          error: 'Aucun jeton d\'authentification fourni',
         };
       }
 
-      // Stocker le token dans le localStorage pour les requêtes ultérieures
-      localStorage.setItem("authToken", token);
-
-      // Décoder le jeton pour extraire le rôle
-      // const decodedToken = jwtDecode(token);
-      // const role = decodedToken.adherent.adherentRole;
-      // console.log(role, "ROLE");
-
-      // // Stocker le rôle décodé dans le localStorage
-      // localStorage.setItem("userRole", role);
+      localStorage.setItem('authToken', token);
 
       return { success: true, user: userData };
     } else {
       const error = await response.json();
       return {
         success: false,
-        error: error.message || "Email ou mot de passe incorrect",
+        error: error.message || 'Email ou mot de passe incorrect',
       };
     }
   } catch (err) {
-    console.error("Login service error:", err);
-    return { success: false, error: err.message };
+    console.error('Login service error:', err);
+    return { success: false, error: 'Erreur de connexion au serveur. Veuillez réessayer plus tard.' };
   }
 };

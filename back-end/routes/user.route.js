@@ -1,18 +1,9 @@
-import { Router } from "express";
-import UserController from "../controllers/UserController.js";
-import { verifyRegister, verifyLogin } from "../middlewares/userMiddlware.js";
-import { verifyPassword } from "../utils/auth.js";
+import express from 'express';
+import UserController from '../controllers/UserController.js';
 
-const router = Router();
-const userController = new UserController();
+const router = express.Router();
 
-router.get("/", userController.browse);
-router.post("/register", verifyRegister, userController.add);
-router.post(
-  "/login",
-  verifyLogin,
-  userController.findByMailForLogin,
-  verifyPassword
-);
+router.post('/register', UserController.register);
+router.post('/login', UserController.login); // Assurez-vous que cette route existe
 
 export default router;

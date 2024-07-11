@@ -41,6 +41,7 @@ export default function RegisterForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Submitting form with:', { username, email, password });
 
     const { success, error } = await registerService({
       username,

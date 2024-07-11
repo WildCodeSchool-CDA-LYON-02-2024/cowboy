@@ -7,16 +7,16 @@ import ChevronIcon from "../../assets/images/ChevronIcon";
 import BarilletImg from "../../assets/images/barillet-sbg.png";
 import Bullet from "../../assets/images/cowboys/bullet.png";
 import WesternSaloon from "../../assets/images/cowboys/saloon-pix.jpeg";
-import RedArrow from "../../assets/images/red-arrow-pix.png";
+import GreenArrow from "../../assets/images/green-arrow-pix.png";
 import CardContainer from "./CardContainer";
 
 export default function CowboysContainer() {
   const [expanded, setExpanded] = useState(false);
 
   const moveLeftRight = keyframes`
-  0% { left: 9rem; }
-  50% { left: 11rem; }
-  100% { left: 9rem; }
+  0% { down: 8rem; }
+  50% { top:10rem; }
+  100% { down: 8rem; }
 `;
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -326,32 +326,32 @@ export default function CowboysContainer() {
           backgroundPosition: "center",
         }}
       >
-        <Typography>ENTREZ</Typography>
         <Box
           component="img"
-          src={RedArrow}
+          src={GreenArrow}
           alt="Fleche"
           sx={{
-            width: "4rem",
-            height: "3rem",
+            width: "1.55rem",
+            height: "2.5rem",
             position: "relative",
-            top: "11rem",
-
-            animation: `${moveLeftRight} 4s infinite`,
+            top: "7rem",
+            left: "16rem",
+            transform: "rotate(90deg)",
+            animation: `${moveLeftRight} 2s infinite`,
           }}
         />
         <Link
           to="/shop"
           style={{
             display: "block",
-            width: "2rem",
-            height: "2rem",
+            width: "3rem",
+            height: "3rem",
             position: "relative",
             top: "8.5rem",
-            left: "15.5rem",
+            left: "15rem",
           }}
         >
-          <Box sx={{ height: "2rem", width: "2rem" }} />
+          <Box sx={{ height: "3rem", width: "3rem" }} />
         </Link>
       </Box>
     </Container>

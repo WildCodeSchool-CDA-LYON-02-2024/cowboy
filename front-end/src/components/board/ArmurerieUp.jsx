@@ -17,6 +17,8 @@ export default function ArmurerieUp({
   building,
   buildingTypeId,
   playerResources,
+  setUpdate,
+  update,
 }) {
   const { playerData } = usePlayerContext();
 
@@ -86,7 +88,7 @@ export default function ArmurerieUp({
         playerData.token,
         updatedResources
       );
-
+      setUpdate(!update);
       console.log(
         "Player resources updated successfully:",
         updatedPlayerResources
@@ -298,4 +300,6 @@ ArmurerieUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
+  setUpdate: PropTypes.func.isRequired,
+  update: PropTypes.bool.isRequired,
 };

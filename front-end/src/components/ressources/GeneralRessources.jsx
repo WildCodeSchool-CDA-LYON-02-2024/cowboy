@@ -53,7 +53,6 @@ export default function GeneralRessources() {
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        flexDirection: "row-reverse",
         zIndex: 2,
         position: "fixed",
         top: "4.2rem",

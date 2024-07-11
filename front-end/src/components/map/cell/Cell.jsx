@@ -1,20 +1,14 @@
 /* eslint-disable react/prop-types */
 // Composant Cell qui représente une case dans la grille
-import home from '../../../assets/map/home.png';
 
-const Cell = ({ id, onClick, playerSlot, slotNewColony }) => {
-  // Créer un tableau combiné de playerSlot et slotNewColony
-  const combinedSlots = Array.isArray(playerSlot)
-    ? [...playerSlot, ...slotNewColony]
-    : [slotNewColony];
+import home from '../../../assets/images/navbar/home.png';
 
-  // Vérifier si l'id actuel existe dans le tableau combiné
-  const isPlayerSlot =
-    combinedSlots.filter((slotObj) => slotObj === id).length > 0;
+const Cell = ({ id, onClick, playerSlot }) => {
+  // Vérifier si playerSlot existe et si l'id actuel existe dans playerSlot
+  const isPlayerSlot = playerSlot && playerSlot.includes(id);
 
   return (
     <div className='cell' onClick={() => onClick(id)}>
-      {id}
       {isPlayerSlot && <img src={home} alt='' className='img-home' />}
     </div>
   );

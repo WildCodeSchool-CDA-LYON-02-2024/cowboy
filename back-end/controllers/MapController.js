@@ -11,6 +11,17 @@ class MapController extends AbstractController {
     this.ressource = new Ressource();
   }
 
+  getPlayerSlot = (req, res) => {
+    const id = req.params.id;
+    this.model
+      .findSlotByPlayerId(id)
+      .then((result) => {
+        const slotId = result.map((slotObj) => slotObj.slot);
+        res.send(slotId);
+      })
+      .catch((err) => console.error(err));
+  };
+
   getRessource = (req, res) => {
     this.ressourceDAO
       .findAll()

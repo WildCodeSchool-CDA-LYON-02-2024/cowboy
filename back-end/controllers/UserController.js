@@ -5,6 +5,7 @@ import error from '../services/errors/error.js';
 import MapConfig from '../services/map/MapConfig.js';
 import { hashPassword } from '../utils/auth.js';
 import AbstractController from './AbsractController.js';
+import globals from '../services/Player.js';
 
 class UserController extends AbstractController {
   constructor() {
@@ -12,6 +13,7 @@ class UserController extends AbstractController {
     this.model = new UserDAO();
     this.init = new MapConfig();
     this.map = new MapDAO();
+    this.player = null;
   }
 
   add = async (req, res) => {
@@ -36,6 +38,8 @@ class UserController extends AbstractController {
     this.model
       .findByMail(email)
       .then((rows) => {
+        console.log('rows id : ', rows[0].id);
+        globals.playerId = rows[0].id;
         if (rows[0] === undefined) {
           res.status(404).json({ error: 'Utilisateur non trouvé' });
         } else {

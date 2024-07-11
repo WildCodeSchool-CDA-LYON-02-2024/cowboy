@@ -14,6 +14,7 @@ import {
   collectResource,
   fetchGlobalResource,
   buildRessource,
+  fetchPlayerSlots,
 } from '../../services/ResourceService.js';
 
 const Grid = ({ rows, cols }) => {
@@ -22,26 +23,31 @@ const Grid = ({ rows, cols }) => {
   const [slots, setSlots] = useState([]);
   const [resourceSlot, setResourceSlot] = useState([]);
   const [slotId, setSlotId] = useState();
-  const [slotNewColony, setSlotNewColony] = useState([]);
+  // State a enlever
+
   const [message, setMessage] = useState('');
   const [buildAuthorisation, setBuildAuthorisation] = useState(true);
-
   const [modal, setModal] = useState(false);
   const [playerId, setPlayerId] = useState();
   const [colonyId, setColonyId] = useState();
 
   useEffect(() => {
-    fetchGlobalResource(playerData.token);
+    if (decodedToken) {
+      setPlayerId(decodedToken.payload.sub.id);
+      setColonyId(decodedToken.payload.sub.colonyId);
+    }
+  }, [decodedToken]);
 
-    fetchSlots(setSlots);
-    setPlayerSlot(decodedToken.payload.sub.slot);
-    setPlayerId(decodedToken.payload.sub.id);
-    setColonyId(decodedToken.payload.sub.colonyId);
-  }, [slotId, slotNewColony]);
+  useEffect(() => {
+    if (playerId && playerData) {
+      fetchSlots(setSlots);
+      fetchPlayerSlots(playerId, setPlayerSlot);
+      fetchGlobalResource(playerData.token);
+    }
+  }, [playerId]);
 
   // Gestion du clic sur une case
   const handleClick = (id) => {
-    console.log('message click :', message);
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
@@ -57,12 +63,11 @@ const Grid = ({ rows, cols }) => {
       playerId,
       colonyId,
       slotId,
-      setSlotNewColony,
       setMessage,
       setBuildAuthorisation,
-      setModal
+      setModal,
+      setPlayerSlot
     );
-    console.log('build : ', buildAuthorisation);
   };
 
   const handleClose = () => {
@@ -79,13 +84,7 @@ const Grid = ({ rows, cols }) => {
       const slot = slots[idCounter - 1]; // Correspond à l'index dans le tableau des slots
       const id = slot ? slot.id : idCounter; // Utilise l'ID du slot ou un ID par défaut si les slots ne sont pas encore chargés
       grid.push(
-        <Cell
-          key={id}
-          id={id}
-          onClick={handleClick}
-          playerSlot={playerSlot}
-          slotNewColony={slotNewColony}
-        />
+        <Cell key={id} id={id} onClick={handleClick} playerSlot={playerSlot} />
       );
       idCounter++;
     }

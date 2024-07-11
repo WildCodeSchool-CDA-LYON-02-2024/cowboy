@@ -41,14 +41,6 @@ export const fetchResourceOnSlot = (id, setSlotResource) => {
 };
 
 export const collectResource = (playerId, resource, colonyId) => {
-  console.log(
-    'playerId : ',
-    playerId,
-    'resource :',
-    resource,
-    'colonyId : ',
-    colonyId
-  );
   fetch(
     `${
       import.meta.env.VITE_BACKEND_URL
@@ -74,10 +66,10 @@ export const buildRessource = (
   playerId,
   colonyId,
   slotId,
-  setSlotNewColony,
   setMessage,
   setBuildAuthorisation,
-  setModal
+  setModal,
+  setPlayerSlot
 ) => {
   fetch(
     `${
@@ -101,13 +93,29 @@ export const buildRessource = (
         setModal(true);
       } else if (data.message != "You don't have enough gold") {
         setBuildAuthorisation(true);
-        setSlotNewColony((prevSlots) => [...prevSlots, data.slot[0]]);
+        setPlayerSlot((prevSlots) => [...prevSlots, data.slot[0]]);
         setModal(false);
       } else {
         setMessage("Tu n'as pas assez d'argent");
         setBuildAuthorisation(false);
         setModal(true);
       }
+    })
+    .catch((err) => console.error(err));
+};
+
+export const fetchPlayerSlots = (playerId, setPlayerSlot) => {
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/map/slot/${playerId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      setPlayerSlot(data);
     })
     .catch((err) => console.error(err));
 };

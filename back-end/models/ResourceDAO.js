@@ -108,17 +108,18 @@ class ResourceModel extends AbstractDAO {
 
   // get resource by ever hour
 
-  getResourceHour() {
+  getResourceHour(nbOfCol, id) {
+    console.log('nb : ', nbOfCol);
     return new Promise((resolve, reject) => {
       const query = `
           UPDATE resource
             JOIN colony ON resource.colony_id = colony.id
             JOIN map ON colony.map_id = map.id
-            SET resource.quantity = resource.quantity + 1
-            WHERE map.player_id IS NOT NULL;
+            SET resource.quantity = resource.quantity + ?
+            WHERE map.player_id = ?;
   `;
 
-      this.connection.execute(query, (error, result) => {
+      this.connection.execute(query, [nbOfCol, id], (error, result) => {
         if (error) {
           reject(error);
         } else {

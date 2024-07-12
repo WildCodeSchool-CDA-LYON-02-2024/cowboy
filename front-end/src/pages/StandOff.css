@@ -1,0 +1,76 @@
+.cowboy {
+  width: 80px;
+  height: 120px;
+  position: relative;
+  background-color: #2da033;
+  border-radius: 10px;
+  margin: 0 20px;
+  transform: scaleX(-1); /* Flip the cowboy */
+}
+
+.head {
+  width: 30px;
+  height: 30px;
+  background-color: #F2EADC;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px; /* Adjusted position */
+  left: 25px;
+}
+
+.hat {
+  width: 60px;
+  height: 20px;
+  background-color: #000;
+  position: absolute;
+  top: -10px; /* Adjusted position */
+  left: 10px;
+  transform: rotate(45deg);
+}
+
+.gun {
+  width: 20px;
+  height: 10px;
+  background-color: #000;
+  position: absolute;
+  top: 70px;
+  left: 30px; /* Adjusted position */
+}
+
+/* Animation keyframes for shooting and falling */
+@keyframes shoot {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-30deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(60px); }
+}
+
+/* Animation classes */
+.shooting {
+  animation: shoot 0.3s ease forwards;
+}
+
+.falling {
+  animation: fall 0.5s ease forwards;
+}
+
+/* Second cowboy adjustments */
+.cowboy.right {
+  transform: scaleX(1); /* Facing right */
+}
+
+.cowboy.right .head {
+  left: 25px; /* Adjusted position */
+}
+
+.cowboy.right .hat {
+  left: 0; /* Adjusted position */
+}
+
+.cowboy.right .gun {
+  left: -10px; /* Adjusted position */
+}

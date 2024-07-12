@@ -34,6 +34,25 @@ class CowboyModel extends AbstractDAO {
     });
   }
 
+  getPlayerCowboy(id) {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT cowboy.id, cowboy.name FROM ${this.table}
+        JOIN colony ON ${this.table}.colony_id = colony.id
+        JOIN map ON colony.map_id = map.id
+        JOIN player ON map.player_id = player.id
+        WHERE player.id = ?
+      `;
+      this.connection.execute(query, [id], (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
   /* cow boy get hired */
 
   hiringCowboy(player_id, id) {

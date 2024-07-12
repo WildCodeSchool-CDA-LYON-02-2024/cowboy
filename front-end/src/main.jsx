@@ -11,6 +11,8 @@ import BoardPage from "./pages/BoardPage.jsx";
 import CowboyPage from "./pages/CowboyPage.jsx";
 import HiringPage from "./pages/HiringPage.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
+import FightPage from "./pages/FightPage.jsx";
+import FightComponent from "./components/FightComponents.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <Grid rows={20} cols={10} c />,
+      },
+      {
+        path: "/fight",
+        element: <FightPage />,
+      },
+      {
+        path: "/fightground",
+        element: <FightComponent />,
       },
     ],
   },

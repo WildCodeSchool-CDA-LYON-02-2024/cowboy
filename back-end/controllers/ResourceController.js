@@ -55,10 +55,6 @@ const update = (req, res) => {
 
 const browseSSE = (req, res) => {
   const loggedPlayerId = req.loggedPlayerId;
-<<<<<<< HEAD
-=======
-  console.log(loggedPlayerId, 'PLAYER CONNECTE');
->>>>>>> dev
   setSSEHeaders(res);
 
   getResources1(res, loggedPlayerId);

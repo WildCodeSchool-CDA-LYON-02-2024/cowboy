@@ -83,55 +83,77 @@ export default function FightComponent() {
           objectFit: "cover",
         }}
       />
-      {fighting && (
-        <Typography
-          variant="h1"
-          sx={{
-            zIndex: 1,
-            color: "white",
-            fontSize: "10rem",
-            fontWeight: "bold",
-            marginLeft: "20%",
-          }}
-        >
-          {countdown}
-        </Typography>
-      )}
-      {winner && (
-        <Typography
-          variant="h4"
-          sx={{
-            zIndex: 1,
-            textAlign: "center",
-            color: "white",
-            fontWeight: "bold",
-          }}
-        >
-          {winner.name} remporte le combat !
-        </Typography>
-      )}
-      {!winner && (
-        <Box
-          sx={{
-            marginTop: "40rem",
-            textAlign: "center",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleFight}
-            disabled={fighting}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        {fighting && (
+          <Typography
+            align="center"
+            variant="h1"
             sx={{
               zIndex: 1,
-              position: "relative",
-              marginTop: fighting ? "1rem" : 0,
+              color: "white",
+              fontSize: "10rem",
+              fontWeight: "bold",
+              fontFamily: "Pixelify",
+              textShadow:
+                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
             }}
           >
-            {fighting ? "En cours..." : "Commencer le Combat"}
-          </Button>
-        </Box>
-      )}
+            {countdown}
+          </Typography>
+        )}
+        {winner && (
+          <Typography
+            variant="h4"
+            sx={{
+              zIndex: 1,
+              textAlign: "center",
+              color: "white",
+              fontFamily: "Pixelify",
+              textShadow:
+                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+            }}
+          >
+            {winner.name} remporte le combat !
+          </Typography>
+        )}
+        {!winner && (
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleFight}
+              disabled={fighting}
+              sx={{
+                zIndex: 1,
+                width: "18rem",
+                height: "3rem",
+                fontSize: "1.3rem",
+                position: "relative",
+                marginTop: fighting ? "1rem" : 0,
+                color: "white",
+                backgroundColor: "#1D1C1C",
+                "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
+                "&:hover": {
+                  backgroundColor: "#333333",
+                },
+                fontFamily: "Pixelify",
+              }}
+            >
+              {fighting ? "En cours..." : "Commencer le Combat"}
+            </Button>
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 }

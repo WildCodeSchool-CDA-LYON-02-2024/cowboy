@@ -78,121 +78,123 @@ const CardFight = () => {
 
   return (
     <Container
+      disableGutters
       sx={{
-        backgroundColor: "white",
-        height: "auto",
-        overflowY: "scroll",
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "2rem",
+        marginTop: 0,
+        backgroundColor: "#959595",
       }}
     >
       <Box
         sx={{
           width: "100%",
-          height: "100%",
+          height: "95%",
+          marginTop: "8rem",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          flexWrap: "wrap",
+          justifyContent: "center",
           gap: "2rem",
-          marginTop: 0,
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            height: "95%",
-            marginTop: "8rem",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "2rem",
-          }}
-        >
-          {cowboys.map((cowboy) => (
-            <Card
-              key={cowboy.id}
-              sx={{
-                height: "13rem",
-                width: "8.3rem",
-                border: selectedCowboy === cowboy
+        {cowboys.map((cowboy) => (
+          <Card
+            key={cowboy.id}
+            sx={{
+              height: "13rem",
+              width: "8.3rem",
+              border:
+                selectedCowboy === cowboy
                   ? "3px solid #00FF00"
                   : "3px solid #B91818",
-                backgroundColor: "#1D1C1C",
-                padding: "0.15rem",
-                borderRadius: "0.5rem",
-                cursor: "pointer",
-              }}
-              onClick={() => handleCardClick(cowboy)}
-            >
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  image={Canyon}
-                  sx={{ p: "0.2rem", borderRadius: "0.4rem", height: "55%" }}
-                />
-                <Box
-                  component="img"
-                  src={cowboy.image}
-                  alt={cowboy.name}
-                  sx={{
-                    height: "5.5rem",
-                    position: "relative",
-                    bottom: "6rem",
-                    left: "1.3rem",
-                  }}
-                />
-                <Box
-                  component="img"
-                  src={Magnums}
-                  alt="Bandit Class"
-                  sx={{
-                    height: "1rem",
-                    pl: "0.2rem",
-                    pr: "0.2rem",
-                    pb: "0.2rem",
-                    position: "relative",
-                    bottom: "12.2rem",
-                    backgroundColor: "#1D1C1C",
-                    borderRadius: "0 0 0.2rem 0",
-                  }}
-                />
-                <CardContent
-                  sx={{
-                    "&.MuiCardContent-root": { padding: 0 },
-                    position: "relative",
-                    bottom: "6.5rem",
-                    textShadow:
-                      "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-                    color: "white",
-                  }}
+              backgroundColor: "#1D1C1C",
+              padding: "0.15rem",
+              borderRadius: "0.5rem",
+              cursor: "pointer",
+            }}
+            onClick={() => handleCardClick(cowboy)}
+          >
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                image={Canyon}
+                sx={{ p: "0.2rem", borderRadius: "0.4rem", height: "55%" }}
+              />
+              <Box
+                component="img"
+                src={cowboy.image}
+                alt={cowboy.name}
+                sx={{
+                  height: "5.5rem",
+                  position: "relative",
+                  bottom: "6rem",
+                  left: "1.3rem",
+                }}
+              />
+              <Box
+                component="img"
+                src={Magnums}
+                alt="Bandit Class"
+                sx={{
+                  height: "1rem",
+                  pl: "0.2rem",
+                  pr: "0.2rem",
+                  pb: "0.2rem",
+                  position: "relative",
+                  bottom: "12.2rem",
+                  backgroundColor: "#1D1C1C",
+                  borderRadius: "0 0 0.2rem 0",
+                }}
+              />
+              <CardContent
+                sx={{
+                  "&.MuiCardContent-root": { padding: 0 },
+                  position: "relative",
+                  bottom: "6.5rem",
+                  textShadow:
+                    "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+                  color: "white",
+                }}
+              >
+                <Typography
+                  align="center"
+                  sx={{ fontFamily: "Pixelify", fontSize: "0.7rem" }}
                 >
-                  <Typography
-                    align="center"
-                    sx={{ fontFamily: "Pixelify", fontSize: "0.7rem" }}
-                  >
-                    {cowboy.name}
-                  </Typography>{" "}
-                  <Box sx={{ height: "5rem" }}>
-                    <CowboyStats />
-                  </Box>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
-        </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleFight}
-          disabled={!selectedCowboy}
-          sx={{
-            marginBottom: "5rem",
-            marginTop: "3rem",
-            border: "2px solid blue",
-            color: "black",
-          }}
-        >
-          Commencer le Combat
-        </Button>
+                  {cowboy.name}
+                </Typography>{" "}
+                <Box sx={{ height: "5rem" }}>
+                  <CowboyStats />
+                </Box>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
       </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleFight}
+        disabled={!selectedCowboy}
+        sx={{
+          marginBottom: "5rem",
+          marginTop: "3rem",
+
+          color: "white",
+          width: "60%",
+          backgroundColor: "#1D1C1C",
+          "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
+          "&:hover": {
+            backgroundColor: "#333333",
+          },
+          fontFamily: "Pixelify",
+        }}
+      >
+        Commencer le Combat
+      </Button>
     </Container>
   );
 };

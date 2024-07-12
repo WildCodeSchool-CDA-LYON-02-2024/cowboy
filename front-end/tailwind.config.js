@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'map-bg': "url('/public/map.jpeg')",
+        'map-bg': "url('/map.jpeg')",
       },
     },
     fontFamily: {

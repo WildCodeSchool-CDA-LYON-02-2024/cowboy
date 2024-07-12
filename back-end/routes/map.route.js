@@ -6,5 +6,6 @@ const router = Router();
 
 router.get('/', mapController.getRessource);
 router.get('/slot', mapController.browse);
+router.get('/slot/:id', mapController.getPlayerSlot);
 
 export default router;

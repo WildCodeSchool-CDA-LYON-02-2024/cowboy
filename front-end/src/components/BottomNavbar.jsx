@@ -4,10 +4,17 @@ import GlobeIcon from '../assets/images/navbar/GlobeIcon';
 import HatIcon from '../assets/images/navbar/HatIcon';
 import HomeIcon from '../assets/images/navbar/HomeIcon';
 import MagnumsIcon from '../assets/images/navbar/MagnumsIcon';
+import soundClick from '../assets/musique/click.mp3';
+import AudioPlayer from '../services/audio/AudioPlayer.js';
 
 export default function BottomNavbar() {
+  const audio = new AudioPlayer();
   const location = useLocation();
   const activeStyle = { borderColor: '#B91818' };
+
+  const playClick = () => {
+    audio.play(soundClick);
+  };
 
   return (
     <>
@@ -29,6 +36,7 @@ export default function BottomNavbar() {
           }}
         >
           <IconButton
+            onClick={playClick}
             sx={{
               borderRadius: 0,
               height: '4.3rem',
@@ -42,6 +50,7 @@ export default function BottomNavbar() {
             </Link>
           </IconButton>
           <IconButton
+            onClick={playClick}
             sx={{
               borderRadius: 0,
               height: '4.3rem',
@@ -55,6 +64,7 @@ export default function BottomNavbar() {
             </Link>
           </IconButton>
           <IconButton
+            onClick={playClick}
             sx={{
               borderRadius: 0,
               height: '4.3rem',
@@ -68,6 +78,7 @@ export default function BottomNavbar() {
             </Link>
           </IconButton>
           <IconButton
+            onClick={playClick}
             sx={{
               borderRadius: 0,
               height: '4.3rem',

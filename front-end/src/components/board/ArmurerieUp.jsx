@@ -1,18 +1,18 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import fleche from "../../assets/images/fleche-verte.png";
-import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
-import { usePlayerContext } from "../../context/PlayerContext.jsx";
-import { upgradeBuilding } from "../../services/BuildingService.js";
+import { Box, Button, Container, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import fleche from '../../assets/images/fleche-verte.png';
+import RessourcesForUp from '../../components/ressources/RessourcesForUp.jsx';
+import { usePlayerContext } from '../../context/PlayerContext.jsx';
+import { upgradeBuilding } from '../../services/BuildingService.js';
 import {
   checkIfCanUpgrade,
   removeResourcesForUpgrade,
   resourceTiers,
   updatePlayerResources,
-} from "../../services/ResourceService.js";
-import { attackDefenseTiers } from "../../services/StatsService.js";
-
+} from '../../services/ResourceService.js';
+import { attackDefenseTiers } from '../../services/StatsService.js';
+import { funcAudioArmoryUp } from '../audioClick/audioClick.js';
 export default function ArmurerieUp({
   building,
   buildingTypeId,
@@ -41,7 +41,7 @@ export default function ArmurerieUp({
   const handleUpgrade = async () => {
     try {
       if (!playerData || !playerData.token) {
-        console.error("Player data or token missing.");
+        console.error('Player data or token missing.');
         return;
       }
 
@@ -51,7 +51,7 @@ export default function ArmurerieUp({
       );
 
       if (!canUpgradeResult.canUpgrade) {
-        console.error("Amélioration impossible:", canUpgradeResult.message);
+        console.error('Amélioration impossible:', canUpgradeResult.message);
         return;
       }
 
@@ -59,13 +59,13 @@ export default function ArmurerieUp({
         playerData.token,
         buildingTypeId
       );
-
+      funcAudioArmoryUp();
       if (updatedBuilding.error) {
-        console.error("Failed to upgrade building:", updatedBuilding.error);
+        console.error('Failed to upgrade building:', updatedBuilding.error);
         return;
       }
 
-      console.log("Building upgraded successfully:", updatedBuilding);
+      console.log('Building upgraded successfully:', updatedBuilding);
 
       setBuildingLevel((prevLevel) => prevLevel + 1);
 
@@ -79,7 +79,7 @@ export default function ArmurerieUp({
       );
 
       if (!updatedResources) {
-        console.error("Updated resources is undefined or null.");
+        console.error('Updated resources is undefined or null.');
         return;
       }
 
@@ -90,11 +90,11 @@ export default function ArmurerieUp({
       );
       setUpdate(!update);
       console.log(
-        "Player resources updated successfully:",
+        'Player resources updated successfully:',
         updatedPlayerResources
       );
     } catch (err) {
-      console.error("Failed to upgrade building:", err);
+      console.error('Failed to upgrade building:', err);
     }
   };
 
@@ -114,35 +114,35 @@ export default function ArmurerieUp({
     <Container disableGutters>
       <Box
         sx={{
-          paddingLeft: "0.5rem",
-          paddingRight: "0.5rem",
+          paddingLeft: '0.5rem',
+          paddingRight: '0.5rem',
         }}
       >
         <Typography
           sx={{
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
-            fontSize: "1.3rem",
-            display: "flex",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
+            fontSize: '1.3rem',
+            display: 'flex',
           }}
         >
           lvl:
-          <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
+          <span style={{ color: '#33E264', display: 'flex', width: '50%' }}>
             {maxLevelReached ? (
-              "MAX"
+              'MAX'
             ) : (
               <>
                 {displayLevel}
                 <Box
-                  component="img"
+                  component='img'
                   src={fleche}
                   sx={{
-                    height: "1.2rem",
-                    mt: "0.4rem",
-                    ml: "0.3rem",
-                    mr: "0.3rem",
+                    height: '1.2rem',
+                    mt: '0.4rem',
+                    ml: '0.3rem',
+                    mr: '0.3rem',
                   }}
                 />
                 {displayLevel + 1}
@@ -154,111 +154,111 @@ export default function ArmurerieUp({
       </Box>
       <Box
         sx={{
-          padding: "1.5rem 0.5rem 0.5rem 0.5rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          padding: '1.5rem 0.5rem 0.5rem 0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Typography
           sx={{
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
-            textAlign: "center",
-            width: "90%",
-            fontSize: "1.2rem",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
+            textAlign: 'center',
+            width: '90%',
+            fontSize: '1.2rem',
           }}
         >
           Augmente les statistiques d’attaque et défense
         </Typography>
         <Box
           sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            paddingTop: "1rem",
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingTop: '1rem',
           }}
         >
           <Typography
             sx={{
-              fontFamily: "Pixelify",
+              fontFamily: 'Pixelify',
               textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-              color: "white",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              fontSize: "1.2rem",
+                '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+              color: 'white',
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              fontSize: '1.2rem',
             }}
           >
             Attaque:
             <span
               style={{
-                display: "flex",
-                justifyContent: maxLevelReached ? "center" : "space-between",
-                color: "#33E264",
-                width: "40%",
-                marginLeft: "0.3rem",
+                display: 'flex',
+                justifyContent: maxLevelReached ? 'center' : 'space-between',
+                color: '#33E264',
+                width: '40%',
+                marginLeft: '0.3rem',
               }}
             >
-              {" "}
-              {attackBonus}%{"  "}
+              {' '}
+              {attackBonus}%{'  '}
               <Box
-                component="img"
+                component='img'
                 src={fleche}
                 sx={{
-                  height: "0.9rem",
-                  mt: "0.4rem",
-                  ml: "0.3rem",
-                  mr: "0.3rem",
-                  display: maxLevelReached ? "none" : "",
+                  height: '0.9rem',
+                  mt: '0.4rem',
+                  ml: '0.3rem',
+                  mr: '0.3rem',
+                  display: maxLevelReached ? 'none' : '',
                 }}
               />
-              {"  "}
+              {'  '}
               {nextLevelStats && `${nextLevelStats.attackBonus}%`}
-            </span>{" "}
+            </span>{' '}
             {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
           </Typography>
           <Typography
             sx={{
-              fontFamily: "Pixelify",
+              fontFamily: 'Pixelify',
               textShadow:
-                "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-              color: "white",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              fontSize: "1.2rem",
+                '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+              color: 'white',
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              fontSize: '1.2rem',
             }}
           >
-            Défense:{" "}
+            Défense:{' '}
             <span
               style={{
-                display: "flex",
-                justifyContent: maxLevelReached ? "center" : "space-between",
-                color: "#33E264",
-                width: "40%",
-                marginLeft: "0.3rem",
+                display: 'flex',
+                justifyContent: maxLevelReached ? 'center' : 'space-between',
+                color: '#33E264',
+                width: '40%',
+                marginLeft: '0.3rem',
               }}
             >
-              {" "}
-              {defenseBonus}%{" "}
+              {' '}
+              {defenseBonus}%{' '}
               <Box
-                component="img"
+                component='img'
                 src={fleche}
                 sx={{
-                  height: "0.9rem",
-                  mt: "0.4rem",
-                  ml: "0.3rem",
-                  mr: "0.3rem",
-                  display: maxLevelReached ? "none" : "",
+                  height: '0.9rem',
+                  mt: '0.4rem',
+                  ml: '0.3rem',
+                  mr: '0.3rem',
+                  display: maxLevelReached ? 'none' : '',
                 }}
-              />{" "}
+              />{' '}
               {nextLevelStats && `${nextLevelStats.defenseBonus}%`}
-            </span>{" "}
+            </span>{' '}
             {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
           </Typography>
         </Box>
@@ -266,22 +266,22 @@ export default function ArmurerieUp({
 
       <RessourcesForUp level={buildingLevel} />
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: '2rem' }}>
         <Button
-          variant="contained"
+          variant='contained'
           sx={{
-            width: "60%",
-            backgroundColor: "#1D1C1C",
-            "&.Mui-disabled": { backgroundColor: "rgb(29,28,28,30%)" },
-            "&:hover": {
-              backgroundColor: "#333333",
+            width: '60%',
+            backgroundColor: '#1D1C1C',
+            '&.Mui-disabled': { backgroundColor: 'rgb(29,28,28,30%)' },
+            '&:hover': {
+              backgroundColor: '#333333',
             },
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow: maxLevelReached
-              ? ""
-              : "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              ? ''
+              : '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
           }}
-          type="submit"
+          type='submit'
           onClick={handleUpgrade}
           disabled={!canUpgrade || maxLevelReached}
         >

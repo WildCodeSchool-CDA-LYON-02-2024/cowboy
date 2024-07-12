@@ -1,10 +1,14 @@
-import ResourceModel from "../models/ResourceDAO.js";
+import ResourceModel from '../models/ResourceDAO.js';
+import jwt from 'jsonwebtoken';
+import RessourceService from '../services/ressources/Ressource.js';
+const resourceService = new RessourceService();
+
 const Resource = new ResourceModel();
 // sse headers
 const setSSEHeaders = (res) => {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
 };
 
 // La méthode d'envoi des données SSE
@@ -26,16 +30,32 @@ const getResources1 = (res, loggedPlayerId) => {
       // res.json(resources);
     })
     .catch((err) => {
-      console.error("Error fetching initial resources:", err);
-      sendError(res, "Error fetching initial resources");
+      console.error('Error fetching initial resources:', err);
+      sendError(res, 'Error fetching initial resources');
     });
 };
 
-// // le fetch de ressources
+const find = (req, res) => {
+  const id = req.params.id;
+  Resource.getResourcesSlot(id)
+    .then((rows) => {
+      res.json(rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({ error: 'An error occurred while fetching data' });
+    });
+};
+
+const update = (req, res) => {
+  resourceService.collectResources(req, res);
+};
+
+// le fetch de ressources
 
 const browseSSE = (req, res) => {
   const loggedPlayerId = req.loggedPlayerId;
-  console.log(loggedPlayerId, "PLAYER CONNECTE");
+  console.log(loggedPlayerId, 'PLAYER CONNECTE');
   setSSEHeaders(res);
 
   getResources1(res, loggedPlayerId);
@@ -47,21 +67,21 @@ const browseSSE = (req, res) => {
         sendData(res, resources);
       })
       .catch((err) => {
-        console.error("Error fetching resources 2:", err);
-        sendError(res, "Error fetching resources 2 ");
+        console.error('Error fetching resources 2:', err);
+        sendError(res, 'Error fetching resources 2 ');
       });
   }, 500);
 
-  req.on("close", () => {
+  req.on('close', () => {
     clearInterval(getResource2);
     res.end();
-    console.log("SSE connection closed by client");
+    console.log('SSE connection closed by client');
   });
 
-  req.on("error", (err) => {
+  req.on('error', (err) => {
     clearInterval(getResource2);
     res.end();
-    console.error("SSE connection error:", err);
+    console.error('SSE connection error:', err);
   });
 };
 
@@ -81,19 +101,19 @@ const updateResources = async (req, res) => {
   const { colonyId } = req.params;
   const resources = req.body;
   console.log(
-    "RESOURCES CONTROLLER:",
+    'RESOURCES CONTROLLER:',
     resources,
-    "COLONYID CONTROLLER:",
+    'COLONYID CONTROLLER:',
     colonyId
   );
   Resource.updateResources(colonyId, resources)
     .then((result) => {
-      res.json({ message: "Ressource mise à jour avec succès", result });
+      res.json({ message: 'Ressource mise à jour avec succès', result });
     })
     .catch((err) => {
-      console.error("Failed to update resource:", err);
-      res.status(500).json({ error: "Failed to update resource" });
+      console.error('Failed to update resource:', err);
+      res.status(500).json({ error: 'Failed to update resource' });
     });
 };
 
-export default { browse, browseSSE, updateResources };
+export default { browse, browseSSE, updateResources, update, find };

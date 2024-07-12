@@ -1,16 +1,21 @@
+import MapDAO from '../models/MapDAO.js';
 import UserDAO from '../models/UserDAO.js';
 
 import error from '../services/errors/error.js';
 import MapConfig from '../services/map/MapConfig.js';
 import { hashPassword } from '../utils/auth.js';
 import AbstractController from './AbsractController.js';
+import globals from '../services/Player.js';
 
 class UserController extends AbstractController {
   constructor() {
     super();
     this.model = new UserDAO();
     this.init = new MapConfig();
+    this.map = new MapDAO();
+    this.player = null;
   }
+
   add = async (req, res) => {
     const { username, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
@@ -29,13 +34,36 @@ class UserController extends AbstractController {
 
   findByMailForLogin = (req, res, next) => {
     const { email, password } = req.body;
+    let slotId = null;
     this.model
       .findByMail(email)
       .then((rows) => {
+        console.log('rows id : ', rows[0].id);
+        globals.playerId = rows[0].id;
         if (rows[0] === undefined) {
           res.status(404).json({ error: 'Utilisateur non trouvé' });
-        } else req.user = { ...rows, password: password };
-        next();
+        } else {
+          // Je recupere le slot qui a été affecté au player pour le renvoyer dans le front
+
+          this.map
+            .findSlotByPlayerId(rows[0].id)
+
+            .then((data) => {
+              slotId = data.map((slotObj) => slotObj.slot);
+
+              req.user = {
+                id: rows[0].id,
+                username: rows[0].username,
+                email: rows[0].email,
+                password: rows[0].password,
+                colony_id: rows[0].colony_id,
+                slot: slotId,
+              };
+
+              next();
+            })
+            .catch((err) => console.error(err));
+        }
       })
       .catch((err) => {
         console.error(err);

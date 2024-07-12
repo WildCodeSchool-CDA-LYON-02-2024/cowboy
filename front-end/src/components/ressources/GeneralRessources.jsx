@@ -1,12 +1,12 @@
-import { Box, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import Bois from "../../assets/images/ressources/buche-bois.png";
-import Gold from "../../assets/images/ressources/pepite-or.png";
-import Iron from "../../assets/images/ressources/steel.png";
-import Stone from "../../assets/images/ressources/stone.png";
-import { usePlayerContext } from "../../context/PlayerContext";
+import { Box, Container, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import Bois from '../../assets/images/ressources/buche-bois.png';
+import Gold from '../../assets/images/ressources/pepite-or.png';
+import Iron from '../../assets/images/ressources/steel.png';
+import Stone from '../../assets/images/ressources/stone.png';
+import { usePlayerContext } from '../../context/PlayerContext';
 // import { fetchGlobalResource } from "../../services/ResourceService";
-import { subscribeToResourceUpdates } from "../../services/ResourceService.js";
+import { subscribeToResourceUpdates } from '../../services/ResourceService.js';
 
 export default function GeneralRessources() {
   const [resources, setResources] = useState([]);
@@ -22,7 +22,7 @@ export default function GeneralRessources() {
         setResources(newData);
       },
       (err) => {
-        console.error("SSE error:", err);
+        console.error('SSE error:', err);
       }
     );
 
@@ -42,22 +42,22 @@ export default function GeneralRessources() {
 
   // Définir une correspondance du nom de la ressource aux styles
   const resourceStylesMap = {
-    gold: { height: "1rem", mt: "0.1rem", pl: "0.2rem" },
-    metal: { height: "0.75rem", mt: "0.1rem", pl: "0.3rem" },
-    stone: { height: "1.2rem", mt: "0.1rem", pl: "0.1rem", width: "40%" },
-    wood: { height: "1.2rem", pl: "0.5rem" },
+    gold: { height: '1rem', mt: '0.1rem', pl: '0.2rem' },
+    metal: { height: '0.75rem', mt: '0.1rem', pl: '0.3rem' },
+    stone: { height: '1.2rem', mt: '0.1rem', pl: '0.1rem', width: '40%' },
+    wood: { height: '1.2rem', pl: '0.5rem' },
   };
 
   return (
     <Container
       sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "row-reverse",
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
         zIndex: 2,
-        position: "fixed",
-        top: "4.2rem",
-        pt: "0.3rem",
+        position: 'fixed',
+        top: '4.2rem',
+        pt: '0.3rem',
       }}
     >
       {resources &&
@@ -65,30 +65,30 @@ export default function GeneralRessources() {
           <Box
             key={index}
             sx={{
-              width: "20%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "1rem",
-              border: "2px solid #565656",
-              backgroundColor: "black",
+              width: '20%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '1rem',
+              border: '2px solid #565656',
+              backgroundColor: 'black',
             }}
           >
             <Box
-              component="img"
+              component='img'
               src={resourceImageMap[resource.name]}
               alt={resource.name}
               sx={resourceStylesMap[resource.name]}
             />
             <Typography
               sx={{
-                width: "70%",
-                pl: "0.2rem",
-                fontFamily: "Pixelify",
+                width: '70%',
+                pl: '0.2rem',
+                fontFamily: 'Pixelify',
                 textShadow:
-                  "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-                color: "white",
-                textAlign: "center",
+                  '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+                color: 'white',
+                textAlign: 'center',
               }}
             >
               {resource.quantity} k

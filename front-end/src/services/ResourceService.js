@@ -1,23 +1,127 @@
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+import { funcAudioBuild } from '../components/audioClick/audioClick.js';
 
 export const fetchGlobalResource = async (token) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/resource`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }
     );
 
-    return await response.json();
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json(); // Récupération des données JSON
+
+    return data; // Retourner les données récupérées
   } catch (err) {
-    console.error("Network error:", err);
+    console.error('Network error:', err);
     throw err;
   }
+};
+
+export const fetchResourceOnSlot = (id, setSlotResource) => {
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/resource/slot/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      setSlotResource(data);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const collectResource = (playerId, resource, colonyId) => {
+  fetch(
+    `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/resource/player/${playerId}/take-resources`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ resource, playerId, colonyId }),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log('data : ', data);
+    })
+    .catch((err) => console.error(err));
+};
+
+export const buildRessource = (
+  playerId,
+  colonyId,
+  slotId,
+  setMessage,
+  setBuildAuthorisation,
+  setModal,
+  setPlayerSlot
+) => {
+  fetch(
+    `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/resource/player/${playerId}/add-colony`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ playerId, colonyId, slotId }),
+    }
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      if (data.message === 'Il y a déjà une colonie sur cet emplacement') {
+        setMessage(data.message);
+        setBuildAuthorisation(false);
+        setModal(true);
+      } else if (data.message != "You don't have enough gold") {
+        funcAudioBuild();
+        setBuildAuthorisation(true);
+        setPlayerSlot((prevSlots) => [...prevSlots, data.slot[0]]);
+        setModal(false);
+      } else {
+        setMessage("Tu n'as pas assez d'argent");
+        setBuildAuthorisation(false);
+        setModal(true);
+      }
+    })
+    .catch((err) => console.error(err));
+};
+
+export const fetchPlayerSlots = (playerId, setPlayerSlot) => {
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/map/slot/${playerId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      setPlayerSlot(data);
+    })
+    .catch((err) => console.error(err));
 };
 
 export const subscribeToResourceUpdates = (token, onMessage, onError) => {
@@ -33,7 +137,7 @@ export const subscribeToResourceUpdates = (token, onMessage, onError) => {
   };
 
   eventSource.onerror = (err) => {
-    console.error("EventSource error:", err);
+    console.error('EventSource error:', err);
     if (onError) {
       onError(err);
     }
@@ -51,9 +155,9 @@ export const updatePlayerResources = async (token, updatedResources) => {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/resource/${colonyId}`,
       {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedResources),
@@ -61,13 +165,13 @@ export const updatePlayerResources = async (token, updatedResources) => {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to update player resources");
+      throw new Error('Failed to update player resources');
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error updating player resources:", error);
+    console.error('Error updating player resources:', error);
     throw error; // Gérer l'erreur selon votre logique d'application
   }
 };
@@ -95,12 +199,12 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
   if (!requiredResources) {
     return {
       canUpgrade: false,
-      message: "Niveau max atteint, aucune amélioration possible.",
+      message: 'Niveau max atteint, aucune amélioration possible.',
     };
   }
 
   const hasEnoughResources = Object.keys(requiredResources).every((key) => {
-    if (key === "level") {
+    if (key === 'level') {
       return true;
     }
     const requiredAmount = requiredResources[key];
@@ -118,7 +222,7 @@ export const checkIfCanUpgrade = (playerResources, buildingLevel) => {
 
   return {
     canUpgrade: true,
-    message: "Amélioration possible.",
+    message: 'Amélioration possible.',
   };
 };
 
@@ -133,7 +237,7 @@ export const removeResourcesForUpgrade = (
   );
 
   if (!requiredResources) {
-    console.error("Cannot find required resources for next level upgrade.");
+    console.error('Cannot find required resources for next level upgrade.');
     return null;
   }
 
@@ -142,8 +246,9 @@ export const removeResourcesForUpgrade = (
     const resourceId = resource.id;
     const resourceName = resource.name;
     const requiredAmount = requiredResources[resourceId];
-
+    console.log(requiredAmount, ":AMOUNT");
     if (requiredAmount && resource.quantity >= requiredAmount) {
+      console.log(resource, "RESOURCES SERVICE");
       return {
         id: resourceId,
         name: resourceName,
@@ -153,6 +258,6 @@ export const removeResourcesForUpgrade = (
       return resource;
     }
   });
-
+  console.log(updatedResources, "APRES AMELIORATION");
   return updatedResources;
 };

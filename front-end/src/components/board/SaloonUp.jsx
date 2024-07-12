@@ -1,45 +1,58 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import fleche from "../../assets/images/fleche-verte.png";
-import RessourcesForUp from "../../components/ressources/RessourcesForUp.jsx";
-import { usePlayerContext } from "../../context/PlayerContext.jsx";
-import { upgradeBuilding } from "../../services/BuildingService.js";
+import { Box, Button, Container, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import fleche from '../../assets/images/fleche-verte.png';
+import RessourcesForUp from '../../components/ressources/RessourcesForUp.jsx';
+import { usePlayerContext } from '../../context/PlayerContext.jsx';
+import { upgradeBuilding } from '../../services/BuildingService.js';
 import {
   checkIfCanUpgrade,
   removeResourcesForUpgrade,
   resourceTiers,
   updatePlayerResources,
-} from "../../services/ResourceService.js";
-import { reducTiers } from "../../services/StatsService.js";
+} from '../../services/ResourceService.js';
+import { reducTiers } from '../../services/StatsService.js';
+import { funcAudioSaloonUp } from '../audioClick/audioClick.js';
 
 export default function SaloonUp({
   building,
   buildingTypeId,
   playerResources,
+  setUpdate,
+  update,
 }) {
   const { playerData } = usePlayerContext();
 
   const [canUpgrade, setCanUpgrade] = useState(false);
+  const [buildingLevel, setBuildingLevel] = useState(building.level);
+  const [displayLevel, setDisplayLevel] = useState(building.level);
+  const [maxLevelReached, setMaxLevelReached] = useState(false);
+
+  const maxLevel = 10;
 
   useEffect(() => {
-    setCanUpgrade(checkIfCanUpgrade(playerResources, building.level));
-  }, [building.level, playerResources]);
+    if (buildingLevel >= maxLevel) {
+      setMaxLevelReached(true);
+    } else {
+      setMaxLevelReached(false);
+      setCanUpgrade(checkIfCanUpgrade(playerResources, buildingLevel));
+    }
+  }, [buildingLevel, playerResources]);
 
   const handleUpgrade = async () => {
     try {
       if (!playerData || !playerData.token) {
-        console.error("Player data or token missing.");
+        console.error('Player data or token missing.');
         return;
       }
 
       const canUpgradeResult = checkIfCanUpgrade(
         playerResources,
-        building.level
+        buildingLevel
       );
 
       if (!canUpgradeResult.canUpgrade) {
-        console.error("Amélioration impossible:", canUpgradeResult.message);
+        console.error('Amélioration impossible:', canUpgradeResult.message);
         return;
       }
 
@@ -47,23 +60,27 @@ export default function SaloonUp({
         playerData.token,
         buildingTypeId
       );
-
+      funcAudioSaloonUp();
       if (updatedBuilding.error) {
-        console.error("Failed to upgrade building:", updatedBuilding.error);
+        console.error('Failed to upgrade building:', updatedBuilding.error);
         return;
       }
 
-      console.log("Building upgraded successfully:", updatedBuilding);
+      console.log('Building upgraded successfully:', updatedBuilding);
+
+      setBuildingLevel((prevLevel) => prevLevel + 1);
+
+      setDisplayLevel(buildingLevel + 1);
 
       // Calculer les ressources mises à jour nécessaires
       const updatedResources = removeResourcesForUpgrade(
         playerResources,
-        building.level,
+        buildingLevel,
         resourceTiers
       );
 
       if (!updatedResources) {
-        console.error("Updated resources is undefined or null.");
+        console.error('Updated resources is undefined or null.');
         return;
       }
 
@@ -72,17 +89,17 @@ export default function SaloonUp({
         playerData.token,
         updatedResources
       );
-
+      setUpdate(!update);
       console.log(
-        "Player resources updated successfully:",
+        'Player resources updated successfully:',
         updatedPlayerResources
       );
     } catch (err) {
-      console.error("Failed to upgrade building:", err);
+      console.error('Failed to upgrade building:', err);
     }
   };
 
-  const stats = reducTiers.find((tier) => tier.level === building.level);
+  const stats = reducTiers.find((tier) => tier.level === buildingLevel);
 
   if (!stats) {
     return null; // Gestion de cas où le niveau n'est pas trouvé
@@ -92,125 +109,136 @@ export default function SaloonUp({
 
   // Recherche des statistiques de vitesse de déplacement pour le niveau suivant
   const nextLevelStats = reducTiers.find(
-    (tier) => tier.level === building.level + 1
+    (tier) => tier.level === buildingLevel + 1
   );
 
   return (
     <Container disableGutters>
       <Box
         sx={{
-          paddingLeft: "0.5rem",
-          paddingRight: "0.5rem",
+          paddingLeft: '0.5rem',
+          paddingRight: '0.5rem',
         }}
       >
         <Typography
           sx={{
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
-            fontSize: "1.3rem",
-            display: "flex",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
+            fontSize: '1.3rem',
+            display: 'flex',
           }}
         >
-          lvl:{" "}
-          <span style={{ color: "#33E264", display: "flex", width: "50%" }}>
-            {building.level}{" "}
-            <Box
-              component="img"
-              src={fleche}
-              sx={{
-                height: "1.2rem",
-                mt: "0.4rem",
-                ml: "0.3rem",
-                mr: "0.3rem",
-              }}
-            />{" "}
-            {building.level + 1}
-          </span>{" "}
+          lvl:{' '}
+          <span style={{ color: '#33E264', display: 'flex', width: '50%' }}>
+            {maxLevelReached ? (
+              'MAX'
+            ) : (
+              <>
+                {displayLevel}
+                <Box
+                  component='img'
+                  src={fleche}
+                  sx={{
+                    height: '1.2rem',
+                    mt: '0.4rem',
+                    ml: '0.3rem',
+                    mr: '0.3rem',
+                  }}
+                />
+                {displayLevel + 1}
+              </>
+            )}
+          </span>
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
       <Box
         sx={{
-          padding: "1.5rem 0.5rem 0.5rem 0.5rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          padding: '1.5rem 0.5rem 0.5rem 0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Typography
           sx={{
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
-            textAlign: "center",
-            width: "90%",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
+            textAlign: 'center',
+            width: '90%',
+            fontSize: '1.2rem',
           }}
         >
           Réduit le coût de recrutement des nouveaux cow-boys
         </Typography>
         <Typography
           sx={{
-            fontFamily: "Pixelify",
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-            pt: "1rem",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            textAlign: 'center',
+            pt: '1rem',
+            fontSize: '1.2rem',
           }}
         >
-          Coût de recrutement:{" "}
+          Coût de recrutement:{' '}
           <span
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              color: "#33E264",
-              marginLeft: "0.3rem",
+              display: 'flex',
+              justifyContent: 'space-between',
+              color: '#33E264',
+              marginLeft: '0.3rem',
             }}
           >
-            {" "}
-            -{reducBonus}%{"  "}
+            {' '}
+            -{reducBonus}%{'  '}
             <Box
-              component="img"
+              component='img'
               src={fleche}
               sx={{
-                height: "0.7rem",
-                mt: "0.4rem",
-                ml: "0.3rem",
-                mr: "0.3rem",
+                height: '0.9rem',
+                mt: '0.4rem',
+                ml: '0.3rem',
+                mr: '0.3rem',
+                display: maxLevelReached ? 'none' : '',
               }}
             />
-            {"  "}
+            {'  '}
             {nextLevelStats && `-${nextLevelStats.reducBonus}%`}
-          </span>{" "}
+          </span>{' '}
           {/*Passer les valeurs via props du cmpnt parent "BoardContainer" */}
         </Typography>
       </Box>
 
-      <RessourcesForUp level={building.level} />
+      {!maxLevelReached && <RessourcesForUp level={buildingLevel} />}
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: '2rem' }}>
         <Button
-          variant="contained"
+          variant='contained'
           sx={{
-            width: "60%",
-            backgroundColor: "#1D1C1C",
-            "&:hover": {
-              backgroundColor: "#333333",
+            width: '60%',
+            backgroundColor: '#1D1C1C',
+            '&.Mui-disabled': { backgroundColor: 'rgb(29,28,28,30%)' },
+            '&:hover': {
+              backgroundColor: '#333333',
             },
-            fontFamily: "Pixelify",
-            textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-            color: "white",
+            fontFamily: 'Pixelify',
+            textShadow: maxLevelReached
+              ? ''
+              : '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+            color: 'white',
           }}
-          type="submit"
+          type='submit'
           onClick={handleUpgrade}
-          disabled={!canUpgrade}
+          disabled={!canUpgrade || maxLevelReached}
         >
           AMÉLIORER
         </Button>
@@ -227,4 +255,6 @@ SaloonUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
+  setUpdate: PropTypes.func.isRequired,
+  update: PropTypes.bool.isRequired,
 };

@@ -89,7 +89,6 @@ class MapConfig {
 
   // Affectation d'un slot de manière aleatoire
   affectRandomSlot(array, playerId) {
-    console.log('playerId : ', playerId);
     const position = Math.floor(Math.random() * array.length);
     this.slot = array[position].slot;
 
@@ -162,7 +161,6 @@ class MapConfig {
   // Insertion de l'id de la table map, dans la table colony, afin de relier le nouveau joueur a sa colonie
   affectPlayerToColony() {
     return new Promise((resolve, reject) => {
-      console.log('slotId : ', this.slotId);
       this.colony
         .create('test', this.slotId)
         .then((res) => {

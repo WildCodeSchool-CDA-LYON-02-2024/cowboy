@@ -1,24 +1,27 @@
-import { Accordion, Box, Container, Typography } from "@mui/material";
-import { AccordionDetails, AccordionSummary } from "@mui/material/";
-import { useEffect, useState } from "react";
-import ChevronIcon from "../../assets/images/ChevronIcon";
-import BarilletImg from "../../assets/images/barillet-sbg.png";
-import WesternCity from "../../assets/images/western-city.jpeg";
-import { usePlayerContext } from "../../context/PlayerContext.jsx";
-import { fetchBuildingLevel } from "../../services/BuildingService.js";
-import { fetchGlobalResource } from "../../services/ResourceService.js";
-import ArmurerieUp from "./ArmurerieUp";
-import EcurieUp from "./EcurieUp";
-import EntrepotUp from "./EntrepotUp";
-import SaloonUp from "./SaloonUp";
+import { Accordion, Box, Container, Typography } from '@mui/material';
+import { AccordionDetails, AccordionSummary } from '@mui/material/';
+import { useEffect, useState } from 'react';
+import ChevronIcon from '../../assets/images/ChevronIcon';
+import BarilletImg from '../../assets/images/barillet-sbg.png';
+import WesternCity from '../../assets/images/western-city.jpeg';
+import { usePlayerContext } from '../../context/PlayerContext.jsx';
+import { fetchBuildingLevel } from '../../services/BuildingService.js';
+import { fetchGlobalResource } from '../../services/ResourceService.js';
+import ArmurerieUp from './ArmurerieUp';
+import EcurieUp from './EcurieUp';
+import EntrepotUp from './EntrepotUp';
+import SaloonUp from './SaloonUp';
+import { funcAudioClick, funcAudioClose } from '../audioClick/audioClick.js';
 
 export default function BoardContainer() {
   const [expanded, setExpanded] = useState(false);
   const [building, setBuilding] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [playerResources, setPlayerResources] = useState(null);
   const { playerData } = usePlayerContext();
 
   useEffect(() => {
+    console.log("iciiiiiiii");
     const fetchLevel = async () => {
       try {
         if (playerData && playerData.token) {
@@ -29,86 +32,89 @@ export default function BoardContainer() {
           setPlayerResources(resources);
         }
       } catch (err) {
-        console.error("Failed to fetch resources:", err);
+        console.error('Failed to fetch resources:', err);
       }
     };
 
     fetchLevel();
-  }, [playerData]);
+  }, [playerData, update]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    if (isExpanded) {
+      funcAudioClick();
+    } else funcAudioClose();
   };
 
   return (
     <Container
-      component="section"
+      component='section'
       disableGutters
       maxWidth={false}
-      sx={{ pt: "4rem", height: "100vh", width: "100vw" }}
+      sx={{ pt: '4rem', height: '100vh', width: '100vw' }}
     >
       <Box
         sx={{
-          height: "15vh",
-          width: "100%",
-          backgroundColor: "black",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "fixed",
+          height: '15vh',
+          width: '100%',
+          backgroundColor: 'black',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'fixed',
           zIndex: 1,
         }}
       >
         <Typography
-          variant="h2"
+          variant='h2'
           sx={{
-            pt: "1.5rem",
-            display: "flex",
-            color: "white",
-            fontFamily: "Pixelify",
+            pt: '1.5rem',
+            display: 'flex',
+            color: 'white',
+            fontFamily: 'Pixelify',
             textShadow:
-              "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
           }}
         >
           B
           <span>
             <Box
-              component="img"
+              component='img'
               src={BarilletImg}
-              alt="barillet"
-              sx={{ width: "3.5rem", height: "3.5rem", mt: "0.5rem" }}
+              alt='barillet'
+              sx={{ width: '3.5rem', height: '3.5rem', mt: '0.5rem' }}
             />
           </span>
           ARD
         </Typography>
       </Box>
       <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
+        expanded={expanded === 'panel1'}
+        onChange={handleChange('panel1')}
         sx={{
-          "&.MuiPaper-root": {
+          '&.MuiPaper-root': {
             margin: 0,
           },
-          fontFamily: "Pixelify",
+          fontFamily: 'Pixelify',
           textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          marginTop: "10rem",
-          paddingTop: "8.5rem",
+            '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          color: 'white',
+          marginTop: '10rem',
+          paddingTop: '8.5rem',
         }}
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
           sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
+            height: '10vh',
+            backgroundColor: '#565656',
+            fontSize: '2rem',
           }}
         >
           SALOON
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
+          sx={{ padding: 0, backgroundColor: '#959595', height: '18.1rem' }}
         >
           {/*COMPOSANT D AMELIORATION SALOON*/}
           {building.length > 1 && playerResources && (
@@ -116,36 +122,38 @@ export default function BoardContainer() {
               building={building[0]}
               buildingTypeId={building[0].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
       </Accordion>
       <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
+        expanded={expanded === 'panel2'}
+        onChange={handleChange('panel2')}
         sx={{
-          "&.MuiPaper-root": {
+          '&.MuiPaper-root': {
             margin: 0,
           },
-          fontFamily: "Pixelify",
+          fontFamily: 'Pixelify',
           textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
+            '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          color: 'white',
+          borderTop: '1px solid black',
         }}
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
           sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
+            height: '10vh',
+            backgroundColor: '#565656',
+            fontSize: '2rem',
           }}
         >
           ARMURERIE
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
+          sx={{ padding: 0, backgroundColor: '#959595', height: '18.1rem' }}
         >
           {/*COMPOSANT D AMELIORATION ARMURERIE*/}
           {building.length > 1 && playerResources && (
@@ -153,36 +161,38 @@ export default function BoardContainer() {
               building={building[1]}
               buildingTypeId={building[1].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
       </Accordion>
       <Accordion
-        expanded={expanded === "panel3"}
-        onChange={handleChange("panel3")}
+        expanded={expanded === 'panel3'}
+        onChange={handleChange('panel3')}
         sx={{
-          "&.MuiPaper-root": {
+          '&.MuiPaper-root': {
             margin: 0,
           },
-          fontFamily: "Pixelify",
+          fontFamily: 'Pixelify',
           textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
+            '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          color: 'white',
+          borderTop: '1px solid black',
         }}
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
           sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
+            height: '10vh',
+            backgroundColor: '#565656',
+            fontSize: '2rem',
           }}
         >
           ÉCURIE
         </AccordionSummary>
         <AccordionDetails
-          sx={{ padding: 0, backgroundColor: "#959595", height: "18.1rem" }}
+          sx={{ padding: 0, backgroundColor: '#959595', height: '18.1rem' }}
         >
           {/*COMPOSANT D AMELIORATION ECURIE*/}
           {building.length > 1 && playerResources && (
@@ -190,31 +200,33 @@ export default function BoardContainer() {
               building={building[2]}
               buildingTypeId={building[2].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
-      </Accordion>{" "}
+      </Accordion>{' '}
       <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
+        expanded={expanded === 'panel4'}
+        onChange={handleChange('panel4')}
         sx={{
-          "&.MuiPaper-root": {
+          '&.MuiPaper-root': {
             margin: 0,
             zIndex: 1,
           },
-          fontFamily: "Pixelify",
+          fontFamily: 'Pixelify',
           textShadow:
-            "1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black",
-          color: "white",
-          borderTop: "1px solid black",
+            '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          color: 'white',
+          borderTop: '1px solid black',
         }}
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
           sx={{
-            height: "10vh",
-            backgroundColor: "#565656",
-            fontSize: "2rem",
+            height: '10vh',
+            backgroundColor: '#565656',
+            fontSize: '2rem',
           }}
         >
           ENTREPOT
@@ -222,8 +234,8 @@ export default function BoardContainer() {
         <AccordionDetails
           sx={{
             padding: 0,
-            backgroundColor: "#959595",
-            height: "18.1rem",
+            backgroundColor: '#959595',
+            height: '18.1rem',
           }}
         >
           {/*COMPOSANT D AMELIORATION ENTREPOT*/}
@@ -232,18 +244,20 @@ export default function BoardContainer() {
               building={building[3]}
               buildingTypeId={building[3].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
       </Accordion>
       <Box
-        alt="Image de la ville"
+        alt='Image de la ville'
         sx={{
-          height: "18.1rem",
-          width: "100%",
+          height: '18.1rem',
+          width: '100%',
           backgroundImage: `url(${WesternCity})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       />
     </Container>

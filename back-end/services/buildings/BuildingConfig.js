@@ -1,8 +1,8 @@
-import AbstractController from "../../controllers/AbsractController.js";
-import BuildingDAO from "../../models/BuildingDAO.js";
-import BuildingTypeDAO from "../../models/BuildingTypeDAO.js";
+import AbstractController from '../../controllers/AbsractController.js';
+import BuildingDAO from '../../models/BuildingDAO.js';
+import BuildingTypeDAO from '../../models/BuildingTypeDAO.js';
 
-import Ressource from "../ressources/Ressource.js";
+import Ressource from '../ressources/Ressource.js';
 
 class BuildingConfig extends AbstractController {
   constructor() {
@@ -13,11 +13,11 @@ class BuildingConfig extends AbstractController {
     // this.building = this.model.table;
     this.lvl = 1;
     this.ressource = new Ressource();
-    this.wood = new Ressource("wood");
-    this.gold = new Ressource("gold");
-    this.metal = new Ressource("metal");
-    this.stone = new Ressource("stone");
-    this.type = ["saloon", "armory", "stable", "warehouse"];
+    this.wood = new Ressource('wood');
+    this.gold = new Ressource('gold');
+    this.metal = new Ressource('metal');
+    this.stone = new Ressource('stone');
+    this.type = ['saloon', 'armory', 'stable', 'warehouse'];
   }
 
   // Init des types de building
@@ -57,7 +57,7 @@ class BuildingConfig extends AbstractController {
       .catch((err) => console.error(err));
   }
   nextLevel() {
-    console.log("this table :", this.building);
+    console.log('this table :', this.building);
   }
 }
 

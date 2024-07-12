@@ -85,6 +85,61 @@ class Ressource {
     // Affiche le résultat final dans la console
     console.log(resourceMap);
   }
+
+  collectResources(req, res) {
+    // Je recupere toutes les infos dans mon req.body
+    const payload = req.body;
+    const playerId = payload.playerId;
+    const colonyId = payload.colonyId;
+
+    // Je recupere toutes les ressources du joueurs
+    this.getGlobalResources(playerId)
+      .then((globalResources) => {
+        const result = globalResources;
+
+        return new Promise((resolve, reject) => {
+          let promises = [];
+          for (let i = 0; i < payload.resource.length; i++) {
+            let updatedQuantity =
+              payload.resource[i].quantity + result[i].quantity;
+            let promise = this.model
+              // J'additionne les ressources du joueurs, avec les nouvelles ressources
+              .updateResourcePlayer(updatedQuantity, i + 1, colonyId);
+
+            promises.push(promise);
+          }
+
+          Promise.all(promises)
+            .then((results) => {
+              res.sendStatus(204);
+              resolve(results);
+            })
+            .catch((err) => {
+              console.error(err);
+              res
+                .status(500)
+                .send('An error occurred while updating resources.');
+              reject(err);
+            });
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('An error occurred while retrieving resources.');
+      });
+  }
+
+  getGlobalResources(id) {
+    return new Promise((resolve, reject) => {
+      this.model
+        .getResources(id)
+        .then((result) => resolve(result))
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });
+  }
 }
 
 export default Ressource;

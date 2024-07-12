@@ -22,7 +22,8 @@ const hashPassword = async (password) => {
 };
 
 const verifyPassword = (req, res, next) => {
-  const { id, username, email, colony_id, slot, password } = req.user;
+  const { id, username, email, colony_id, slot, password, otherSlot } =
+    req.user;
 
   argon2
     .verify(password, req.body.password)
@@ -35,6 +36,7 @@ const verifyPassword = (req, res, next) => {
             email: email,
             colonyId: colony_id,
             slot: slot,
+            otherSlot: otherSlot,
           },
         };
         console.log('payLoad : ', payload);

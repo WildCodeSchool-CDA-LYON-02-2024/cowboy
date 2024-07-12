@@ -33,7 +33,24 @@ class MapDAO extends AbstractDAO {
           if (err) {
             return reject(err);
           }
-     
+
+          return resolve(result);
+        }
+      );
+    });
+  }
+  findOtherSlot(id) {
+    return new Promise((resolve, reject) => {
+      this.connection.execute(
+        `SELECT slot FROM ${this.table}
+        WHERE player_id != ?
+        `,
+        [id],
+        (err, result, fields) => {
+          if (err) {
+            return reject(err);
+          }
+
           return resolve(result);
         }
       );
@@ -42,7 +59,6 @@ class MapDAO extends AbstractDAO {
 
   update(playerId, slot) {
     return new Promise((resolve, reject) => {
-
       this.connection.execute(
         `UPDATE ${this.table} set player_id = ? 
         WHERE slot = ?`,

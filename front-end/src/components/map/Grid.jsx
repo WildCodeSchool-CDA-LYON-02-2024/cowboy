@@ -28,7 +28,7 @@ const Grid = ({ rows, cols }) => {
   const [slots, setSlots] = useState([]);
   const [resourceSlot, setResourceSlot] = useState([]);
   const [slotId, setSlotId] = useState();
-  // State a enlever
+  const [otherSlot, setOtherSlot] = useState();
 
   const [message, setMessage] = useState('');
   const [buildAuthorisation, setBuildAuthorisation] = useState(true);
@@ -40,6 +40,7 @@ const Grid = ({ rows, cols }) => {
     if (decodedToken) {
       setPlayerId(decodedToken.payload.sub.id);
       setColonyId(decodedToken.payload.sub.colonyId);
+      setOtherSlot(decodedToken.payload.sub.otherSlot);
     }
   }, [decodedToken]);
 
@@ -57,6 +58,7 @@ const Grid = ({ rows, cols }) => {
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
+    console.log('Other slot :', otherSlot);
   };
 
   const handleCollect = () => {
@@ -92,7 +94,13 @@ const Grid = ({ rows, cols }) => {
       const slot = slots[idCounter - 1]; // Correspond à l'index dans le tableau des slots
       const id = slot ? slot.id : idCounter; // Utilise l'ID du slot ou un ID par défaut si les slots ne sont pas encore chargés
       grid.push(
-        <Cell key={id} id={id} onClick={handleClick} playerSlot={playerSlot} />
+        <Cell
+          key={id}
+          id={id}
+          onClick={handleClick}
+          playerSlot={playerSlot}
+          otherSlot={otherSlot}
+        />
       );
       idCounter++;
     }

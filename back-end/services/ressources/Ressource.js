@@ -1,7 +1,6 @@
 import RessourceTypeDAO from '../../models/RessourceTypeDAO.js';
 import ResourceDAO from '../../models/ResourceDAO.js';
 import ressourcesPosition from './ressourcesPosition.js';
-import { collectResource } from '../../../front-end/src/services/ResourceService.js';
 
 class Ressource {
   constructor(name, quantity) {

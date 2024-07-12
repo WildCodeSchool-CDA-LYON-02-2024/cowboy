@@ -11,8 +11,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePlayerContext } from '../../context/PlayerContext';
 import { loginService } from '../../services/PlayerService';
+import AudioPlayer from '../../services/audio/AudioPlayer.js';
+import audioTheme from '../../assets/musique/theme.mp3';
 
 export default function LoginForm() {
+  const audio = new AudioPlayer();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,6 +30,10 @@ export default function LoginForm() {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handlePlay = () => {
+    audio.play(audioTheme, true);
   };
 
   const handleSubmit = async (event) => {
@@ -218,6 +225,7 @@ export default function LoginForm() {
           )}
 
           <Button
+            onClick={handlePlay}
             variant='contained'
             sx={{
               mt: '2rem',

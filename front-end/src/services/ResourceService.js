@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
+import { funcAudioBuild } from '../components/audioClick/audioClick.js';
 
 export const fetchGlobalResource = async (token) => {
   try {
@@ -94,6 +95,7 @@ export const buildRessource = (
         setBuildAuthorisation(false);
         setModal(true);
       } else if (data.message != "You don't have enough gold") {
+        funcAudioBuild();
         setBuildAuthorisation(true);
         setPlayerSlot((prevSlots) => [...prevSlots, data.slot[0]]);
         setModal(false);

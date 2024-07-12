@@ -16,6 +16,11 @@ import {
   buildRessource,
   fetchPlayerSlots,
 } from '../../services/ResourceService.js';
+import {
+  funcAudioClick,
+  funcAudioClose,
+  funcAudioCollect,
+} from '../audioClick/audioClick.js';
 
 const Grid = ({ rows, cols }) => {
   const { decodedToken, playerData } = usePlayerContext();
@@ -48,12 +53,14 @@ const Grid = ({ rows, cols }) => {
 
   // Gestion du clic sur une case
   const handleClick = (id) => {
+    funcAudioClick();
     setSlotId(slots.find((slot) => slot.id === id));
     fetchResourceOnSlot(id, setResourceSlot);
     setModal(true);
   };
 
   const handleCollect = () => {
+    funcAudioCollect();
     collectResource(playerId, resourceSlot, colonyId);
     setModal(false);
   };
@@ -71,6 +78,7 @@ const Grid = ({ rows, cols }) => {
   };
 
   const handleClose = () => {
+    funcAudioClose();
     setModal(false);
     setMessage('');
     setBuildAuthorisation(true);

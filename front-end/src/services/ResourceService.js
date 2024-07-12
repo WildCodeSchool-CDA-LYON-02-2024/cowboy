@@ -142,8 +142,9 @@ export const removeResourcesForUpgrade = (
     const resourceId = resource.id;
     const resourceName = resource.name;
     const requiredAmount = requiredResources[resourceId];
-
+    console.log(requiredAmount, ":AMOUNT");
     if (requiredAmount && resource.quantity >= requiredAmount) {
+      console.log(resource, "RESOURCES SERVICE");
       return {
         id: resourceId,
         name: resourceName,
@@ -153,6 +154,6 @@ export const removeResourcesForUpgrade = (
       return resource;
     }
   });
-
+  console.log(updatedResources, "APRES AMELIORATION");
   return updatedResources;
 };

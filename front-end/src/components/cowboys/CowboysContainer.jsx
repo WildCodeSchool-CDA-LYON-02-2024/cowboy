@@ -1,17 +1,24 @@
 import { Accordion, Box, Container, Typography } from '@mui/material';
 import { AccordionDetails, AccordionSummary } from '@mui/material/';
+import { keyframes } from '@mui/system';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import ChevronIcon from '../../assets/images/ChevronIcon';
 import BarilletImg from '../../assets/images/barillet-sbg.png';
 import Bullet from '../../assets/images/cowboys/bullet.png';
 import WesternSaloon from '../../assets/images/cowboys/saloon-pix.jpeg';
-import { funcAudioClick, funcAudioClose } from '../audioClick/audioClick.js';
-
+import GreenArrow from '../../assets/images/green-arrow-pix.png';
 import CardContainer from './CardContainer';
+import { funcAudioClick, funcAudioClose } from '../audioClick/audioClick.js';
 
 export default function CowboysContainer() {
   const [expanded, setExpanded] = useState(false);
 
+  const moveLeftRight = keyframes`
+  0% { down: 8rem; }
+  50% { top:10rem; }
+  100% { down: 8rem; }
+`;
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
     if (isExpanded) {
@@ -24,7 +31,7 @@ export default function CowboysContainer() {
       component='section'
       disableGutters
       maxWidth={false}
-      sx={{ pt: '4rem', height: '100%', width: '100%' }}
+      sx={{ pt: '4rem', height: '100%', width: '100%', mb: '4rem' }}
     >
       <Box
         sx={{
@@ -139,6 +146,7 @@ export default function CowboysContainer() {
             '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
           color: 'white',
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
@@ -187,6 +195,7 @@ export default function CowboysContainer() {
             '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
           color: 'white',
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
@@ -235,6 +244,7 @@ export default function CowboysContainer() {
             '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
           color: 'white',
         }}
+        disabled
       >
         <AccordionSummary
           expandIcon={<ChevronIcon />}
@@ -272,13 +282,95 @@ export default function CowboysContainer() {
       <Box
         alt='Image de la ville'
         sx={{
+          width: '100%',
+          height: '10vh',
+          backgroundColor: 'black',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Typography
+          variant='h2'
+          sx={{
+            display: 'flex',
+            color: 'white',
+            fontFamily: 'Pixelify',
+            textShadow:
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          }}
+        >
+          SAL{' '}
+          <span>
+            <Box
+              component='img'
+              src={BarilletImg}
+              alt='barillet'
+              sx={{ width: '3rem', height: '3rem', mt: '0.7rem' }}
+            />
+          </span>
+          <span>
+            <Box
+              component='img'
+              src={BarilletImg}
+              alt='barillet'
+              sx={{ width: '3rem', height: '3rem', mt: '0.7rem', ml: '0.3rem' }}
+            />
+          </span>
+          N{' '}
+        </Typography>
+        <Typography
+          sx={{
+            pb: '0.5rem',
+            color: 'white',
+            fontFamily: 'Pixelify',
+            textShadow:
+              '1px 1px 0px black, -1px 1px 0px black, 1px -1px 0px black, -1px -1px 0px black',
+          }}
+        >
+          De nouveaux cowboys vous attendent !
+        </Typography>
+      </Box>
+      <Box
+        alt='Image de la ville'
+        sx={{
+          pb: '1rem',
           height: '18.1rem',
           width: '100%',
           backgroundImage: `url(${WesternSaloon})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-      />
+      >
+        <Box
+          component='img'
+          src={GreenArrow}
+          alt='Fleche'
+          sx={{
+            width: '1.55rem',
+            height: '2.5rem',
+            position: 'relative',
+            top: '7rem',
+            left: '16rem',
+            transform: 'rotate(90deg)',
+            animation: `${moveLeftRight} 2s infinite`,
+          }}
+        />
+        <Link
+          to='/shop'
+          style={{
+            display: 'block',
+            width: '3rem',
+            height: '3rem',
+            position: 'relative',
+            top: '8.5rem',
+            left: '15rem',
+          }}
+        >
+          <Box sx={{ height: '3rem', width: '3rem' }} />
+        </Link>
+      </Box>
     </Container>
   );
 }

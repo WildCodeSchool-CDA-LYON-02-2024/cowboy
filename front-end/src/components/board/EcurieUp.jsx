@@ -18,6 +18,8 @@ export default function EcurieUp({
   building,
   buildingTypeId,
   playerResources,
+  setUpdate,
+  update,
 }) {
   const { playerData } = usePlayerContext();
 
@@ -87,7 +89,7 @@ export default function EcurieUp({
         playerData.token,
         updatedResources
       );
-
+      setUpdate(!update);
       console.log(
         'Player resources updated successfully:',
         updatedPlayerResources
@@ -260,4 +262,6 @@ EcurieUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
+  setUpdate: PropTypes.func.isRequired,
+  update: PropTypes.bool.isRequired,
 };

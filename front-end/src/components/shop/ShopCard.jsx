@@ -8,14 +8,14 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import Canyon from "../../assets/images/cowboys/canyon.png";
-import Magnums from "../../assets/images/navbar/double-magnum.png";
-import CowboyStats from "./CowboyStats";
 import Cowboy1 from "../../assets/images/cowboys/cowboy-pix-sbg.png";
 import Cowboy2 from "../../assets/images/cowboys/cowboy2-pix.png";
 import Cowboy3 from "../../assets/images/cowboys/cowboy3-pix-sbg.png";
 import Cowboy4 from "../../assets/images/cowboys/cowboy4-pix-sbg.png";
+import Magnums from "../../assets/images/navbar/double-magnum.png";
+import CowboyStats from "../cowboys/CowboyStats.jsx";
 
-export default function CowboyCard({ cowboy }) {
+export default function ShopCard({ cowboy }) {
   const cowboysImg = [
     {
       image: Cowboy1,
@@ -105,8 +105,7 @@ export default function CowboyCard({ cowboy }) {
     </Card>
   );
 }
-
-CowboyCard.propTypes = {
+ShopCard.propTypes = {
   cowboy: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

@@ -70,7 +70,7 @@ const browseSSE = (req, res) => {
         console.error('Error fetching resources 2:', err);
         sendError(res, 'Error fetching resources 2 ');
       });
-  }, 1000);
+  }, 500);
 
   req.on('close', () => {
     clearInterval(getResource2);

@@ -18,8 +18,8 @@ export default function SaloonUp({
   building,
   buildingTypeId,
   playerResources,
-  // onUpdateBuilding,
-  // onUpdatePlayerResources,
+  setUpdate,
+  update,
 }) {
   const { playerData } = usePlayerContext();
 
@@ -89,7 +89,7 @@ export default function SaloonUp({
         playerData.token,
         updatedResources
       );
-
+      setUpdate(!update);
       console.log(
         'Player resources updated successfully:',
         updatedPlayerResources
@@ -255,6 +255,6 @@ SaloonUp.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ).isRequired,
-  // onUpdateBuilding: PropTypes.func, // Ajouter cette prop pour permettre la mise à jour des données parentales
-  // onUpdatePlayerResources: PropTypes.func,
+  setUpdate: PropTypes.func.isRequired,
+  update: PropTypes.bool.isRequired,
 };

@@ -1,16 +1,18 @@
 import { Container } from "@mui/material";
-import CowboysContainer from "../components/cowboys/CowboysContainer";
-export default function CowboyPage() {
+import ShopContainer from "../components/shop/ShopContainer";
+
+export default function ShopPage() {
   return (
     <Container
       disableGutters
       sx={{
         height: "100vh",
         width: "100vw",
+        pt: "4rem",
         backgroundColor: "black",
       }}
     >
-      <CowboysContainer />
+      <ShopContainer />
     </Container>
   );
 }

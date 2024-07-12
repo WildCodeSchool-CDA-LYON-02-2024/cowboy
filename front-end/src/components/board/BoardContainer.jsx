@@ -16,10 +16,12 @@ import { funcAudioClick, funcAudioClose } from '../audioClick/audioClick.js';
 export default function BoardContainer() {
   const [expanded, setExpanded] = useState(false);
   const [building, setBuilding] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [playerResources, setPlayerResources] = useState(null);
   const { playerData } = usePlayerContext();
 
   useEffect(() => {
+    console.log("iciiiiiiii");
     const fetchLevel = async () => {
       try {
         if (playerData && playerData.token) {
@@ -35,7 +37,7 @@ export default function BoardContainer() {
     };
 
     fetchLevel();
-  }, [playerData]);
+  }, [playerData, update]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -120,6 +122,8 @@ export default function BoardContainer() {
               building={building[0]}
               buildingTypeId={building[0].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
@@ -157,6 +161,8 @@ export default function BoardContainer() {
               building={building[1]}
               buildingTypeId={building[1].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
@@ -194,6 +200,8 @@ export default function BoardContainer() {
               building={building[2]}
               buildingTypeId={building[2].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>
@@ -236,6 +244,8 @@ export default function BoardContainer() {
               building={building[3]}
               buildingTypeId={building[3].building_type_id}
               playerResources={playerResources}
+              setUpdate={setUpdate}
+              update={update}
             />
           )}
         </AccordionDetails>

@@ -2,9 +2,34 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import BigCanyon from "../../assets/images/big-canyon-pix.jpeg";
 import CowboyUpgrade from "./CowboyUpgrade";
+import Cowboy1 from "../../assets/images/cowboys/cowboy-pix-sbg.png";
+import Cowboy2 from "../../assets/images/cowboys/cowboy2-pix.png";
+import Cowboy3 from "../../assets/images/cowboys/cowboy3-pix-sbg.png";
+import Cowboy4 from "../../assets/images/cowboys/cowboy4-pix-sbg.png";
 
 export default function CowboyDetails({ cowboy, onBack }) {
-  const { name, image } = cowboy;
+  const { id, name } = cowboy;
+
+  const cowboysImg = [
+    {
+      image: Cowboy1,
+    },
+    {
+      image: Cowboy2,
+    },
+    {
+      image: Cowboy3,
+    },
+    {
+      image: Cowboy4,
+    },
+    {
+      image: Cowboy3,
+    },
+    // Ajoutez autant de cowboys que nécessaire
+  ];
+
+  const cowboyImage = cowboysImg[id % cowboysImg.length].image;
 
   return (
     <Container
@@ -31,7 +56,12 @@ export default function CowboyDetails({ cowboy, onBack }) {
           justifyContent: "center",
         }}
       >
-        <Box component="img" src={image} alt={name} sx={{ height: "70%" }} />
+        <Box
+          component="img"
+          src={cowboyImage}
+          alt={name}
+          sx={{ height: "70%" }}
+        />
       </Box>
       <Box
         component="section"
@@ -109,8 +139,8 @@ export default function CowboyDetails({ cowboy, onBack }) {
 
 CowboyDetails.propTypes = {
   cowboy: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
 };

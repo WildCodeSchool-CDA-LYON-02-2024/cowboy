@@ -13,6 +13,15 @@ const browse = (req, res) => {
     });
 };
 
+const getPlayerCowboys = (req,res) =>{
+  const loggedPlayerID = req.loggedPlayerId
+  Cowboy.getPlayerCowboy(loggedPlayerID).then((cowboy)=>{
+    res.json(cowboy)
+  }).catch((err)=>{
+    console.log("you can't get your cowboys")
+    return res.status(401).json(err)
+  })
+}
 /* get all dispo cowboys  */
 
 const getAlldispoCowboys = (req, res) => {
@@ -30,4 +39,6 @@ const getAlldispoCowboys = (req, res) => {
 export default {
   browse,
   getAlldispoCowboys,
+  getPlayerCowboys
+  
 };

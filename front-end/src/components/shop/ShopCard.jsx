@@ -36,6 +36,7 @@ export default function ShopCard({ cowboy }) {
   ];
 
   const cowboyImage = cowboysImg[cowboy.id % cowboysImg.length].image;
+
   return (
     <Card
       sx={{

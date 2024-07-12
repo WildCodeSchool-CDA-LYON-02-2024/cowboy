@@ -1,17 +1,21 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import BigCanyon from "../../assets/images/big-canyon-pix.jpeg";
 import Cowboy1 from "../../assets/images/cowboys/cowboy-pix-sbg.png";
 import Cowboy2 from "../../assets/images/cowboys/cowboy2-pix.png";
 import Cowboy3 from "../../assets/images/cowboys/cowboy3-pix-sbg.png";
 import Cowboy4 from "../../assets/images/cowboys/cowboy4-pix-sbg.png";
+import LeftArrow from "../../assets/images/left-arrow-pix.png";
 import Gold from "../../assets/images/ressources/pepite-or.png";
 import { usePlayerContext } from "../../context/PlayerContext";
 import { recruitCowboys } from "../../services/CowboyService.js";
+import SuccesCpnt from "./SuccesCpnt.jsx";
 
 export default function Recruit({ cowboy, onBack }) {
   const { id, name } = cowboy;
   const { playerData } = usePlayerContext();
+  const [recruitSuccess, setRecruitSuccess] = useState(false);
 
   const cowboysImg = [
     {
@@ -38,13 +42,21 @@ export default function Recruit({ cowboy, onBack }) {
     try {
       if (playerData && playerData.token) {
         await recruitCowboys(playerData.token, id);
-        onBack();
+        setRecruitSuccess(true);
       }
     } catch (err) {
       console.error("Failed to recruit cowboy:", err);
-      alert("Failed to recruit cowboy");
     }
   };
+
+  const handleSuccessClose = () => {
+    setRecruitSuccess(false);
+    onBack();
+  };
+
+  if (recruitSuccess) {
+    return <SuccesCpnt cowboyName={name} onClose={handleSuccessClose} />;
+  }
 
   return (
     <>
@@ -76,11 +88,11 @@ export default function Recruit({ cowboy, onBack }) {
               minWidth: "2rem",
               width: "2rem",
               height: "2rem",
-              backgroundColor: "#B91818",
+              backgroundColor: "#565656",
               padding: 0,
             }}
           >
-            x
+            <Box component="img" src={LeftArrow} sx={{ width: "90%" }} />
           </Button>
         </Box>
         <Box

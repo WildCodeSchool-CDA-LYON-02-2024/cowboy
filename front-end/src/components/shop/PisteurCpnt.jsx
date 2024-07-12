@@ -1,20 +1,18 @@
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
 import Canyon from "../../assets/images/cactus.jpg";
 import Bandit from "../../assets/images/cowboys/cowboy4-pix-sbg.png";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
-export default function PisteurCpnt({ onCardClick }) {
+export default function PisteurCpnt() {
   return (
     <Card
       sx={{
         width: "90%",
         height: "6rem",
+        filter: "grayscale(100%)",
       }}
     >
-      <Link to="/hire"></Link>
       <CardActionArea
-        onClick={onCardClick}
+        disabled
         sx={{
           height: "100%",
           width: "100%",
@@ -75,7 +73,3 @@ export default function PisteurCpnt({ onCardClick }) {
     </Card>
   );
 }
-
-PisteurCpnt.propTypes = {
-  onCardClick: PropTypes.func.isRequired,
-};

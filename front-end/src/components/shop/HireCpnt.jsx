@@ -1,8 +1,19 @@
 import { Box, Button, Container, Paper, Typography } from "@mui/material";
-import ShopCardContainer from "./ShopCardContainer";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import LeftArrow from "../../assets/images/left-arrow-pix.png";
+import ShopCardContainer from "./ShopCardContainer";
 
 export default function HireCpnt() {
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
+
+  const handleShopCardClick = () => {
+    setIsButtonVisible(false);
+  };
+
+  const handleBackToCards = () => {
+    setIsButtonVisible(true);
+  };
   return (
     <Container
       disableGutters
@@ -24,34 +35,6 @@ export default function HireCpnt() {
             backgroundColor: "rgb(29,28,28,80%)",
           }}
         >
-          <Box
-            sx={{
-              height: "3rem",
-              display: "flex",
-
-              justifyContent: "flex-end",
-            }}
-          >
-            <Link to="/shop">
-            <Button
-              variant="contained"
-              sx={{
-                fontFamily: "Pixelify",
-                fontSize: "1.3rem",
-                fontWeight: 700,
-                minWidth: "2rem",
-                width: "2rem",
-                height: "2rem",
-                backgroundColor: "#B91818",
-                padding: 0,
-                mt: "1rem",
-                mr: "1rem",
-              }}
-            >
-              x
-            </Button>
-            </Link>
-          </Box>
           <Box
             sx={{
               height: "5rem",
@@ -77,6 +60,31 @@ export default function HireCpnt() {
           </Box>
           <Box
             sx={{
+              height: "3rem",
+              display: isButtonVisible ? "block" : "none",
+            }}
+          >
+            <Link to="/shop">
+              <Button
+                variant="contained"
+                sx={{
+                  fontFamily: "Pixelify",
+                  fontSize: "1.3rem",
+                  fontWeight: 700,
+                  minWidth: "2rem",
+                  width: "2rem",
+                  height: "2rem",
+                  backgroundColor: "#565656",
+                  padding: 0,
+                  ml: "1rem",
+                }}
+              >
+                <Box component="img" src={LeftArrow} sx={{ width: "90%" }} />
+              </Button>
+            </Link>
+          </Box>
+          <Box
+            sx={{
               height: "75%",
               display: "flex",
               flexDirection: "column",
@@ -84,7 +92,10 @@ export default function HireCpnt() {
               justifyContent: "space-around",
             }}
           >
-            <ShopCardContainer />
+            <ShopCardContainer
+              onCardClick={handleShopCardClick}
+              onBackToCards={handleBackToCards}
+            />
           </Box>
         </Paper>
       </Box>

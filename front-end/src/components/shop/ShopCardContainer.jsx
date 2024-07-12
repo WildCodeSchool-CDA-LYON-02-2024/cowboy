@@ -1,11 +1,13 @@
 import { Box } from "@mui/material";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { usePlayerContext } from "../../context/PlayerContext";
 import { fetchAllCowboy } from "../../services/CowboyService";
 import Recruit from "./Recruit.jsx";
+
 import ShopCard from "./ShopCard.jsx";
 
-export default function ShopCardContainer() {
+export default function ShopCardContainer({ onCardClick, onBackToCards }) {
   const [available, setAvailable] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -26,12 +28,21 @@ export default function ShopCardContainer() {
     fetchCowboys();
   }, [playerData, available]);
 
+  // const handleCardClickShop = (cowboy) => {
+  //   setSelectedCard(cowboy);
+  // };
+
+  // const handleBackToCards = () => {
+  //   setSelectedCard(null);
+  // };
   const handleCardClickShop = (cowboy) => {
     setSelectedCard(cowboy);
+    onCardClick();
   };
 
   const handleBackToCards = () => {
     setSelectedCard(null);
+    onBackToCards();
   };
 
   return (
@@ -74,3 +85,8 @@ export default function ShopCardContainer() {
     </Box>
   );
 }
+
+ShopCardContainer.propTypes = {
+  onCardClick: PropTypes.func.isRequired,
+  onBackToCards: PropTypes.func.isRequired,
+};

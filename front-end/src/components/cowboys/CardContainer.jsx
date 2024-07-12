@@ -7,6 +7,7 @@ import { fetchPlayerCowboy } from "../../services/CowboyService";
 
 export default function CardContainer() {
   const [selectedCowboy, setSelectedCowboy] = useState(null);
+
   const { playerData } = usePlayerContext();
 
   const [playerCowboys, setPlayerCowboys] = useState([]);

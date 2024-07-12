@@ -1,8 +1,7 @@
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import Canyon from "../../assets/images/cactus.jpg";
 import Bandit from "../../assets/images/cowboys/cowboy-pix-sbg.png";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 export default function BanditCpnt() {
   return (
@@ -75,7 +74,3 @@ export default function BanditCpnt() {
     </Card>
   );
 }
-
-BanditCpnt.propTypes = {
-  onCardClick: PropTypes.func.isRequired,
-};

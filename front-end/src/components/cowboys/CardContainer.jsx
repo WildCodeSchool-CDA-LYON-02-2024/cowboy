@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import CowboyCard from "./CowboyCard";
 import CowboyDetails from "./CowboyDetails";
-
 export default function CardContainer() {
   const [selectedCowboy, setSelectedCowboy] = useState(null);
   const handleCardClick = (cowboy) => {

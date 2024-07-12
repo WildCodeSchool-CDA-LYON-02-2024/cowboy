@@ -8,6 +8,7 @@ import { PlayerContextProvider } from "./context/PlayerContext.jsx";
 import "./index.css";
 import BoardPage from "./pages/BoardPage.jsx";
 import FightPage from "./pages/FightPage.jsx";
+import FightComponent from "./components/FightComponents.jsx";
 import CowboyPage from "./pages/CowboyPage.jsx";
 import Grid from "./components/map/Grid.jsx";
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/fight",
         element: <FightPage />,
+      },
+      {
+        path: "/fightground",
+        element: <FightComponent />,
       },
     ],
   },
